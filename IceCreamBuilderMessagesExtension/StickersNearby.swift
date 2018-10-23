@@ -136,6 +136,12 @@ func getType(type:String)->Base{
         return .vegetarian
     case "wine_bars":
         return .winebars
+    case "chickenshop":
+        return .chickenshop
+    case "sandwiches":
+        return .sandwiches
+    case "chinese":
+        return .chinese
 
     default:
         print(type)
