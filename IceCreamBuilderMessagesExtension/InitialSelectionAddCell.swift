@@ -7,7 +7,7 @@ A `UICollectionViewCell` subclass used to display an add button in the `IceCream
 
 import UIKit
 
-class IceCreamAddCell: UICollectionViewCell {
+class InitialSelectionAddCell: UICollectionViewCell {
 
     static let reuseIdentifier = "IceCreamAddCell"
     

@@ -18,6 +18,11 @@ struct IceCream {
     
     var topping: Topping?
     
+    var restaraunt:Restaurant?
+    
+    var blackAndWhite:Bool
+
+    
     var isComplete: Bool {
         return base != nil && scoops != nil && topping != nil
     }
@@ -41,7 +46,7 @@ extension IceCream {
         if let part = topping {
             items.append(part.queryItem)
         }
-        
+     
         return items
     }
     
@@ -51,6 +56,8 @@ extension IceCream {
         var base: Base?
         var scoops: Scoops?
         var topping: Topping?
+        
+        
         
         for queryItem in queryItems {
             guard let value = queryItem.value else { continue }
@@ -64,14 +71,32 @@ extension IceCream {
             if let decodedPart = Topping(rawValue: value), queryItem.name == Topping.queryItemKey {
                 topping = decodedPart
             }
+            
+      
         }
+        
         
         guard let decodedBase = base else { return nil }
         
         self.base = decodedBase
         self.scoops = scoops
         self.topping = topping
+        self.blackAndWhite = false
     }
+    
+    
+    init(iceCream:IceCream,blackAndWhite:Bool){
+        self.base = iceCream.base
+        self.scoops = iceCream.scoops
+        self.topping = iceCream.topping
+        self.blackAndWhite = blackAndWhite
+    }
+    
+//    mutating func toggleBlackAndWhite(){
+//        let currentStatus = self.blackAndWhite
+//        self.blackAndWhite = !currentStatus
+//    }
+    
 }
 
 /// Extends `IceCream` to be able to be created with the contents of an `MSMessage`.

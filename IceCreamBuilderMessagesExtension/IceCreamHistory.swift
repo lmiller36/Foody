@@ -37,29 +37,32 @@ struct IceCreamHistory {
     static func load() -> IceCreamHistory {
         var iceCreams = [IceCream]()
         let defaults = UserDefaults.standard
-        
-        if let savedIceCreams = defaults.object(forKey: IceCreamHistory.userDefaultsKey) as? [String] {
-            iceCreams = savedIceCreams.compactMap { urlString in
-                guard let url = URL(string: urlString) else { return nil }
-                guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
-                guard let queryItems = components.queryItems else { return nil }
-                
-                return IceCream(queryItems: queryItems)
-            }
-        }
-        
+//        iceCreams.append(IceCream(base: .burger, scoops: .scoops01, topping: .topping01))
+//
+//        let defaults = UserDefaults.standard
+//
+   
+//
         // If no ice creams have been loaded, create some tasty examples.
-        if iceCreams.isEmpty {
-            iceCreams.append(IceCream(base: .base01, scoops: .scoops01, topping: .topping01))
-            iceCreams.append(IceCream(base: .base02, scoops: .scoops02, topping: .topping02))
-            iceCreams.append(IceCream(base: .base03, scoops: .scoops03, topping: .topping03))
-            iceCreams.append(IceCream(base: .base04, scoops: .scoops04, topping: .topping04))
-            
-            let historyToSave = IceCreamHistory(iceCreams: iceCreams)
-            historyToSave.save()
+        if !iceCreams.isEmpty{
+            if let savedIceCreams = defaults.object(forKey: IceCreamHistory.userDefaultsKey) as? [String] {
+                iceCreams = savedIceCreams.compactMap { urlString in
+                    guard let url = URL(string: urlString) else { return nil }
+                    guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
+                    guard let queryItems = components.queryItems else { return nil }
+
+                    return IceCream(queryItems: queryItems)
+                }
+                print("SAVED ICE CREAMS")
+                print(iceCreams)
+
+            }
+            print("SAVED")
+            print(iceCreams)
         }
+////
+ return IceCreamHistory(iceCreams: iceCreams)
         
-        return IceCreamHistory(iceCreams: iceCreams)
     }
     
     /// Saves the history.
@@ -77,6 +80,7 @@ struct IceCreamHistory {
         
         let defaults = UserDefaults.standard
         defaults.set(iceCreamURLStrings as AnyObject, forKey: IceCreamHistory.userDefaultsKey)
+
     }
     
     mutating func append(_ iceCream: IceCream) {

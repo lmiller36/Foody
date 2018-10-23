@@ -60,8 +60,10 @@ class IceCreamStickerCache {
         guard let base = iceCream.base, let scoops = iceCream.scoops, let topping = iceCream.topping
             else { fatalError("Stickers can only be created for completed ice creams") }
 
+        let blackAndWhite = iceCream.blackAndWhite
+        
         // Determine the URL for the sticker.
-        let fileName = base.rawValue + scoops.rawValue + topping.rawValue + ".png"
+        let fileName = base.rawValue + scoops.rawValue + topping.rawValue + String(blackAndWhite) + ".png"
         let url = cacheURL.appendingPathComponent(fileName)
         
         // Create an operation to process the request.

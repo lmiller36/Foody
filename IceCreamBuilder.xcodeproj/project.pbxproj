@@ -7,6 +7,71 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		480F20DE215FD47E0038963B /* icecream_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20DD215FD47E0038963B /* icecream_sticker.png */; };
+		480F20E2215FD61D0038963B /* american_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20E1215FD61D0038963B /* american_sticker.png */; };
+		480F20E4215FD6AA0038963B /* french_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20E3215FD6AA0038963B /* french_sticker.png */; };
+		480F20E6215FD70E0038963B /* ramen_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20E5215FD70E0038963B /* ramen_sticker.png */; };
+		480F20E8215FD7CD0038963B /* russian_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20E7215FD7CD0038963B /* russian_sticker.png */; };
+		480F20EA215FDBF90038963B /* fishnchips_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20E9215FDBF90038963B /* fishnchips_sticker.png */; };
+		480F20EC215FDBFF0038963B /* asianfusion_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20EB215FDBFE0038963B /* asianfusion_sticker.png */; };
+		480F20F0215FDD520038963B /* japanese_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20EF215FDD520038963B /* japanese_sticker.png */; };
+		480F20F2215FDD660038963B /* bbq_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20F1215FDD660038963B /* bbq_sticker.png */; };
+		480F20F4215FDD760038963B /* seafood_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20F3215FDD760038963B /* seafood_sticker.png */; };
+		480F20F6215FDD8D0038963B /* winebars_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20F5215FDD8D0038963B /* winebars_sticker.png */; };
+		480F20F8215FDDBB0038963B /* donuts_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20F7215FDDBB0038963B /* donuts_sticker.png */; };
+		480F20FA215FDDC00038963B /* tapas_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20F9215FDDC00038963B /* tapas_sticker.png */; };
+		480F20FC215FDFE70038963B /* hotdog_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20FB215FDFE70038963B /* hotdog_sticker.png */; };
+		480F20FE215FDFED0038963B /* spanish_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20FD215FDFED0038963B /* spanish_sticker.png */; };
+		480F2100215FDFF40038963B /* jazz_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F20FF215FDFF30038963B /* jazz_sticker.png */; };
+		480F2102215FDFFA0038963B /* czech_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2101215FDFFA0038963B /* czech_sticker.png */; };
+		480F2104215FE0020038963B /* brazilian_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2103215FE0020038963B /* brazilian_sticker.png */; };
+		480F2106215FE24B0038963B /* bagels_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2105215FE24B0038963B /* bagels_sticker.png */; };
+		480F210A215FE2580038963B /* chickenwings_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2109215FE2580038963B /* chickenwings_sticker.png */; };
+		480F210C215FE25F0038963B /* gourmet_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F210B215FE25F0038963B /* gourmet_sticker.png */; };
+		480F210E215FE3270038963B /* desserts_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F210D215FE3260038963B /* desserts_sticker.png */; };
+		480F2114215FE46F0038963B /* hawaiian_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2113215FE46E0038963B /* hawaiian_sticker.png */; };
+		480F2118215FE4B90038963B /* bento_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2117215FE4B90038963B /* bento_sticker.png */; };
+		480F211A215FE4BE0038963B /* korean_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2119215FE4BE0038963B /* korean_sticker.png */; };
+		480F211C215FE5B80038963B /* cuban_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F211B215FE5B80038963B /* cuban_sticker.png */; };
+		480F211E215FE5F90038963B /* mediterranean_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F211D215FE5F90038963B /* mediterranean_sticker.png */; };
+		480F2120215FE6E10038963B /* falafel_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F211F215FE6E10038963B /* falafel_sticker.png */; };
+		480F2124215FE6F00038963B /* thai_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2123215FE6F00038963B /* thai_sticker.png */; };
+		480F2126215FE7790038963B /* foodstand_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2125215FE7790038963B /* foodstand_sticker.png */; };
+		480F2128215FE7FC0038963B /* german_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2127215FE7FC0038963B /* german_sticker.png */; };
+		480F212A215FEA650038963B /* deli_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F2129215FEA640038963B /* deli_sticker.png */; };
+		480F212C215FEB620038963B /* tea_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F212B215FEB620038963B /* tea_sticker.png */; };
+		48140475217D4A0000124E76 /* thumbsUp_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 48140471217D49FF00124E76 /* thumbsUp_selected.png */; };
+		48140477217D4A0000124E76 /* thumbsUp_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 48140473217D49FF00124E76 /* thumbsUp_unselected.png */; };
+		4814047C217D505C00124E76 /* ThumbUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4814047B217D505C00124E76 /* ThumbUp.swift */; };
+		4815EBD0216518930043DC82 /* VotingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4815EBCF216518930043DC82 /* VotingViewController.swift */; };
+		4815EBD2216519090043DC82 /* VotingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4815EBD1216519090043DC82 /* VotingCell.swift */; };
+		48163198217ED33D0003F334 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48163197217ED33D0003F334 /* Map.swift */; };
+		4816715C2157462300FB53D5 /* burgers_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816715B2157462300FB53D5 /* burgers_sticker.png */; };
+		481671622157499D00FB53D5 /* mexican_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 481671612157499D00FB53D5 /* mexican_sticker.png */; };
+		48167164215749CC00FB53D5 /* breakfastBrunch_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 48167163215749CC00FB53D5 /* breakfastBrunch_sticker.png */; };
+		4816716621574A4F00FB53D5 /* coffee_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816716521574A4F00FB53D5 /* coffee_sticker.png */; };
+		4816716821574AC400FB53D5 /* vegetarian_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816716721574AC400FB53D5 /* vegetarian_sticker.png */; };
+		4816716A21574B8400FB53D5 /* bars_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816716921574B8400FB53D5 /* bars_sticker.png */; };
+		4816716C21574BE800FB53D5 /* cocktailBars_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816716B21574BE800FB53D5 /* cocktailBars_sticker.png */; };
+		4816717021574C5100FB53D5 /* sushi_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816716F21574C5100FB53D5 /* sushi_sticker.png */; };
+		4816717221574CA400FB53D5 /* greek_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816717121574CA300FB53D5 /* greek_sticker.png */; };
+		4816717821574DBC00FB53D5 /* steak_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816717321574DBC00FB53D5 /* steak_sticker.png */; };
+		4816717921574DBC00FB53D5 /* bakery_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816717421574DBC00FB53D5 /* bakery_sticker.png */; };
+		4816717B21574DBC00FB53D5 /* cheese_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816717621574DBC00FB53D5 /* cheese_sticker.png */; };
+		4816717C21574DBC00FB53D5 /* italian_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4816717721574DBC00FB53D5 /* italian_sticker.png */; };
+		4816717E2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4816717D2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift */; };
+		482045752155E59700989507 /* burger_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 482045712155E59700989507 /* burger_sticker.png */; };
+		482045762155E59700989507 /* pizza_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 482045722155E59700989507 /* pizza_sticker.png */; };
+		4820457A2155EBE900989507 /* StickersNearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482045792155EBE900989507 /* StickersNearby.swift */; };
+		4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */; };
+		484F2CF2217D63970083B3CE /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484F2CF1217D63970083B3CE /* OptionCell.swift */; };
+		484F2CF8217E31D30083B3CE /* StartMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484F2CF7217E31D30083B3CE /* StartMenuViewController.swift */; };
+		4875BBC3215C5FB7005D0C09 /* TopMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4875BBC2215C5FB7005D0C09 /* TopMenu.swift */; };
+		48B14F4C2155A4A300A05FEF /* YelpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F4A2155A4A300A05FEF /* YelpRequest.swift */; };
+		48B14F4F2155A61700A05FEF /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F4D2155A61700A05FEF /* Restaurant.swift */; };
+		48B14F522155DA0100A05FEF /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F502155DA0100A05FEF /* CurrentLocation.swift */; };
+		48EC4D322163D6140010FDE5 /* SelectedRestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EC4D312163D6140010FDE5 /* SelectedRestaurantViewController.swift */; };
+		48EC4D38216438820010FDE5 /* SelectedRestaurantsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EC4D37216438820010FDE5 /* SelectedRestaurantsCollectionView.swift */; };
 		B52828AD1CD1724C009CD776 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52828AC1CD1724C009CD776 /* AppDelegate.swift */; };
 		B52828AF1CD1724C009CD776 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52828AE1CD1724C009CD776 /* ViewController.swift */; };
 		B52828B21CD1724C009CD776 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B52828B01CD1724C009CD776 /* Main.storyboard */; };
@@ -20,13 +85,13 @@
 		B55F96411CFF82E100B33E33 /* BuildIceCreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F96351CFF82E100B33E33 /* BuildIceCreamViewController.swift */; };
 		B55F96421CFF82E100B33E33 /* IceCream.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F96361CFF82E100B33E33 /* IceCream.swift */; };
 		B55F96431CFF82E100B33E33 /* IceCream+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F96371CFF82E100B33E33 /* IceCream+Image.swift */; };
-		B55F96441CFF82E100B33E33 /* IceCreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F96381CFF82E100B33E33 /* IceCreamCell.swift */; };
+		B55F96441CFF82E100B33E33 /* InitialSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F96381CFF82E100B33E33 /* InitialSelectionCell.swift */; };
 		B55F96451CFF82E100B33E33 /* IceCreamHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F96391CFF82E100B33E33 /* IceCreamHistory.swift */; };
-		B55F96461CFF82E100B33E33 /* IceCreamAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F963A1CFF82E100B33E33 /* IceCreamAddCell.swift */; };
+		B55F96461CFF82E100B33E33 /* InitialSelectionAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F963A1CFF82E100B33E33 /* InitialSelectionAddCell.swift */; };
 		B55F96471CFF82E100B33E33 /* IceCreamPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F963B1CFF82E100B33E33 /* IceCreamPart.swift */; };
 		B55F96481CFF82E100B33E33 /* IceCreamPartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F963C1CFF82E100B33E33 /* IceCreamPartCell.swift */; };
 		B55F96491CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F963D1CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift */; };
-		B55F964A1CFF82E100B33E33 /* IceCreamsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F963E1CFF82E100B33E33 /* IceCreamsViewController.swift */; };
+		B55F964A1CFF82E100B33E33 /* InitialSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F963E1CFF82E100B33E33 /* InitialSelectionViewController.swift */; };
 		B55F964B1CFF82E100B33E33 /* IceCreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F963F1CFF82E100B33E33 /* IceCreamView.swift */; };
 		B55F964C1CFF82E100B33E33 /* QueryItemRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F96401CFF82E100B33E33 /* QueryItemRepresentable.swift */; };
 		B55F964F1CFF9FB800B33E33 /* CompletedIceCreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F964E1CFF9FB800B33E33 /* CompletedIceCreamViewController.swift */; };
@@ -85,8 +150,73 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A4D44100A4D441D000000001 /* SampleCode.xcconfig */ = {isa = PBXFileReference; name = SampleCode.xcconfig; path = Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
-		A4E3BEA0A4E3BEF000000001 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.txt; sourceTree = "<group>"; };
+		480F20DD215FD47E0038963B /* icecream_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icecream_sticker.png; path = ../../../icecream_sticker.png; sourceTree = "<group>"; };
+		480F20E1215FD61D0038963B /* american_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = american_sticker.png; path = ../../../american_sticker.png; sourceTree = "<group>"; };
+		480F20E3215FD6AA0038963B /* french_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = french_sticker.png; path = ../../../french_sticker.png; sourceTree = "<group>"; };
+		480F20E5215FD70E0038963B /* ramen_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ramen_sticker.png; path = ../../../ramen_sticker.png; sourceTree = "<group>"; };
+		480F20E7215FD7CD0038963B /* russian_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = russian_sticker.png; path = ../../../russian_sticker.png; sourceTree = "<group>"; };
+		480F20E9215FDBF90038963B /* fishnchips_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fishnchips_sticker.png; path = ../../../fishnchips_sticker.png; sourceTree = "<group>"; };
+		480F20EB215FDBFE0038963B /* asianfusion_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = asianfusion_sticker.png; path = ../../../asianfusion_sticker.png; sourceTree = "<group>"; };
+		480F20EF215FDD520038963B /* japanese_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = japanese_sticker.png; path = ../../../japanese_sticker.png; sourceTree = "<group>"; };
+		480F20F1215FDD660038963B /* bbq_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bbq_sticker.png; path = ../../../bbq_sticker.png; sourceTree = "<group>"; };
+		480F20F3215FDD760038963B /* seafood_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = seafood_sticker.png; path = ../../../seafood_sticker.png; sourceTree = "<group>"; };
+		480F20F5215FDD8D0038963B /* winebars_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = winebars_sticker.png; path = ../../../winebars_sticker.png; sourceTree = "<group>"; };
+		480F20F7215FDDBB0038963B /* donuts_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = donuts_sticker.png; path = ../../../donuts_sticker.png; sourceTree = "<group>"; };
+		480F20F9215FDDC00038963B /* tapas_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tapas_sticker.png; path = ../../../tapas_sticker.png; sourceTree = "<group>"; };
+		480F20FB215FDFE70038963B /* hotdog_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hotdog_sticker.png; path = ../../../hotdog_sticker.png; sourceTree = "<group>"; };
+		480F20FD215FDFED0038963B /* spanish_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spanish_sticker.png; path = ../../../spanish_sticker.png; sourceTree = "<group>"; };
+		480F20FF215FDFF30038963B /* jazz_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = jazz_sticker.png; path = ../../../jazz_sticker.png; sourceTree = "<group>"; };
+		480F2101215FDFFA0038963B /* czech_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = czech_sticker.png; path = ../../../czech_sticker.png; sourceTree = "<group>"; };
+		480F2103215FE0020038963B /* brazilian_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = brazilian_sticker.png; path = ../../../brazilian_sticker.png; sourceTree = "<group>"; };
+		480F2105215FE24B0038963B /* bagels_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bagels_sticker.png; path = ../../../bagels_sticker.png; sourceTree = "<group>"; };
+		480F2109215FE2580038963B /* chickenwings_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = chickenwings_sticker.png; path = ../../../chickenwings_sticker.png; sourceTree = "<group>"; };
+		480F210B215FE25F0038963B /* gourmet_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gourmet_sticker.png; path = ../../../gourmet_sticker.png; sourceTree = "<group>"; };
+		480F210D215FE3260038963B /* desserts_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = desserts_sticker.png; path = ../../../desserts_sticker.png; sourceTree = "<group>"; };
+		480F2113215FE46E0038963B /* hawaiian_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hawaiian_sticker.png; path = ../../../hawaiian_sticker.png; sourceTree = "<group>"; };
+		480F2117215FE4B90038963B /* bento_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bento_sticker.png; path = ../../../bento_sticker.png; sourceTree = "<group>"; };
+		480F2119215FE4BE0038963B /* korean_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = korean_sticker.png; path = ../../../korean_sticker.png; sourceTree = "<group>"; };
+		480F211B215FE5B80038963B /* cuban_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cuban_sticker.png; path = ../../../cuban_sticker.png; sourceTree = "<group>"; };
+		480F211D215FE5F90038963B /* mediterranean_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mediterranean_sticker.png; path = ../../../mediterranean_sticker.png; sourceTree = "<group>"; };
+		480F211F215FE6E10038963B /* falafel_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = falafel_sticker.png; path = ../../../falafel_sticker.png; sourceTree = "<group>"; };
+		480F2123215FE6F00038963B /* thai_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thai_sticker.png; path = ../../../thai_sticker.png; sourceTree = "<group>"; };
+		480F2125215FE7790038963B /* foodstand_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = foodstand_sticker.png; path = ../../../foodstand_sticker.png; sourceTree = "<group>"; };
+		480F2127215FE7FC0038963B /* german_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = german_sticker.png; path = ../../../german_sticker.png; sourceTree = "<group>"; };
+		480F2129215FEA640038963B /* deli_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = deli_sticker.png; path = ../../../deli_sticker.png; sourceTree = "<group>"; };
+		480F212B215FEB620038963B /* tea_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tea_sticker.png; path = ../../../tea_sticker.png; sourceTree = "<group>"; };
+		48140471217D49FF00124E76 /* thumbsUp_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thumbsUp_selected.png; path = ../../../../thumbsUp_selected.png; sourceTree = "<group>"; };
+		48140473217D49FF00124E76 /* thumbsUp_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thumbsUp_unselected.png; path = ../../../../thumbsUp_unselected.png; sourceTree = "<group>"; };
+		4814047B217D505C00124E76 /* ThumbUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbUp.swift; sourceTree = "<group>"; };
+		4815EBCF216518930043DC82 /* VotingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingViewController.swift; sourceTree = "<group>"; };
+		4815EBD1216519090043DC82 /* VotingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingCell.swift; sourceTree = "<group>"; };
+		48163197217ED33D0003F334 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		4816715B2157462300FB53D5 /* burgers_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = burgers_sticker.png; sourceTree = "<group>"; };
+		481671612157499D00FB53D5 /* mexican_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mexican_sticker.png; sourceTree = "<group>"; };
+		48167163215749CC00FB53D5 /* breakfastBrunch_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = breakfastBrunch_sticker.png; sourceTree = "<group>"; };
+		4816716521574A4F00FB53D5 /* coffee_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coffee_sticker.png; sourceTree = "<group>"; };
+		4816716721574AC400FB53D5 /* vegetarian_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vegetarian_sticker.png; sourceTree = "<group>"; };
+		4816716921574B8400FB53D5 /* bars_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bars_sticker.png; sourceTree = "<group>"; };
+		4816716B21574BE800FB53D5 /* cocktailBars_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktailBars_sticker.png; sourceTree = "<group>"; };
+		4816716F21574C5100FB53D5 /* sushi_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sushi_sticker.png; sourceTree = "<group>"; };
+		4816717121574CA300FB53D5 /* greek_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greek_sticker.png; sourceTree = "<group>"; };
+		4816717321574DBC00FB53D5 /* steak_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steak_sticker.png; sourceTree = "<group>"; };
+		4816717421574DBC00FB53D5 /* bakery_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bakery_sticker.png; sourceTree = "<group>"; };
+		4816717621574DBC00FB53D5 /* cheese_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cheese_sticker.png; sourceTree = "<group>"; };
+		4816717721574DBC00FB53D5 /* italian_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = italian_sticker.png; sourceTree = "<group>"; };
+		4816717D2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceTouchGestureRecognizer.swift; sourceTree = "<group>"; };
+		482045712155E59700989507 /* burger_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = burger_sticker.png; sourceTree = "<group>"; };
+		482045722155E59700989507 /* pizza_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pizza_sticker.png; sourceTree = "<group>"; };
+		482045792155EBE900989507 /* StickersNearby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersNearby.swift; sourceTree = "<group>"; };
+		4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsNearby.swift; sourceTree = "<group>"; };
+		484F2CF1217D63970083B3CE /* OptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
+		484F2CF7217E31D30083B3CE /* StartMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuViewController.swift; sourceTree = "<group>"; };
+		4875BBC2215C5FB7005D0C09 /* TopMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopMenu.swift; sourceTree = "<group>"; };
+		48B14F4A2155A4A300A05FEF /* YelpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpRequest.swift; sourceTree = "<group>"; };
+		48B14F4D2155A61700A05FEF /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
+		48B14F502155DA0100A05FEF /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
+		48EC4D312163D6140010FDE5 /* SelectedRestaurantViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedRestaurantViewController.swift; sourceTree = "<group>"; };
+		48EC4D37216438820010FDE5 /* SelectedRestaurantsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedRestaurantsCollectionView.swift; sourceTree = "<group>"; };
+		A4D44100A4D441D000000001 /* SampleCode.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = SampleCode.xcconfig; path = Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
+		A4E3BEA0A4E3BEF000000001 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		B52828A91CD1724C009CD776 /* IceCreamBuilder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IceCreamBuilder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52828AC1CD1724C009CD776 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B52828AE1CD1724C009CD776 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -103,13 +233,13 @@
 		B55F96351CFF82E100B33E33 /* BuildIceCreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildIceCreamViewController.swift; sourceTree = "<group>"; };
 		B55F96361CFF82E100B33E33 /* IceCream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCream.swift; sourceTree = "<group>"; };
 		B55F96371CFF82E100B33E33 /* IceCream+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IceCream+Image.swift"; sourceTree = "<group>"; };
-		B55F96381CFF82E100B33E33 /* IceCreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCreamCell.swift; sourceTree = "<group>"; };
+		B55F96381CFF82E100B33E33 /* InitialSelectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialSelectionCell.swift; sourceTree = "<group>"; };
 		B55F96391CFF82E100B33E33 /* IceCreamHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCreamHistory.swift; sourceTree = "<group>"; };
-		B55F963A1CFF82E100B33E33 /* IceCreamAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCreamAddCell.swift; sourceTree = "<group>"; };
+		B55F963A1CFF82E100B33E33 /* InitialSelectionAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialSelectionAddCell.swift; sourceTree = "<group>"; };
 		B55F963B1CFF82E100B33E33 /* IceCreamPart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCreamPart.swift; sourceTree = "<group>"; };
 		B55F963C1CFF82E100B33E33 /* IceCreamPartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCreamPartCell.swift; sourceTree = "<group>"; };
 		B55F963D1CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCreamPartCollectionViewLayout.swift; sourceTree = "<group>"; };
-		B55F963E1CFF82E100B33E33 /* IceCreamsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCreamsViewController.swift; sourceTree = "<group>"; };
+		B55F963E1CFF82E100B33E33 /* InitialSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialSelectionViewController.swift; sourceTree = "<group>"; };
 		B55F963F1CFF82E100B33E33 /* IceCreamView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IceCreamView.swift; sourceTree = "<group>"; };
 		B55F96401CFF82E100B33E33 /* QueryItemRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryItemRepresentable.swift; sourceTree = "<group>"; };
 		B55F964E1CFF9FB800B33E33 /* CompletedIceCreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedIceCreamViewController.swift; sourceTree = "<group>"; };
@@ -176,7 +306,6 @@
 			children = (
 				A4E3BEA0A4E3BEF000000001 /* LICENSE.txt */,
 			);
-			name = LICENSE;
 			path = LICENSE;
 			sourceTree = "<group>";
 		};
@@ -227,9 +356,15 @@
 			isa = PBXGroup;
 			children = (
 				B55F96271CFF829D00B33E33 /* MessagesViewController.swift */,
-				B55F963E1CFF82E100B33E33 /* IceCreamsViewController.swift */,
-				B55F96381CFF82E100B33E33 /* IceCreamCell.swift */,
-				B55F963A1CFF82E100B33E33 /* IceCreamAddCell.swift */,
+				484F2CF7217E31D30083B3CE /* StartMenuViewController.swift */,
+				B55F963E1CFF82E100B33E33 /* InitialSelectionViewController.swift */,
+				B55F96381CFF82E100B33E33 /* InitialSelectionCell.swift */,
+				B55F963A1CFF82E100B33E33 /* InitialSelectionAddCell.swift */,
+				48163197217ED33D0003F334 /* Map.swift */,
+				4875BBC2215C5FB7005D0C09 /* TopMenu.swift */,
+				484F2CF1217D63970083B3CE /* OptionCell.swift */,
+				4815EBD1216519090043DC82 /* VotingCell.swift */,
+				4815EBCF216518930043DC82 /* VotingViewController.swift */,
 				B55F96351CFF82E100B33E33 /* BuildIceCreamViewController.swift */,
 				B55F963C1CFF82E100B33E33 /* IceCreamPartCell.swift */,
 				B55F963D1CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift */,
@@ -240,6 +375,14 @@
 				B55F96291CFF829D00B33E33 /* MainInterface.storyboard */,
 				B55F962C1CFF829D00B33E33 /* Assets.xcassets */,
 				B55F962E1CFF829D00B33E33 /* Info.plist */,
+				4816717D2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift */,
+				4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */,
+				48B14F4A2155A4A300A05FEF /* YelpRequest.swift */,
+				48B14F4D2155A61700A05FEF /* Restaurant.swift */,
+				48B14F502155DA0100A05FEF /* CurrentLocation.swift */,
+				48EC4D312163D6140010FDE5 /* SelectedRestaurantViewController.swift */,
+				48EC4D37216438820010FDE5 /* SelectedRestaurantsCollectionView.swift */,
+				4814047B217D505C00124E76 /* ThumbUp.swift */,
 			);
 			path = IceCreamBuilderMessagesExtension;
 			sourceTree = "<group>";
@@ -253,6 +396,7 @@
 				B55F963B1CFF82E100B33E33 /* IceCreamPart.swift */,
 				B55F96401CFF82E100B33E33 /* QueryItemRepresentable.swift */,
 				B5B1E9F11D02717700BD5715 /* IceCreamStickerCache.swift */,
+				482045792155EBE900989507 /* StickersNearby.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -271,6 +415,56 @@
 		B5E0A5841D0109D1006A77D2 /* Bases */ = {
 			isa = PBXGroup;
 			children = (
+				480F20E1215FD61D0038963B /* american_sticker.png */,
+				480F20EB215FDBFE0038963B /* asianfusion_sticker.png */,
+				480F2105215FE24B0038963B /* bagels_sticker.png */,
+				4816717421574DBC00FB53D5 /* bakery_sticker.png */,
+				4816716921574B8400FB53D5 /* bars_sticker.png */,
+				480F20F1215FDD660038963B /* bbq_sticker.png */,
+				480F2117215FE4B90038963B /* bento_sticker.png */,
+				480F2103215FE0020038963B /* brazilian_sticker.png */,
+				48167163215749CC00FB53D5 /* breakfastBrunch_sticker.png */,
+				482045712155E59700989507 /* burger_sticker.png */,
+				4816715B2157462300FB53D5 /* burgers_sticker.png */,
+				480F2101215FDFFA0038963B /* czech_sticker.png */,
+				4816717621574DBC00FB53D5 /* cheese_sticker.png */,
+				480F2109215FE2580038963B /* chickenwings_sticker.png */,
+				4816716B21574BE800FB53D5 /* cocktailBars_sticker.png */,
+				4816716521574A4F00FB53D5 /* coffee_sticker.png */,
+				480F211B215FE5B80038963B /* cuban_sticker.png */,
+				480F2129215FEA640038963B /* deli_sticker.png */,
+				480F210D215FE3260038963B /* desserts_sticker.png */,
+				480F20F7215FDDBB0038963B /* donuts_sticker.png */,
+				480F211F215FE6E10038963B /* falafel_sticker.png */,
+				480F20E9215FDBF90038963B /* fishnchips_sticker.png */,
+				480F2125215FE7790038963B /* foodstand_sticker.png */,
+				480F20E3215FD6AA0038963B /* french_sticker.png */,
+				480F2127215FE7FC0038963B /* german_sticker.png */,
+				480F210B215FE25F0038963B /* gourmet_sticker.png */,
+				4816717121574CA300FB53D5 /* greek_sticker.png */,
+				480F2113215FE46E0038963B /* hawaiian_sticker.png */,
+				480F20FB215FDFE70038963B /* hotdog_sticker.png */,
+				480F20DD215FD47E0038963B /* icecream_sticker.png */,
+				4816717721574DBC00FB53D5 /* italian_sticker.png */,
+				480F20EF215FDD520038963B /* japanese_sticker.png */,
+				480F20FF215FDFF30038963B /* jazz_sticker.png */,
+				480F2119215FE4BE0038963B /* korean_sticker.png */,
+				480F211D215FE5F90038963B /* mediterranean_sticker.png */,
+				481671612157499D00FB53D5 /* mexican_sticker.png */,
+				482045722155E59700989507 /* pizza_sticker.png */,
+				480F20E5215FD70E0038963B /* ramen_sticker.png */,
+				480F20E7215FD7CD0038963B /* russian_sticker.png */,
+				480F20F3215FDD760038963B /* seafood_sticker.png */,
+				480F20FD215FDFED0038963B /* spanish_sticker.png */,
+				4816717321574DBC00FB53D5 /* steak_sticker.png */,
+				4816716F21574C5100FB53D5 /* sushi_sticker.png */,
+				480F20F9215FDDC00038963B /* tapas_sticker.png */,
+				480F212B215FEB620038963B /* tea_sticker.png */,
+				480F2123215FE6F00038963B /* thai_sticker.png */,
+				48140471217D49FF00124E76 /* thumbsUp_selected.png */,
+				48140473217D49FF00124E76 /* thumbsUp_unselected.png */,
+				4816716721574AC400FB53D5 /* vegetarian_sticker.png */,
+				480F20F5215FDD8D0038963B /* winebars_sticker.png */,
 				B5E0A54E1D01079C006A77D2 /* base01_sticker.png */,
 				B5E0A54F1D01079C006A77D2 /* base02_sticker.png */,
 				B5E0A5501D01079C006A77D2 /* base03_sticker.png */,
@@ -326,7 +520,6 @@
 				B52828A61CD1724C009CD776 /* Frameworks */,
 				B52828A71CD1724C009CD776 /* Resources */,
 				B52828D51CD17260009CD776 /* Embed App Extensions */,
-				55E656D220AB1BCE0062EBA0,
 			);
 			buildRules = (
 			);
@@ -367,11 +560,13 @@
 				TargetAttributes = {
 					B52828A81CD1724C009CD776 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = WH3S96Y2LZ;
 						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 					};
 					B55F96231CFF829D00B33E33 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = WH3S96Y2LZ;
 						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 					};
@@ -411,34 +606,84 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				480F20F2215FDD660038963B /* bbq_sticker.png in Resources */,
+				480F211C215FE5B80038963B /* cuban_sticker.png in Resources */,
 				B5E0A57D1D01079C006A77D2 /* topping06_sticker.png in Resources */,
+				480F20FE215FDFED0038963B /* spanish_sticker.png in Resources */,
+				480F211A215FE4BE0038963B /* korean_sticker.png in Resources */,
+				480F20EC215FDBFF0038963B /* asianfusion_sticker.png in Resources */,
+				48140475217D4A0000124E76 /* thumbsUp_selected.png in Resources */,
+				480F20E2215FD61D0038963B /* american_sticker.png in Resources */,
+				481671622157499D00FB53D5 /* mexican_sticker.png in Resources */,
+				4816717821574DBC00FB53D5 /* steak_sticker.png in Resources */,
 				B5E0A57A1D01079C006A77D2 /* topping03_sticker.png in Resources */,
+				480F210E215FE3270038963B /* desserts_sticker.png in Resources */,
+				480F2114215FE46F0038963B /* hawaiian_sticker.png in Resources */,
 				B5E0A5721D01079C006A77D2 /* scoops06_sticker.png in Resources */,
+				480F2126215FE7790038963B /* foodstand_sticker.png in Resources */,
 				B5E0A5751D01079C006A77D2 /* scoops09_sticker.png in Resources */,
+				482045762155E59700989507 /* pizza_sticker.png in Resources */,
+				480F211E215FE5F90038963B /* mediterranean_sticker.png in Resources */,
+				480F20EA215FDBF90038963B /* fishnchips_sticker.png in Resources */,
 				B5E0A57E1D01079C006A77D2 /* topping07_sticker.png in Resources */,
+				480F20F0215FDD520038963B /* japanese_sticker.png in Resources */,
 				B55F962D1CFF829D00B33E33 /* Assets.xcassets in Resources */,
 				B5E0A5761D01079C006A77D2 /* scoops10_sticker.png in Resources */,
+				4816717021574C5100FB53D5 /* sushi_sticker.png in Resources */,
+				480F2120215FE6E10038963B /* falafel_sticker.png in Resources */,
 				B5E0A5791D01079C006A77D2 /* topping02_sticker.png in Resources */,
+				480F2100215FDFF40038963B /* jazz_sticker.png in Resources */,
+				480F2124215FE6F00038963B /* thai_sticker.png in Resources */,
+				48140477217D4A0000124E76 /* thumbsUp_unselected.png in Resources */,
 				B5E0A5691D01079C006A77D2 /* base01_sticker.png in Resources */,
+				480F2128215FE7FC0038963B /* german_sticker.png in Resources */,
+				480F210C215FE25F0038963B /* gourmet_sticker.png in Resources */,
+				4816717921574DBC00FB53D5 /* bakery_sticker.png in Resources */,
 				B5E0A56C1D01079C006A77D2 /* base04_sticker.png in Resources */,
 				B5E0A5731D01079C006A77D2 /* scoops07_sticker.png in Resources */,
 				B5E0A56A1D01079C006A77D2 /* base02_sticker.png in Resources */,
+				482045752155E59700989507 /* burger_sticker.png in Resources */,
 				B5E0A5711D01079C006A77D2 /* scoops05_sticker.png in Resources */,
+				480F20E8215FD7CD0038963B /* russian_sticker.png in Resources */,
 				B5E0A5701D01079C006A77D2 /* scoops04_sticker.png in Resources */,
 				B5E0A5821D01079C006A77D2 /* topping11_sticker.png in Resources */,
+				480F20DE215FD47E0038963B /* icecream_sticker.png in Resources */,
 				B5E0A57F1D01079C006A77D2 /* topping08_sticker.png in Resources */,
+				4816716621574A4F00FB53D5 /* coffee_sticker.png in Resources */,
 				B5E0A57B1D01079C006A77D2 /* topping04_sticker.png in Resources */,
 				B5E0A56E1D01079C006A77D2 /* scoops02_sticker.png in Resources */,
+				480F2104215FE0020038963B /* brazilian_sticker.png in Resources */,
+				480F2102215FDFFA0038963B /* czech_sticker.png in Resources */,
+				480F20E6215FD70E0038963B /* ramen_sticker.png in Resources */,
+				480F2118215FE4B90038963B /* bento_sticker.png in Resources */,
 				B5E0A56F1D01079C006A77D2 /* scoops03_sticker.png in Resources */,
+				480F20FA215FDDC00038963B /* tapas_sticker.png in Resources */,
+				4816715C2157462300FB53D5 /* burgers_sticker.png in Resources */,
 				B5E0A57C1D01079C006A77D2 /* topping05_sticker.png in Resources */,
 				B5E0A56B1D01079C006A77D2 /* base03_sticker.png in Resources */,
 				B5E0A5831D01079C006A77D2 /* topping12_sticker.png in Resources */,
+				480F20F8215FDDBB0038963B /* donuts_sticker.png in Resources */,
+				4816716821574AC400FB53D5 /* vegetarian_sticker.png in Resources */,
 				B55F962B1CFF829D00B33E33 /* MainInterface.storyboard in Resources */,
+				4816717221574CA400FB53D5 /* greek_sticker.png in Resources */,
 				B5E0A5741D01079C006A77D2 /* scoops08_sticker.png in Resources */,
 				B5A2FBA71D048F7800EB0205 /* sticker_placeholder.png in Resources */,
+				48167164215749CC00FB53D5 /* breakfastBrunch_sticker.png in Resources */,
+				480F212A215FEA650038963B /* deli_sticker.png in Resources */,
+				480F20E4215FD6AA0038963B /* french_sticker.png in Resources */,
 				B5E0A5781D01079C006A77D2 /* topping01_sticker.png in Resources */,
+				4816717B21574DBC00FB53D5 /* cheese_sticker.png in Resources */,
+				4816717C21574DBC00FB53D5 /* italian_sticker.png in Resources */,
+				480F212C215FEB620038963B /* tea_sticker.png in Resources */,
+				4816716C21574BE800FB53D5 /* cocktailBars_sticker.png in Resources */,
+				480F20F4215FDD760038963B /* seafood_sticker.png in Resources */,
+				480F20FC215FDFE70038963B /* hotdog_sticker.png in Resources */,
+				4816716A21574B8400FB53D5 /* bars_sticker.png in Resources */,
+				480F20F6215FDD8D0038963B /* winebars_sticker.png in Resources */,
 				B5E0A5811D01079C006A77D2 /* topping10_sticker.png in Resources */,
 				B5E0A5801D01079C006A77D2 /* topping09_sticker.png in Resources */,
+				480F2106215FE24B0038963B /* bagels_sticker.png in Resources */,
+				480F210A215FE2580038963B /* chickenwings_sticker.png in Resources */,
 				B5E0A56D1D01079C006A77D2 /* scoops01_sticker.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,21 +704,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B55F96461CFF82E100B33E33 /* IceCreamAddCell.swift in Sources */,
-				B55F964A1CFF82E100B33E33 /* IceCreamsViewController.swift in Sources */,
+				B55F96461CFF82E100B33E33 /* InitialSelectionAddCell.swift in Sources */,
+				B55F964A1CFF82E100B33E33 /* InitialSelectionViewController.swift in Sources */,
+				4815EBD0216518930043DC82 /* VotingViewController.swift in Sources */,
 				B55F96411CFF82E100B33E33 /* BuildIceCreamViewController.swift in Sources */,
+				4816717E2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift in Sources */,
 				B55F96281CFF829D00B33E33 /* MessagesViewController.swift in Sources */,
 				B55F96431CFF82E100B33E33 /* IceCream+Image.swift in Sources */,
+				4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */,
 				B5B1E9F21D02717700BD5715 /* IceCreamStickerCache.swift in Sources */,
 				B55F964B1CFF82E100B33E33 /* IceCreamView.swift in Sources */,
+				48163198217ED33D0003F334 /* Map.swift in Sources */,
 				B55F96491CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift in Sources */,
 				B55F964F1CFF9FB800B33E33 /* CompletedIceCreamViewController.swift in Sources */,
+				484F2CF8217E31D30083B3CE /* StartMenuViewController.swift in Sources */,
 				B55F964C1CFF82E100B33E33 /* QueryItemRepresentable.swift in Sources */,
+				4875BBC3215C5FB7005D0C09 /* TopMenu.swift in Sources */,
+				4820457A2155EBE900989507 /* StickersNearby.swift in Sources */,
 				B55F96451CFF82E100B33E33 /* IceCreamHistory.swift in Sources */,
+				48EC4D322163D6140010FDE5 /* SelectedRestaurantViewController.swift in Sources */,
+				48EC4D38216438820010FDE5 /* SelectedRestaurantsCollectionView.swift in Sources */,
+				484F2CF2217D63970083B3CE /* OptionCell.swift in Sources */,
 				B55F96471CFF82E100B33E33 /* IceCreamPart.swift in Sources */,
-				B55F96441CFF82E100B33E33 /* IceCreamCell.swift in Sources */,
+				48B14F522155DA0100A05FEF /* CurrentLocation.swift in Sources */,
+				B55F96441CFF82E100B33E33 /* InitialSelectionCell.swift in Sources */,
+				4815EBD2216519090043DC82 /* VotingCell.swift in Sources */,
 				B55F96481CFF82E100B33E33 /* IceCreamPartCell.swift in Sources */,
+				48B14F4F2155A61700A05FEF /* Restaurant.swift in Sources */,
+				4814047C217D505C00124E76 /* ThumbUp.swift in Sources */,
 				B55F96421CFF82E100B33E33 /* IceCream.swift in Sources */,
+				48B14F4C2155A4A300A05FEF /* YelpRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,10 +892,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WH3S96Y2LZ;
 				INFOPLIST_FILE = IceCreamBuilder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.IceCreamBuilder${SAMPLE_CODE_DISAMBIGUATOR}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LSMInc.Foody;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
@@ -648,10 +908,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WH3S96Y2LZ;
 				INFOPLIST_FILE = IceCreamBuilder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.IceCreamBuilder${SAMPLE_CODE_DISAMBIGUATOR}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LSMInc.Foody;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
@@ -664,10 +924,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WH3S96Y2LZ;
 				INFOPLIST_FILE = IceCreamBuilderMessagesExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.IceCreamBuilder${SAMPLE_CODE_DISAMBIGUATOR}.IceCreamBuilderMessagesExtension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LSMInc.Foody.IceCreamBuilderMessagesExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -681,10 +941,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WH3S96Y2LZ;
 				INFOPLIST_FILE = IceCreamBuilderMessagesExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.IceCreamBuilder${SAMPLE_CODE_DISAMBIGUATOR}.IceCreamBuilderMessagesExtension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.LSMInc.Foody.IceCreamBuilderMessagesExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;

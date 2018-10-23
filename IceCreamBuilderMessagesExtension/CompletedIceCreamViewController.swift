@@ -35,6 +35,7 @@ class CompletedIceCreamViewController: UIViewController {
                 self.stickerView.sticker = sticker
             }
         }
+   
     }
     
 }

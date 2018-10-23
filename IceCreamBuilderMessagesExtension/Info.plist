@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Ice Cream</string>
+	<string>Foody</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,6 +28,22 @@
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.message-payload-provider</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>ho</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>me</string>
+		<key>location-services</key>
+		<string>here</string>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This might happen</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Hey there</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Sup</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This might also happen</string>
+	<key>location-services</key>
+	<string>yo</string>
 </dict>
 </plist>

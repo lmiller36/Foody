@@ -67,7 +67,7 @@ extension IceCream {
     
     private func renderParts() -> UIImage? {
         // Determine which parts to draw.
-        let allParts: [IceCreamPart?] = [topping, scoops, base]
+        let allParts: [IceCreamPart?] = [base]
         let partImages = allParts.compactMap { $0?.stickerImage }
         
         guard !partImages.isEmpty else { return nil }
@@ -93,11 +93,23 @@ extension IceCream {
                 
                 partImage.draw(at: position)
                 
+                
                 nextYPosition += partImage.size.height
             }
         }
         
-        return image
+        //render as black and white
+        if(self.blackAndWhite) {
+        let ciImage = CIImage(image: image)!
+        let blackAndWhiteImage = ciImage.applyingFilter("CIColorControls", parameters: ["inputSaturation": 0, "inputContrast": 5])
+            return UIImage(ciImage: blackAndWhiteImage)
+
+        }
+            //render in color
+        else {
+            return image
+        }
+        
     }
 
 }
