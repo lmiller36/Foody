@@ -337,8 +337,18 @@ class InitialSelectionViewController: UICollectionViewController {
         
         let selectedRestaurants = RestaurantsNearby.sharedInstance.getSelectedRestaurant()
         // 5 is an arbitrary number
-        let extraneousCount = selectedRestaurants.count - 5
-        if(extraneousCount > 0){
+        let extraneousCount = selectedRestaurants.count - 4
+        
+        //TODO Ensure that this works
+        if(selectedRestaurants.count == 0){
+            let alert = UIAlertController(title: "At least 1 suggestions must be given",message:"Please add at least 1 item", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            
+            
+            self.present(alert, animated: true)
+        }
+       else if(extraneousCount > 0){
             let alert = UIAlertController(title: "Up to 4 suggestions are alloted per person", message: "Please remove at least \(extraneousCount) \(extraneousCount == 1 ? "item":"items")", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -346,6 +356,7 @@ class InitialSelectionViewController: UICollectionViewController {
             
             self.present(alert, animated: true)
         }
+        
         else {
             
             let selectedIceCream = RestaurantIcon(restaurant:selectedRestaurants[0],blackAndWhite:false)

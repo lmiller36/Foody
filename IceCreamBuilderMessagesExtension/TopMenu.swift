@@ -12,8 +12,6 @@ import UIKit
 import Messages
 
 class TopMenu: UICollectionReusableView {
-
-    
     
     static let reuseIdentifier = "TopMenuReusableView"
     

@@ -77,6 +77,7 @@
 		4888F607217F7F0B005EA28A /* chinese_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888F606217F7F0B005EA28A /* chinese_sticker.png */; };
 		4888F609217F806C005EA28A /* cocktailBars_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888F608217F806B005EA28A /* cocktailBars_sticker.png */; };
 		4888F60B2180C4CE005EA28A /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */; };
+		4888F60D2180D06D005EA28A /* VotingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888F60C2180D06D005EA28A /* VotingHeader.swift */; };
 		48B14F4C2155A4A300A05FEF /* YelpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F4A2155A4A300A05FEF /* YelpRequest.swift */; };
 		48B14F4F2155A61700A05FEF /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F4D2155A61700A05FEF /* Restaurant.swift */; };
 		48B14F522155DA0100A05FEF /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F502155DA0100A05FEF /* CurrentLocation.swift */; };
@@ -207,6 +208,7 @@
 		4888F606217F7F0B005EA28A /* chinese_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chinese_sticker.png; sourceTree = "<group>"; };
 		4888F608217F806B005EA28A /* cocktailBars_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktailBars_sticker.png; sourceTree = "<group>"; };
 		4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		4888F60C2180D06D005EA28A /* VotingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingHeader.swift; sourceTree = "<group>"; };
 		48B14F4A2155A4A300A05FEF /* YelpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpRequest.swift; sourceTree = "<group>"; };
 		48B14F4D2155A61700A05FEF /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		48B14F502155DA0100A05FEF /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 				484F2CF1217D63970083B3CE /* OptionCell.swift */,
 				4815EBD1216519090043DC82 /* VotingCell.swift */,
 				4815EBCF216518930043DC82 /* VotingViewController.swift */,
+				4888F60C2180D06D005EA28A /* VotingHeader.swift */,
 				B55F963C1CFF82E100B33E33 /* IceCreamPartCell.swift */,
 				B55F963D1CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift */,
 				B55F964E1CFF9FB800B33E33 /* CompletedIceCreamViewController.swift */,
@@ -640,6 +643,7 @@
 				B55F96461CFF82E100B33E33 /* InitialSelectionAddCell.swift in Sources */,
 				B55F964A1CFF82E100B33E33 /* InitialSelectionViewController.swift in Sources */,
 				4815EBD0216518930043DC82 /* VotingViewController.swift in Sources */,
+				4888F60D2180D06D005EA28A /* VotingHeader.swift in Sources */,
 				4816717E2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift in Sources */,
 				B55F96281CFF829D00B33E33 /* MessagesViewController.swift in Sources */,
 				B55F96431CFF82E100B33E33 /* IceCream+Image.swift in Sources */,

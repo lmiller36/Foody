@@ -30,6 +30,18 @@ class VotingViewController:UICollectionViewController{
         
     }
     
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionElementKindSectionHeader {
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: VotingHeader.reuseIdentifier, for: indexPath)
+            // do any programmatic customization, if any, here
+            
+            return view
+        }
+  
+        fatalError("Unexpected kind")
+    }
+    
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell =  VotingCollectionView.dequeueReusableCell(withReuseIdentifier: VotingCell.reuseIdentifier, for: indexPath) as! VotingCell

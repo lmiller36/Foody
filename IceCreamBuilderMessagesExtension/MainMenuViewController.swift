@@ -18,7 +18,7 @@ class MainMenuViewController :UIViewController{
     
     weak var delegate: MainMenuViewControllerDelegate?
     
-    static let storyboardIdentifier = "StartMenuViewController"
+    static let storyboardIdentifier = "MainMenuViewController"
     
     
     
