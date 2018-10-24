@@ -63,7 +63,7 @@ class InitialSelectionViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TopMenu.reuseIdentifier, for: indexPath) 
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: InitialSelectionHeader.reuseIdentifier, for: indexPath) 
             // do any programmatic customization, if any, here
             
             return view

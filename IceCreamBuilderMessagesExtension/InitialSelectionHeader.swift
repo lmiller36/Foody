@@ -11,9 +11,9 @@ import Foundation
 import UIKit
 import Messages
 
-class TopMenu: UICollectionReusableView {
+class InitialSelectionHeader: UICollectionReusableView {
     
-    static let reuseIdentifier = "TopMenuReusableView"
+    static let reuseIdentifier = "InitialSelectionHeaderReusableView"
     
     @IBOutlet weak var Title: UITextView!
     @IBOutlet weak var ExpandedSwitch: UISwitch!
@@ -90,7 +90,7 @@ class TopMenu: UICollectionReusableView {
 
 }
 
-extension TopMenu: UICollectionViewDataSource {
+extension InitialSelectionHeader: UICollectionViewDataSource {
     
     
     

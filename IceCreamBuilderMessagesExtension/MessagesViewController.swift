@@ -91,7 +91,7 @@ class MessagesViewController: MSMessagesAppViewController {
  
     }
     
-    private func instantiateIceCreamsController() -> UIViewController {
+    private func instantiateInitialSelectionController() -> UIViewController {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: InitialSelectionViewController.storyboardIdentifier)
             as? InitialSelectionViewController
             else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
@@ -113,24 +113,24 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     private func instantiateVotingController() -> UIViewController {
-        // Instantiate a `BuildIceCreamViewController`.
+        // Instantiate a `VotingViewController`.
         guard let controller = storyboard?.instantiateViewController(withIdentifier: VotingViewController.storyboardIdentifier)
             as? VotingViewController
             else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
         
         return controller
     }
-    
-    private func instantiateCompletedIceCreamController(with iceCream: RestaurantIcon) -> UIViewController {
-        // Instantiate a `BuildIceCreamViewController`.
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
-            as? CompletedIceCreamViewController
-            else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
-
-        controller.iceCream = iceCream
-
-        return controller
-    }
+//    
+//    private func instantiateCompletedIceCreamController(with iceCream: RestaurantIcon) -> UIViewController {
+//        // Instantiate a `BuildIceCreamViewController`.
+//        guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
+//            as? CompletedIceCreamViewController
+//            else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
+//
+//        controller.iceCream = iceCream
+//
+//        return controller
+//    }
     
     private func initializeController(){
         
@@ -143,7 +143,7 @@ class MessagesViewController: MSMessagesAppViewController {
         case State.MainMenu:
             controller = instantiateStartMenuController()
         case State.InitialSelection:
-            controller = instantiateIceCreamsController ()
+            controller = instantiateInitialSelectionController ()
         case State.VotingRound1:
             controller = instantiateVotingController()
         case State.VotingRound2:
