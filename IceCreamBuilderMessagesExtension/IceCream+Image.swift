@@ -7,7 +7,7 @@ Extends `IceCream` to add methods to render the ice cream as a `UIImage`.
 
 import UIKit
 
-extension RestaurantIcon {
+extension Restaurant {
     
     private struct StickerProperties {
         /// The desired size of an ice cream sticker image.

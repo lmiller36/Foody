@@ -8,7 +8,7 @@
 
 import Foundation
 
-func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [Restaurant]) -> Void){
+func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [RestaurantInfo]) -> Void){
     // var iceCreams = [IceCream]()
     print("im generated nearby")
 

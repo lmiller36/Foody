@@ -9,7 +9,7 @@ import UIKit
 
 class IceCreamView: UIStackView {
     
-    var iceCream: RestaurantIcon? {
+    var iceCream: Restaurant? {
         didSet {
             // Remove any existing arranged subviews.
             for view in arrangedSubviews {

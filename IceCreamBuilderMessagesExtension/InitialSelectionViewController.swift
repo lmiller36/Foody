@@ -15,7 +15,7 @@ class InitialSelectionViewController: UICollectionViewController {
     
     
     enum CollectionViewItem {
-        case iceCream(RestaurantIcon)
+        case iceCream(Restaurant)
         case create
     }
     
@@ -133,7 +133,7 @@ class InitialSelectionViewController: UICollectionViewController {
     
     // MARK: Convenience
     
-    private func dequeueIceCreamCell(for iceCream: RestaurantIcon, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func dequeueIceCreamCell(for iceCream: Restaurant, at indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView?.dequeueReusableCell(withReuseIdentifier: InitialSelectionCell.reuseIdentifier,
                                                              for: indexPath) as? InitialSelectionCell
             else { fatalError("Unable to dequeue am IceCreamCell") }
@@ -145,7 +145,7 @@ class InitialSelectionViewController: UICollectionViewController {
         let cache = IceCreamStickerCache.cache
         cell.stickerView.sticker = cache.placeholderSticker
         
-        guard let restaraunt = iceCream.restaraunt else {return cell}
+        guard let restaraunt = iceCream.restaurantInfo else {return cell}
         let restarauntName = restaraunt.name
         guard let price = restaraunt.price else {return cell}
         let rating = restaraunt.rating
@@ -201,7 +201,7 @@ class InitialSelectionViewController: UICollectionViewController {
         
         //self.selectedRestaurants.append(selectedIceCream)
 //        RestaurantsNearby.sharedInstance.addSelectedRestaurant(restaurant: selectedIceCream.restaraunt ?? default )
-        if let selectedRestaurant = selectedIceCream.restaraunt {
+        if let selectedRestaurant = selectedIceCream.restaurantInfo {
             RestaurantsNearby.sharedInstance.toggleTappedRestaurant(row: indexPath.row)
         }
         
@@ -359,7 +359,7 @@ class InitialSelectionViewController: UICollectionViewController {
         
         else {
             
-            let selectedIceCream = RestaurantIcon(restaurant:selectedRestaurants[0],blackAndWhite:false)
+            let selectedIceCream = Restaurant(restaurant:selectedRestaurants[0],blackAndWhite:false)
             delegate?.changePresentationStyle(presentationStyle: .compact)
             delegate?.addMessageToConversation(selectedRestaurants,messageImage: selectedIceCream)
         }
@@ -440,7 +440,7 @@ protocol IceCreamsViewControllerDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ restaurants:[Restaurant],messageImage:RestaurantIcon)
+    func addMessageToConversation(_ restaurants:[RestaurantInfo],messageImage:Restaurant)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
 

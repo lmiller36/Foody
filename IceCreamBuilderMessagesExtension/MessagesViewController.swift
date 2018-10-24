@@ -76,7 +76,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 let restaurantInfo = queryItems?.filter({$0.name == key}).first?.value ?? ""
                 let restaurantInfoData = restaurantInfo.data(using: .utf8)!
                 
-                guard let restaurant = try? JSONDecoder().decode(Restaurant.self, from: restaurantInfoData) else {
+                guard let restaurant = try? JSONDecoder().decode(RestaurantInfo.self, from: restaurantInfoData) else {
                     print("Error: Couldn't decode data into restaurant")
                     return
                 }
@@ -182,7 +182,7 @@ class MessagesViewController: MSMessagesAppViewController {
             child.removeFromParentViewController()
         }
     }
-    func composeMessage(with restaurants: [Restaurant],messageImage: RestaurantIcon, caption: String, session: MSSession? = nil) -> MSMessage {
+    func composeMessage(with restaurants: [RestaurantInfo],messageImage: Restaurant, caption: String, session: MSSession? = nil) -> MSMessage {
         
         var components = URLComponents()
         
@@ -275,7 +275,7 @@ extension MessagesViewController: IceCreamsViewControllerDelegate {
     }
     
     
-    func addMessageToConversation(_ restaurants:[Restaurant], messageImage:RestaurantIcon){
+    func addMessageToConversation(_ restaurants:[RestaurantInfo], messageImage:Restaurant){
         
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         

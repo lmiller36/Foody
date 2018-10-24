@@ -116,7 +116,7 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
         
         cell.Name.text = availableTypes[currentKey]
         
-        let iceCream = RestaurantIcon(icon:getType(type: currentKey),blackAndWhite:false)
+        let iceCream = Restaurant(icon:getType(type: currentKey),blackAndWhite:false)
         
         cell.representedIceCream = iceCream
         
@@ -155,9 +155,9 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
         guard let optionCell = AvailableTypes.cellForItem(at: indexPath) as? OptionCell else {return}
         
         
-        if let representedIceCreamRestaurant = optionCell.representedIceCream?.restaraunt {
+        if let representedIceCreamRestaurant = optionCell.representedIceCream?.restaurantInfo {
             if let representedIceCreamBlackAndWhite = optionCell.representedIceCream?.blackAndWhite {
-            let iceCream = RestaurantIcon(restaurant: representedIceCreamRestaurant,blackAndWhite: !representedIceCreamBlackAndWhite)
+            let iceCream = Restaurant(restaurant: representedIceCreamRestaurant,blackAndWhite: !representedIceCreamBlackAndWhite)
         optionCell.representedIceCream = iceCream
         // Fetch the sticker for the ice cream from the cache.
         IceCreamStickerCache.cache.sticker(for: iceCream) { sticker in

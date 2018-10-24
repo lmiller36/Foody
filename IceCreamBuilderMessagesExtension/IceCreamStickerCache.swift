@@ -56,7 +56,7 @@ class IceCreamStickerCache {
     
     // MARK: Convenience
 
-    func sticker(for iceCream: RestaurantIcon, completion: @escaping (_ sticker: MSSticker) -> Void) {
+    func sticker(for iceCream: Restaurant, completion: @escaping (_ sticker: MSSticker) -> Void) {
       
         guard let icon = iceCream.icon //, let scoops = iceCream.scoops, let topping = iceCream.topping
             else { fatalError("Stickers can only be created for completed ice creams") }

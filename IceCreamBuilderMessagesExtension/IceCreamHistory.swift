@@ -16,26 +16,26 @@ struct IceCreamHistory {
     private static let userDefaultsKey = "iceCreams"
     
     /// An array of previously created `IceCream`s.
-    fileprivate var iceCreams: [RestaurantIcon]
+    fileprivate var iceCreams: [Restaurant]
 
     var count: Int {
         return iceCreams.count
     }
 
-    subscript(index: Int) -> RestaurantIcon {
+    subscript(index: Int) -> Restaurant {
         return iceCreams[index]
     }
     
     // MARK: Initialization
     
     /// `IceCreamHistory`'s initializer is marked as private. Instead instances should be loaded via the `load` method.
-    private init(iceCreams: [RestaurantIcon]) {
+    private init(iceCreams: [Restaurant]) {
         self.iceCreams = iceCreams
     }
 
     /// Loads previously created `IceCream`s and returns a `IceCreamHistory` instance.
     static func load() -> IceCreamHistory {
-        var iceCreams = [RestaurantIcon]()
+        var iceCreams = [Restaurant]()
         let defaults = UserDefaults.standard
 //        iceCreams.append(IceCream(base: .burger, scoops: .scoops01, topping: .topping01))
 //
@@ -96,7 +96,7 @@ struct IceCreamHistory {
 
 extension IceCreamHistory: Sequence {
 
-    typealias Iterator = AnyIterator<RestaurantIcon>
+    typealias Iterator = AnyIterator<Restaurant>
     
     func makeIterator() -> Iterator {
         var index = 0

@@ -8,7 +8,7 @@ Defines the `IceCream` struct that represents a complete or partially built ice 
 import Foundation
 import Messages
 
-struct RestaurantIcon {
+struct Restaurant {
 
     // MARK: Properties
     
@@ -18,7 +18,7 @@ struct RestaurantIcon {
 //
 //    var topping: Topping?
     
-    var restaraunt:Restaurant?
+    var restaurantInfo:RestaurantInfo?
     
     var blackAndWhite:Bool
 
@@ -29,92 +29,23 @@ struct RestaurantIcon {
 }
 
 /// Extends `IceCream` to be able to be represented by and created with an array of `NSURLQueryItem`s.
-extension RestaurantIcon {
-    
-    // MARK: Computed properties
-    
-    /// - Tag: QueryItems
-//    var queryItems: [URLQueryItem] {
-//        var items = [URLQueryItem]()
-//
-//        if let part = base {
-//            items.append(part.queryItem)
-//        }
-//        if let part = scoops {
-//            items.append(part.queryItem)
-//        }
-//        if let part = topping {
-//            items.append(part.queryItem)
-//        }
-//
-//        return items
-//    }
-    
-    // MARK: Initialization
-    
-//    init?(queryItems: [URLQueryItem]) {
-//        var base: Base?
-//        var scoops: Scoops?
-//        var topping: Topping?
-//
-//
-//
-//        for queryItem in queryItems {
-//            guard let value = queryItem.value else { continue }
-//
-//            if let decodedPart = Base(rawValue: value), queryItem.name == Base.queryItemKey {
-//                base = decodedPart
-//            }
-//            if let decodedPart = Scoops(rawValue: value), queryItem.name == Scoops.queryItemKey {
-//                scoops = decodedPart
-//            }
-//            if let decodedPart = Topping(rawValue: value), queryItem.name == Topping.queryItemKey {
-//                topping = decodedPart
-//            }
-//
-//
-//        }
-//
-//
-//        guard let decodedBase = base else { return nil }
-//
-//        self.base = decodedBase
-//        self.scoops = scoops
-//        self.topping = topping
-//        self.blackAndWhite = false
-//    }
+extension Restaurant {
     
     
-    init(restaurant:Restaurant,blackAndWhite:Bool){
-//        self.base = iceCream.base
-//        self.scoops = iceCream.scoops
-//        self.topping = iceCream.topping
-        self.restaraunt = restaurant
+    init(restaurant:RestaurantInfo,blackAndWhite:Bool){
+        self.restaurantInfo = restaurant
         self.blackAndWhite = blackAndWhite
         self.icon = getType(type: restaurant.categories[0].alias)
     }
     
     init(icon:Icon,blackAndWhite:Bool){
-        //        self.base = iceCream.base
-        //        self.scoops = iceCream.scoops
-        //        self.topping = iceCream.topping
-        self.restaraunt = Optional<Restaurant>.none
+        self.restaurantInfo = Optional<RestaurantInfo>.none
         self.icon = icon
         self.blackAndWhite = blackAndWhite
     }
     
     func getImage()->Icon? {
-    
-        //check if restaurant is available
-//        guard let restaurant = self.restaraunt else {
-//            guard let icon = self.icon else {return Optional<Icon>.none}
-//            return icon
-//        }
     return icon
-//    mutating func toggleBlackAndWhite(){
-//        let currentStatus = self.blackAndWhite
-//        self.blackAndWhite = !currentStatus
-//    }
     }
 }
 

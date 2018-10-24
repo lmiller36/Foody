@@ -14,7 +14,7 @@ import Messages
 class VotingCell:UICollectionViewCell {
     static let reuseIdentifier = "VotingCell"
     
-    var restaurant:Restaurant?
+    var restaurant:RestaurantInfo?
     var thumbsUpObj : ThumbsUp?
     
     @IBOutlet weak var labelView: UILabel!

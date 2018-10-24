@@ -78,6 +78,7 @@
 		4888F609217F806C005EA28A /* cocktailBars_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888F608217F806B005EA28A /* cocktailBars_sticker.png */; };
 		4888F60B2180C4CE005EA28A /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */; };
 		4888F60D2180D06D005EA28A /* VotingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888F60C2180D06D005EA28A /* VotingHeader.swift */; };
+		4888F60F2180E311005EA28A /* RestaurantInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888F60E2180E311005EA28A /* RestaurantInfo.swift */; };
 		48B14F4C2155A4A300A05FEF /* YelpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F4A2155A4A300A05FEF /* YelpRequest.swift */; };
 		48B14F4F2155A61700A05FEF /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F4D2155A61700A05FEF /* Restaurant.swift */; };
 		48B14F522155DA0100A05FEF /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F502155DA0100A05FEF /* CurrentLocation.swift */; };
@@ -209,6 +210,7 @@
 		4888F608217F806B005EA28A /* cocktailBars_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktailBars_sticker.png; sourceTree = "<group>"; };
 		4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		4888F60C2180D06D005EA28A /* VotingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingHeader.swift; sourceTree = "<group>"; };
+		4888F60E2180E311005EA28A /* RestaurantInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantInfo.swift; sourceTree = "<group>"; };
 		48B14F4A2155A4A300A05FEF /* YelpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpRequest.swift; sourceTree = "<group>"; };
 		48B14F4D2155A61700A05FEF /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		48B14F502155DA0100A05FEF /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 				4816717D2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift */,
 				4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */,
 				48B14F4A2155A4A300A05FEF /* YelpRequest.swift */,
+				4888F60E2180E311005EA28A /* RestaurantInfo.swift */,
 				48B14F4D2155A61700A05FEF /* Restaurant.swift */,
 				48B14F502155DA0100A05FEF /* CurrentLocation.swift */,
 				48EC4D312163D6140010FDE5 /* SelectedRestaurantViewController.swift */,
@@ -648,6 +651,7 @@
 				B55F96281CFF829D00B33E33 /* MessagesViewController.swift in Sources */,
 				B55F96431CFF82E100B33E33 /* IceCream+Image.swift in Sources */,
 				4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */,
+				4888F60F2180E311005EA28A /* RestaurantInfo.swift in Sources */,
 				B5B1E9F21D02717700BD5715 /* IceCreamStickerCache.swift in Sources */,
 				B55F964B1CFF82E100B33E33 /* IceCreamView.swift in Sources */,
 				48163198217ED33D0003F334 /* Map.swift in Sources */,

@@ -9,13 +9,13 @@
 import Foundation
 
 struct Businesses:Codable{
-    let businesses:[Restaurant]
+    let businesses:[RestaurantInfo]
     
 }
 
 extension Businesses: Sequence {
     
-    typealias Iterator = AnyIterator<Restaurant>
+    typealias Iterator = AnyIterator<RestaurantInfo>
     
     func makeIterator() -> Iterator {
         var index = 0
@@ -31,8 +31,8 @@ extension Businesses: Sequence {
     }
 }
     
-
-struct Restaurant: Codable {
+//#TODO combine into one class with RestaurantIcon
+struct RestaurantInfo: Codable {
     let id: String
     let alias: String
     let name:String

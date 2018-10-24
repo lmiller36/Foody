@@ -80,7 +80,7 @@ enum Icon: String, IceCreamPart, QueryItemRepresentable {
 
 extension IceCreamPart {
     var image: UIImage {
-        let imageName = self.rawValue
+        let imageName = "\(self.rawValue)_sticker"
         guard let image = UIImage(named: imageName) else { fatalError("Unable to find image named \(imageName)") }
         return image
     }

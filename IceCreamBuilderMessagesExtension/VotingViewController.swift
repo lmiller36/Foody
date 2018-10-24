@@ -95,7 +95,7 @@ class VotingViewController:UICollectionViewController{
         cell.thumbsUp.addGestureRecognizer(tap)
         //        cell.statement3.text =
         //#TODO Remove this
-        let iceCream = RestaurantIcon(restaurant:representedRestaurant,blackAndWhite:false)
+        let iceCream = Restaurant(restaurant:representedRestaurant,blackAndWhite:false)
         
         // Fetch the sticker for the ice cream from the cache.
         cache.sticker(for: iceCream) { sticker in

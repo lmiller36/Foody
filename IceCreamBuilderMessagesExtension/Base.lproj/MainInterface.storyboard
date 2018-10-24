@@ -243,6 +243,9 @@
                                 <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="bPc-hB-kUg">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="236"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="zhW-k4-4Oi" id="7vh-9y-nHu"/>
+                                    </connections>
                                 </mapView>
                             </subviews>
                             <connections>

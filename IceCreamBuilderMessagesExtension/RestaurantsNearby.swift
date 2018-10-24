@@ -12,7 +12,7 @@ class RestaurantsNearby{
     
     static let sharedInstance = RestaurantsNearby()
     
-    private var restaurants:[Restaurant]
+    private var restaurants:[RestaurantInfo]
     private var selectedRows:[Int]
    // private var originalJson:String
     
@@ -20,7 +20,7 @@ class RestaurantsNearby{
     private var hasBeenSorted:Bool
     
    fileprivate init() {
-        self.restaurants = [Restaurant]()
+        self.restaurants = [RestaurantInfo]()
    // self.originalJson=""
     self.hasBeenSorted = false
     self.selectedRows = [Int]()
@@ -39,11 +39,11 @@ class RestaurantsNearby{
         return restaurantCategories
     }
     
-    func add(restaurants:[Restaurant]){
+    func add(restaurants:[RestaurantInfo]){
         self.restaurants = restaurants
     }
     
-    func add(restaurant:Restaurant){
+    func add(restaurant:RestaurantInfo){
         self.restaurants.append(restaurant)
     }
     
@@ -65,8 +65,8 @@ class RestaurantsNearby{
         return 0
     }
     
-    func getSelectedRestaurant()->[Restaurant]{
-        var selectedRestaurants = [Restaurant]()
+    func getSelectedRestaurant()->[RestaurantInfo]{
+        var selectedRestaurants = [RestaurantInfo]()
         for row in selectedRows {
             selectedRestaurants.append(restaurants[row])
         }
@@ -74,7 +74,7 @@ class RestaurantsNearby{
         return selectedRestaurants
     }
     
-    func getRestaurant(row:Int)->Restaurant?{
+    func getRestaurant(row:Int)->RestaurantInfo?{
         do{
             let restaurant = self.restaurants[row]
         return restaurant
@@ -83,7 +83,7 @@ class RestaurantsNearby{
             print("row is out of bounds")
         }
         
-        return Optional<Restaurant>.none
+        return Optional<RestaurantInfo>.none
     }
     
     func clearAll(){
@@ -99,16 +99,16 @@ class RestaurantsNearby{
 //        return self.originalJson
 //    }
     
-    func getIceCreams()->[RestaurantIcon]?{
+    func getIceCreams()->[Restaurant]?{
         if(!self.hasBeenSorted){
                     self.sort(sortCriteria: RestaurantsNearby.sortCriteria)
 
             self.hasBeenSorted = true
         }
         
-        var iceCreams:[RestaurantIcon] = []
+        var iceCreams:[Restaurant] = []
         for restaraunt in restaurants{
-            iceCreams.append(RestaurantIcon(restaurant:restaraunt,blackAndWhite:false))
+            iceCreams.append(Restaurant(restaurant:restaraunt,blackAndWhite:false))
         }
         return iceCreams
     }
