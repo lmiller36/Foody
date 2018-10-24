@@ -7,7 +7,7 @@ Extends `IceCream` to add methods to render the ice cream as a `UIImage`.
 
 import UIKit
 
-extension IceCream {
+extension RestaurantIcon {
     
     private struct StickerProperties {
         /// The desired size of an ice cream sticker image.
@@ -67,7 +67,7 @@ extension IceCream {
     
     private func renderParts() -> UIImage? {
         // Determine which parts to draw.
-        let allParts: [IceCreamPart?] = [base]
+        let allParts: [IceCreamPart?] = [icon]
         let partImages = allParts.compactMap { $0?.stickerImage }
         
         guard !partImages.isEmpty else { return nil }

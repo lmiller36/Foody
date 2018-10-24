@@ -101,7 +101,7 @@ extension TopMenu: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let restaurantType = Base.all[indexPath.row].rawValue
+        let restaurantType = Icon.all[indexPath.row].rawValue
         
         return dequeueIceCreamCell(for: restaurantType, at: indexPath)
         
@@ -118,7 +118,7 @@ extension TopMenu: UICollectionViewDataSource {
         
         cell.Name.text = availableTypes[currentKey]
         
-        let iceCream = IceCream(base: getType(type:currentKey), scoops: .scoops01, topping: .topping01,restaraunt:nil,blackAndWhite:false)
+        let iceCream = RestaurantIcon(icon:getType(type: currentKey),blackAndWhite:false)
         
         cell.representedIceCream = iceCream
         
@@ -157,9 +157,9 @@ extension TopMenu: UICollectionViewDataSource {
         guard let optionCell = AvailableTypes.cellForItem(at: indexPath) as? OptionCell else {return}
         
         
-        if let representedIceCream = optionCell.representedIceCream {
-        
-        let iceCream = IceCream(iceCream: representedIceCream,blackAndWhite: !representedIceCream.blackAndWhite)
+        if let representedIceCreamRestaurant = optionCell.representedIceCream?.restaraunt {
+            if let representedIceCreamBlackAndWhite = optionCell.representedIceCream?.blackAndWhite {
+            let iceCream = RestaurantIcon(restaurant: representedIceCreamRestaurant,blackAndWhite: !representedIceCreamBlackAndWhite)
         optionCell.representedIceCream = iceCream
         // Fetch the sticker for the ice cream from the cache.
         IceCreamStickerCache.cache.sticker(for: iceCream) { sticker in
@@ -169,6 +169,7 @@ extension TopMenu: UICollectionViewDataSource {
                 optionCell.Sticker.sticker = sticker
             }
         }
+            }
         
             
         //let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))

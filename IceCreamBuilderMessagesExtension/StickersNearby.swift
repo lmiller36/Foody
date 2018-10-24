@@ -24,7 +24,7 @@ func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [Rest
     })
     
 }
-func getType(type:String)->Base{
+func getType(type:String)->Icon{
     switch type{
     case "newamerican":
         return .american

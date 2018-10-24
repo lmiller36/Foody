@@ -12,7 +12,7 @@ class InitialSelectionCell: UICollectionViewCell {
     
     static let reuseIdentifier = "IceCreamCell"
     
-    var representedIceCream: IceCream?
+    var representedIceCream: RestaurantIcon?
     
 
     @IBOutlet weak var labelView: UILabel!

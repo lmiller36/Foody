@@ -56,14 +56,17 @@ class IceCreamStickerCache {
     
     // MARK: Convenience
 
-    func sticker(for iceCream: IceCream, completion: @escaping (_ sticker: MSSticker) -> Void) {
-        guard let base = iceCream.base, let scoops = iceCream.scoops, let topping = iceCream.topping
+    func sticker(for iceCream: RestaurantIcon, completion: @escaping (_ sticker: MSSticker) -> Void) {
+      
+        guard let icon = iceCream.icon //, let scoops = iceCream.scoops, let topping = iceCream.topping
             else { fatalError("Stickers can only be created for completed ice creams") }
 
         let blackAndWhite = iceCream.blackAndWhite
         
         // Determine the URL for the sticker.
-        let fileName = base.rawValue + scoops.rawValue + topping.rawValue + String(blackAndWhite) + ".png"
+       // let fileName = base.rawValue + scoops.rawValue + topping.rawValue + String(blackAndWhite) + ".png"
+
+        let fileName = icon.rawValue + String(blackAndWhite) + ".png"
         let url = cacheURL.appendingPathComponent(fileName)
         
         // Create an operation to process the request.

@@ -14,7 +14,7 @@ class OptionCell : UICollectionViewCell {
     
     static let reuseIdentifier = "OptionCell"
     var representedType : String?
-    var representedIceCream : IceCream?
+    var representedIceCream : RestaurantIcon?
     
     @IBOutlet weak var Name: UILabel!
     @IBOutlet weak var Sticker: MSStickerView!

@@ -17,61 +17,61 @@ protocol IceCreamPart {
 
 }
 
-enum Topping: String, IceCreamPart, QueryItemRepresentable {
+//enum Topping: String, IceCreamPart, QueryItemRepresentable {
+//
+//    case topping01, topping02, topping03, topping04, topping05, topping06, topping07, topping08, topping09, topping10, topping11, topping12
+//
+//    static let all: [Topping] = [
+//        .topping01,
+//        .topping02,
+//        .topping03,
+//        .topping04,
+//        .topping05,
+//        .topping06,
+//        .topping07,
+//        .topping08,
+//        .topping09,
+//        .topping10,
+//        .topping11,
+//        .topping12
+//    ]
+//
+//    static var queryItemKey: String {
+//        return "Topping"
+//    }
+//
+//}
 
-    case topping01, topping02, topping03, topping04, topping05, topping06, topping07, topping08, topping09, topping10, topping11, topping12
-    
-    static let all: [Topping] = [
-        .topping01,
-        .topping02,
-        .topping03,
-        .topping04,
-        .topping05,
-        .topping06,
-        .topping07,
-        .topping08,
-        .topping09,
-        .topping10,
-        .topping11,
-        .topping12
-    ]
-    
-    static var queryItemKey: String {
-        return "Topping"
-    }
+//enum Scoops: String, IceCreamPart, QueryItemRepresentable {
+//
+//    case scoops01, scoops02, scoops03, scoops04, scoops05, scoops06, scoops07, scoops08, scoops09, scoops10
+//
+//    static let all: [Scoops] = [
+//        .scoops01,
+//        .scoops02,
+//        .scoops03,
+//        .scoops04,
+//        .scoops05,
+//        .scoops06,
+//        .scoops07,
+//        .scoops08,
+//        .scoops09,
+//        .scoops10
+//    ]
+//
+//    static var queryItemKey: String {
+//        return "Scoops"
+//    }
+//
+//}
 
-}
-
-enum Scoops: String, IceCreamPart, QueryItemRepresentable {
-
-    case scoops01, scoops02, scoops03, scoops04, scoops05, scoops06, scoops07, scoops08, scoops09, scoops10
-    
-    static let all: [Scoops] = [
-        .scoops01,
-        .scoops02,
-        .scoops03,
-        .scoops04,
-        .scoops05,
-        .scoops06,
-        .scoops07,
-        .scoops08,
-        .scoops09,
-        .scoops10
-    ]
-    
-    static var queryItemKey: String {
-        return "Scoops"
-    }
-
-}
-
-enum Base: String, IceCreamPart, QueryItemRepresentable {
+enum Icon: String, IceCreamPart, QueryItemRepresentable {
 
     case pizza, burger, burgers, mexican, base01, breakfastBrunch, vegetarian, coffee, bars, cocktailBars, sushi, greek, cheese,italian,steak,bakery,icecream,american,french,ramen,russian,asianfusion,japanese,fishnchips,donuts,winebars,seafood,tapas,bbq,hotdog,spanish,jazz,czech,brazilian,gourmet,bagels,desserts,chickenwings,foodstand,korean,hawaiian,bento,cuban,mediterranean,german,thai,falafel,deli,tea,chickenshop,sandwiches,chinese
-    static let all: [Base] = [.pizza,.burger,.burgers,.mexican,.breakfastBrunch,.vegetarian,.coffee,.bars,.cocktailBars,.sushi,.base01,.greek,.cheese,.italian,.steak,.bakery,.icecream,.american,.french,.ramen,.russian,.asianfusion,.japanese,.fishnchips,.donuts,.seafood,.tapas,.bbq,.hotdog,.spanish,.jazz,.czech,.brazilian,.gourmet,.bagels,.desserts,.chickenwings,.foodstand,.korean,.hawaiian,.bento,.cuban,.mediterranean,.german,.thai,.falafel,.deli,.tea,.chickenshop,.sandwiches,.chinese]
+    static let all: [Icon] = [.pizza,.burger,.burgers,.mexican,.breakfastBrunch,.vegetarian,.coffee,.bars,.cocktailBars,.sushi,.base01,.greek,.cheese,.italian,.steak,.bakery,.icecream,.american,.french,.ramen,.russian,.asianfusion,.japanese,.fishnchips,.donuts,.seafood,.tapas,.bbq,.hotdog,.spanish,.jazz,.czech,.brazilian,.gourmet,.bagels,.desserts,.chickenwings,.foodstand,.korean,.hawaiian,.bento,.cuban,.mediterranean,.german,.thai,.falafel,.deli,.tea,.chickenshop,.sandwiches,.chinese]
     
     static var queryItemKey: String {
-        return "Base"
+        return "Icon"
     }
 
 }

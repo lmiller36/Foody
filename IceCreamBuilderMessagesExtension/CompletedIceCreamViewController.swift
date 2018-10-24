@@ -14,7 +14,7 @@ class CompletedIceCreamViewController: UIViewController {
 
     static let storyboardIdentifier = "CompletedIceCreamViewController"
     
-    var iceCream: IceCream?
+    var iceCream: RestaurantIcon?
 
     @IBOutlet weak var stickerView: MSStickerView!
     

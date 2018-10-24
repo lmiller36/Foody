@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.30.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="ObA-dk-sSI">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.19.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -259,10 +255,10 @@
             </objects>
             <point key="canvasLocation" x="936.79999999999995" y="-830.73463268365822"/>
         </scene>
-        <!--Start Menu View Controller-->
+        <!--Main Menu View Controller-->
         <scene sceneID="m2m-CF-CwB">
             <objects>
-                <viewController storyboardIdentifier="StartMenuViewController" id="Ru4-bQ-gwN" customClass="StartMenuViewController" customModule="IceCreamBuilderMessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StartMenuViewController" id="Ru4-bQ-gwN" customClass="MainMenuViewController" customModule="IceCreamBuilderMessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CVI-sl-dMr"/>
                         <viewControllerLayoutGuide type="bottom" id="G5A-mo-ruj"/>

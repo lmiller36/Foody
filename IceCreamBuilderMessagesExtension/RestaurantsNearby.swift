@@ -99,16 +99,16 @@ class RestaurantsNearby{
 //        return self.originalJson
 //    }
     
-    func getIceCreams()->[IceCream]?{
+    func getIceCreams()->[RestaurantIcon]?{
         if(!self.hasBeenSorted){
                     self.sort(sortCriteria: RestaurantsNearby.sortCriteria)
 
             self.hasBeenSorted = true
         }
         
-        var iceCreams:[IceCream] = []
+        var iceCreams:[RestaurantIcon] = []
         for restaraunt in restaurants{
-            iceCreams.append(IceCream(base: getType(type:restaraunt.categories[0].alias), scoops: .scoops01, topping: .topping01,restaraunt:restaraunt,blackAndWhite:false))
+            iceCreams.append(RestaurantIcon(restaurant:restaraunt,blackAndWhite:false))
         }
         return iceCreams
     }

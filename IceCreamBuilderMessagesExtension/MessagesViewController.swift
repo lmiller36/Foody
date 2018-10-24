@@ -12,7 +12,12 @@ class MessagesViewController: MSMessagesAppViewController {
 
     // MARK: Properties
     
-    enum State : String{
+    var stateOfApp = State.MainMenu
+    
+    public static var NUMBER_OF_RESTAURANTS = "NumberOfRestaurants"
+     public static var STATE_OF_APP = "StateOfApp"
+    
+   public enum State : String{
         case MainMenu
         case InitialSelection
         case VotingRound1
@@ -47,54 +52,22 @@ class MessagesViewController: MSMessagesAppViewController {
     // MARK: Child view controller presentation
     
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
-        // Remove any child view controllers that have been presented.
-        removeAllChildViewControllers()
-        
-        /// - Tag: PresentViewController
-        let controller: UIViewController
-  
+       
         let url = conversation.selectedMessage?.url
         RestaurantsNearby.sharedInstance.clearAll()
-//
-//        if let selectedMessage = conversation.selectedMessage {
-//            if url = selectedMessage.url{
-//                print(url)
-//            }
-//            else{
-//                print("no url")
-//
-//            }
-//        } else {
-//            print("no selected message")
-//        }
-//
-   
         
-//        guard let sentData = conversation.selectedMessage?.url? else { return }
-//
-    
+        let queryItems = URLComponents(string: url?.absoluteString ?? "")?.queryItems ?? nil
         
-      
+        guard let stateOfApp =  MessagesViewController.State(rawValue: queryItems?.filter({$0.name == MessagesViewController.STATE_OF_APP}).first?.value ?? State.MainMenu.rawValue) else {return}
         
+        print(stateOfApp)
         
-        if(url != nil){
-         
-            let queryItems = URLComponents(string: url?.absoluteString ?? "")?.queryItems
-         
-           // let votingRound = queryItems?.filter({$0.name == "VotingRound"}).first
-            guard let votingRound = queryItems?.filter({$0.name == "VotingRound"}).first?.value else {
-                return
-            }
-            
-             let intVotingRound = Int(votingRound) ?? 0
-            
-           // let param1 = queryItems?.filter({$0.name == "NumberOfRestaurants"}).first
-            guard let numberOfRestaurants = queryItems?.filter({$0.name == "NumberOfRestaurants"}).first?.value else {
+        if (stateOfApp == State.VotingRound1 || stateOfApp == State.VotingRound2 || stateOfApp == State.VotingRound3){
+            guard let numberOfRestaurants = queryItems?.filter({$0.name == MessagesViewController.NUMBER_OF_RESTAURANTS}).first?.value else {
                 return
             }
             
             let intNumberOfRestaurants = Int(numberOfRestaurants) ?? 0
-            
             
             var count = 0;
             
@@ -102,7 +75,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 let key = "restaurant" + String(count)
                 let restaurantInfo = queryItems?.filter({$0.name == key}).first?.value ?? ""
                 let restaurantInfoData = restaurantInfo.data(using: .utf8)!
-              
+                
                 guard let restaurant = try? JSONDecoder().decode(Restaurant.self, from: restaurantInfoData) else {
                     print("Error: Couldn't decode data into restaurant")
                     return
@@ -112,39 +85,74 @@ class MessagesViewController: MSMessagesAppViewController {
                 
                 count+=1
             }
-            controller = instantiateVotingController()
-            
-//            guard let businesses = try? JSONDecoder().decode(Restaurant.self, from: url) else {
-//                print("Error: Couldn't decode data into businesses because of \(error)")
-//                return
-//            }
         }
-        else{
+     
+        switchState(newState: stateOfApp)
+ 
+    }
+    
+    private func instantiateIceCreamsController() -> UIViewController {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: InitialSelectionViewController.storyboardIdentifier)
+            as? InitialSelectionViewController
+            else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
+        
+        controller.delegate = self
+        
+        return controller
+    }
+    
+    private func instantiateStartMenuController() -> UIViewController {
+        // Instantiate a `StartMenuViewController`.
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: MainMenuViewController.storyboardIdentifier)
+            as? MainMenuViewController
+            else { fatalError("Unable to instantiate a StartMenuViewController from the storyboard") }
+        
+          controller.delegate = self
+        
+        return controller
+    }
+    
+    private func instantiateVotingController() -> UIViewController {
+        // Instantiate a `BuildIceCreamViewController`.
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: VotingViewController.storyboardIdentifier)
+            as? VotingViewController
+            else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
+        
+        return controller
+    }
+    
+    private func instantiateCompletedIceCreamController(with iceCream: RestaurantIcon) -> UIViewController {
+        // Instantiate a `BuildIceCreamViewController`.
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
+            as? CompletedIceCreamViewController
+            else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
+
+        controller.iceCream = iceCream
+
+        return controller
+    }
+    
+    private func initializeController(){
+        
+        removeAllChildViewControllers()
+        
+        /// - Tag: PresentViewController
+        let controller: UIViewController
+        
+        switch self.stateOfApp {
+        case State.MainMenu:
             controller = instantiateStartMenuController()
-          //  controller = instantiateIceCreamsController()
-
+        case State.InitialSelection:
+            controller = instantiateIceCreamsController ()
+        case State.VotingRound1:
+            controller = instantiateVotingController()
+        case State.VotingRound2:
+            controller = instantiateVotingController()
+        case State.VotingRound3:
+            controller = instantiateVotingController()
         }
-   
-        print("presentation style presentviewController")
-        print(presentationStyle == .compact)
-        
-      //  if presentationStyle == .compact {
-            // Show a list of previously created ice creams.
         
         
-        //
-//        } else {
-//             // Parse an `IceCream` from the conversation's `selectedMessage` or create a new `IceCream`.
-//            let iceCream = IceCream(message: conversation.selectedMessage) ?? IceCream()
-//
-//            // Show either the in process construction process or the completed ice cream.
-//            if iceCream.isComplete {
-//                controller = instantiateCompletedIceCreamController(with: iceCream)
-//            } else {
-//                controller = instantiateBuildIceCreamController(with: iceCream)
-//            }
-        //}
-
         addChildViewController(controller)
         controller.view.frame = view.bounds
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -160,70 +168,9 @@ class MessagesViewController: MSMessagesAppViewController {
         controller.didMove(toParentViewController: self)
     }
     
-//    private func instantiatePopOverViewController() -> UIViewController {
-//        guard let controller = storyboard?.instantiateViewController(withIdentifier: IceCreamsViewController.storyboardIdentifier)
-//            as? IceCreamsViewController
-//            else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
-//        
-//        controller.delegate = self
-//        
-//        return controller
-//    }
-    
-    private func instantiateIceCreamsController() -> UIViewController {
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: InitialSelectionViewController.storyboardIdentifier)
-            as? InitialSelectionViewController
-            else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
-        
-        controller.delegate = self
-        
-        return controller
-    }
-    
-//    private func instantiateBuildIceCreamController(with iceCream: IceCream) -> UIViewController {
-//        guard let controller = storyboard?.instantiateViewController(withIdentifier: BuildIceCreamViewController.storyboardIdentifier)
-//            as? BuildIceCreamViewController
-//            else { fatalError("Unable to instantiate a BuildIceCreamViewController from the storyboard") }
-//        
-//        controller.iceCream = iceCream
-//        controller.delegate = self
-//        
-//        return controller
-//    }
-    
-    
-    private func instantiateStartMenuController() -> UIViewController {
-        // Instantiate a `StartMenuViewController`.
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: StartMenuViewController.storyboardIdentifier)
-            as? StartMenuViewController
-            else { fatalError("Unable to instantiate a StartMenuViewController from the storyboard") }
-        
-        //        controller.iceCream = iceCream
-          controller.delegate = self
-        
-        return controller
-    }
-    
-    private func instantiateVotingController() -> UIViewController {
-        // Instantiate a `BuildIceCreamViewController`.
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: VotingViewController.storyboardIdentifier)
-            as? VotingViewController
-            else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
-        
-//        controller.iceCream = iceCream
-        
-        return controller
-    }
-    
-    private func instantiateCompletedIceCreamController(with iceCream: IceCream) -> UIViewController {
-        // Instantiate a `BuildIceCreamViewController`.
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
-            as? CompletedIceCreamViewController
-            else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
-
-        controller.iceCream = iceCream
-
-        return controller
+    private func switchState(newState:State){
+        self.stateOfApp = newState
+        initializeController()
     }
     
     // MARK: Convenience
@@ -235,87 +182,38 @@ class MessagesViewController: MSMessagesAppViewController {
             child.removeFromParentViewController()
         }
     }
-    
-//    /// - Tag: ComposeMessage
-//     func composeMessage(with iceCream: IceCream, caption: String, session: MSSession? = nil) -> MSMessage {
-//        print("consider me composed")
-//        var components = URLComponents()
-//        components.queryItems = iceCream.queryItems
-//
-//        let layout = MSMessageTemplateLayout()
-//        layout.image = iceCream.renderSticker(opaque: true)
-//        layout.caption = caption
-//
-//        print("gosh, I've been clicked")
-//
-//        let message = MSMessage(session: session ?? MSSession())
-//        message.url = components.url!
-//        message.layout = layout
-//
-//        return message
-//    }
-//
-//    func addMessageToConversation(iceCream:IceCream){
-//
-//        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
-//
-//
-//        // Update the ice cream with the selected body part and determine a caption and description of the change.
-//        var messageCaption: String
-//
-//            messageCaption = NSLocalizedString("Test Msg", comment: "")
-//
-//
-//        // Create a new message with the same session as any currently selected message.
-//                let message = composeMessage(with: iceCream, caption: messageCaption, session: conversation.selectedMessage?.session)
-//
-//        print("Im actually over here!")
-//
-//        /// - Tag: InsertMessageInConversation
-//        // Add the message to the conversation.
-//                conversation.insert(message) { error in
-//                    if let error = error {
-//                        print(error)
-//                    }
-//                }
-//    }
-    
-    func composeMessage(with restaurants: [Restaurant],messageImage: IceCream, caption: String, session: MSSession? = nil) -> MSMessage {
-        
-        
-//        let size = URLQueryItem(name: "Size", value: "Large")
-//
-//
+    func composeMessage(with restaurants: [Restaurant],messageImage: RestaurantIcon, caption: String, session: MSSession? = nil) -> MSMessage {
         
         var components = URLComponents()
         
         var queryItems = [URLQueryItem]()
         
         let encoder = JSONEncoder()
-      
-        queryItems.append(URLQueryItem(name: "NumberOfRestaurants", value: String(restaurants.count)))
         
-        var i = 0;
-        for restaurant in restaurants{
+        if(self.stateOfApp == State.InitialSelection){
             
-        
-            do {
-                let data = try encoder.encode(restaurant)
+             queryItems.append(URLQueryItem(name: MessagesViewController.STATE_OF_APP, value: State.VotingRound1.rawValue))
+            
+            queryItems.append(URLQueryItem(name: MessagesViewController.NUMBER_OF_RESTAURANTS, value: String(restaurants.count)))
+            
+            var i = 0;
+            for restaurant in restaurants{
                 
-                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-         
-                let key = "restaurant" + String(i)
-                queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
-            } catch {
-                //handle error
-                print(error)
+                
+                do {
+                    let data = try encoder.encode(restaurant)
+                    
+                    let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                    
+                    let key = "restaurant" + String(i)
+                    queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
+                } catch {
+                    //handle error
+                    print(error)
+                }
+                
+                i+=1
             }
-          
-            
-           
-//
-//             queryItems.append(URLQueryItem(name: "RestaurantJson", value: RestaurantsNearby.sharedInstance.getOriginalJson()))
-            i+=1
         }
 
         
@@ -377,7 +275,7 @@ extension MessagesViewController: IceCreamsViewControllerDelegate {
     }
     
     
-    func addMessageToConversation(_ restaurants:[Restaurant], messageImage:IceCream){
+    func addMessageToConversation(_ restaurants:[Restaurant], messageImage:RestaurantIcon){
         
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         
@@ -403,96 +301,19 @@ extension MessagesViewController: IceCreamsViewControllerDelegate {
         }
     }
     
+    func changePresentationStyle(presentationStyle: MSMessagesAppPresentationStyle) {
+        requestPresentationStyle(.compact)
+    }
+    
     
 }
 
 /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
 
-extension MessagesViewController: StartMenuViewControllerDelegate {
+extension MessagesViewController: MainMenuViewControllerDelegate {
     
-    func StartSurvey() {
-        print("Start survey!")
-        
-        removeAllChildViewControllers()
-        
-        /// - Tag: PresentViewController
-        let controller: UIViewController
-        
-       
-             controller = instantiateIceCreamsController()
-            
-        
-        addChildViewController(controller)
-        controller.view.frame = view.bounds
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(controller.view)
-        
-        NSLayoutConstraint.activate([
-            controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-            controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-            controller.view.topAnchor.constraint(equalTo: view.topAnchor),
-            controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-        
-        controller.didMove(toParentViewController: self)
-        
-    }
-    
-}
-
-
-/// Extends `MessagesViewController` to conform to the `BuildIceCreamViewControllerDelegate` protocol.
-
-extension MessagesViewController: BuildIceCreamViewControllerDelegate {
-
-    func buildIceCreamViewController(_ controller: BuildIceCreamViewController, didSelect iceCreamPart: IceCreamPart) {
-        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
-        guard var iceCream = controller.iceCream else { fatalError("Expected the controller to be displaying an ice cream") }
-
-        // Update the ice cream with the selected body part and determine a caption and description of the change.
-        var messageCaption: String
-        if let base = iceCreamPart as? Base {
-            iceCream.base = base
-            messageCaption = NSLocalizedString("Let's build an ice cream", comment: "")
-        } else if let scoops = iceCreamPart as? Scoops {
-            iceCream.scoops = scoops
-            messageCaption = NSLocalizedString("I added some scoops", comment: "")
-        } else if let topping = iceCreamPart as? Topping {
-            iceCream.topping = topping
-            messageCaption = NSLocalizedString("Our finished ice cream", comment: "")
-        } else {
-            fatalError("Unexpected type of ice cream part selected.")
-        }
-
-        // Create a new message with the same session as any currently selected message.
-//        let message = composeMessage(with: iceCream, caption: messageCaption, session: conversation.selectedMessage?.session)
-
-        print("Im actually over here!")
-        
-        /// - Tag: InsertMessageInConversation
-        // Add the message to the conversation.
-//        conversation.insert(message) { error in
-//            if let error = error {
-//                print(error)
-//            }
-//        }
-
-        // If the ice cream is complete, save it in the history.
-//        if iceCream.isComplete {
-//  
-//            var history = IceCreamHistory.load()
-//           
-//                history.append(iceCream)
-//
-//           history.save()
-//            
-//        }
-        
-    
-        
-        
-        
-       dismiss()
+    func switchState_StartMenu(newState:State) {
+        switchState(newState: newState)
     }
     
 }
