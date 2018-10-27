@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4806D7612183B80300FC5912 /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7602183B80300FC5912 /* Participant.swift */; };
+		4806D7632183C2C100FC5912 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7622183C2C100FC5912 /* AppState.swift */; };
+		4806D7652183D8C300FC5912 /* WaitingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7642183D8C300FC5912 /* WaitingViewController.swift */; };
 		4814047C217D505C00124E76 /* ThumbUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4814047B217D505C00124E76 /* ThumbUp.swift */; };
 		4815EBD0216518930043DC82 /* VotingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4815EBCF216518930043DC82 /* VotingViewController.swift */; };
 		4815EBD2216519090043DC82 /* VotingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4815EBD1216519090043DC82 /* VotingCell.swift */; };
@@ -139,6 +142,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4806D7602183B80300FC5912 /* Participant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
+		4806D7622183C2C100FC5912 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		4806D7642183D8C300FC5912 /* WaitingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingViewController.swift; sourceTree = "<group>"; };
 		4814047B217D505C00124E76 /* ThumbUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbUp.swift; sourceTree = "<group>"; };
 		4815EBCF216518930043DC82 /* VotingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingViewController.swift; sourceTree = "<group>"; };
 		4815EBD1216519090043DC82 /* VotingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingCell.swift; sourceTree = "<group>"; };
@@ -338,12 +344,15 @@
 				B55F96381CFF82E100B33E33 /* InitialSelectionCell.swift */,
 				B55F963A1CFF82E100B33E33 /* InitialSelectionAddCell.swift */,
 				4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */,
+				4806D7642183D8C300FC5912 /* WaitingViewController.swift */,
 				48163197217ED33D0003F334 /* Map.swift */,
 				4875BBC2215C5FB7005D0C09 /* InitialSelectionHeader.swift */,
 				484F2CF1217D63970083B3CE /* OptionCell.swift */,
 				4815EBD1216519090043DC82 /* VotingCell.swift */,
 				4815EBCF216518930043DC82 /* VotingViewController.swift */,
 				4888F60C2180D06D005EA28A /* VotingHeader.swift */,
+				4806D7602183B80300FC5912 /* Participant.swift */,
+				4806D7622183C2C100FC5912 /* AppState.swift */,
 				B55F963C1CFF82E100B33E33 /* IceCreamPartCell.swift */,
 				B55F963D1CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift */,
 				B55F964E1CFF9FB800B33E33 /* CompletedIceCreamViewController.swift */,
@@ -649,11 +658,13 @@
 				4888F60D2180D06D005EA28A /* VotingHeader.swift in Sources */,
 				4816717E2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift in Sources */,
 				B55F96281CFF829D00B33E33 /* MessagesViewController.swift in Sources */,
+				4806D7632183C2C100FC5912 /* AppState.swift in Sources */,
 				B55F96431CFF82E100B33E33 /* IceCream+Image.swift in Sources */,
 				4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */,
 				4888F60F2180E311005EA28A /* RestaurantInfo.swift in Sources */,
 				B5B1E9F21D02717700BD5715 /* IceCreamStickerCache.swift in Sources */,
 				B55F964B1CFF82E100B33E33 /* IceCreamView.swift in Sources */,
+				4806D7612183B80300FC5912 /* Participant.swift in Sources */,
 				48163198217ED33D0003F334 /* Map.swift in Sources */,
 				B55F96491CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift in Sources */,
 				B55F964F1CFF9FB800B33E33 /* CompletedIceCreamViewController.swift in Sources */,
@@ -671,6 +682,7 @@
 				B55F96481CFF82E100B33E33 /* IceCreamPartCell.swift in Sources */,
 				4888F60B2180C4CE005EA28A /* MainMenuViewController.swift in Sources */,
 				48B14F4F2155A61700A05FEF /* Restaurant.swift in Sources */,
+				4806D7652183D8C300FC5912 /* WaitingViewController.swift in Sources */,
 				4814047C217D505C00124E76 /* ThumbUp.swift in Sources */,
 				B55F96421CFF82E100B33E33 /* RestaurantIcon.swift in Sources */,
 				48B14F4C2155A4A300A05FEF /* YelpRequest.swift in Sources */,

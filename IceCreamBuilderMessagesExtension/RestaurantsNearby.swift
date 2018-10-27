@@ -14,16 +14,18 @@ class RestaurantsNearby{
     
     private var restaurants:[RestaurantInfo]
     private var selectedRows:[Int]
-   // private var originalJson:String
+    private var otherParticipantsSelection : [RestaurantInfo]
+    // private var originalJson:String
     
     private static var sortCriteria = SortCriteria.Distance
     private var hasBeenSorted:Bool
     
-   fileprivate init() {
+    fileprivate init() {
         self.restaurants = [RestaurantInfo]()
-   // self.originalJson=""
-    self.hasBeenSorted = false
-    self.selectedRows = [Int]()
+        // self.originalJson=""
+        self.hasBeenSorted = false
+        self.selectedRows = [Int]()
+        self.otherParticipantsSelection = [RestaurantInfo]()
     }
     
     func getApplicableRestaurantCategories()->Dictionary<String,String>{
@@ -32,9 +34,9 @@ class RestaurantsNearby{
             let category_title = restaurant.categories[0].title
             let category_alias = restaurant.categories[0].alias
             if(!restaurantCategories.keys.contains(category_alias)){
-                 restaurantCategories[category_alias] = category_title
+                restaurantCategories[category_alias] = category_title
             }
-           
+            
         }
         return restaurantCategories
     }
@@ -65,6 +67,13 @@ class RestaurantsNearby{
         return 0
     }
     
+    func getOtherParticipantsSelection()->[RestaurantInfo]{
+        return self.otherParticipantsSelection
+    }
+    func addOtherParticipantsSelection(restaurant : RestaurantInfo){
+        self.otherParticipantsSelection.append(restaurant)
+    }
+    
     func getSelectedRestaurant()->[RestaurantInfo]{
         var selectedRestaurants = [RestaurantInfo]()
         for row in selectedRows {
@@ -75,34 +84,37 @@ class RestaurantsNearby{
     }
     
     func getRestaurant(row:Int)->RestaurantInfo?{
-        do{
-            let restaurant = self.restaurants[row]
-        return restaurant
-        }
-        catch{
-            print("row is out of bounds")
-        }
         
-        return Optional<RestaurantInfo>.none
+        let restaurant = self.restaurants[row]
+        return restaurant
+        
+    }
+    
+    //combines the selection made by the current user as well as the other participants of the survey
+    func getVotedOnRestaurants()->[RestaurantInfo]
+    {
+        self.otherParticipantsSelection.mergeElements(newElements: self.getSelectedRestaurant())
+        return otherParticipantsSelection
     }
     
     func clearAll(){
         self.restaurants.removeAll()
         self.selectedRows.removeAll()
+        self.otherParticipantsSelection.removeAll()
     }
     
-//    func setOriginalJson(string:String){
-//        self.originalJson = string
-//    }
+    //    func setOriginalJson(string:String){
+    //        self.originalJson = string
+    //    }
     
-//    func getOriginalJson()->String{
-//        return self.originalJson
-//    }
+    //    func getOriginalJson()->String{
+    //        return self.originalJson
+    //    }
     
     func getIceCreams()->[Restaurant]?{
         if(!self.hasBeenSorted){
-                    self.sort(sortCriteria: RestaurantsNearby.sortCriteria)
-
+            self.sort(sortCriteria: RestaurantsNearby.sortCriteria)
+            
             self.hasBeenSorted = true
         }
         
@@ -114,8 +126,8 @@ class RestaurantsNearby{
     }
     
     func sort(sortCriteria: SortCriteria) {
-//        guard let restaurants = self.restaurants else{return}
-      
+        //        guard let restaurants = self.restaurants else{return}
+        
         RestaurantsNearby.sortCriteria = sortCriteria
         switch sortCriteria {
             
@@ -129,13 +141,13 @@ class RestaurantsNearby{
     }
     
     
-//    func sortIfNecessary(){
-//        if(!self.hasBeenSorted){
-//            self.hasBeenSorted = true
-//            self.sort(sortCriteria: RestaurantsNearby.SortCriteria.Distance)
-//        }
-//
-//    }
+    //    func sortIfNecessary(){
+    //        if(!self.hasBeenSorted){
+    //            self.hasBeenSorted = true
+    //            self.sort(sortCriteria: RestaurantsNearby.SortCriteria.Distance)
+    //        }
+    //
+    //    }
     
     enum SortCriteria{
         case Distance

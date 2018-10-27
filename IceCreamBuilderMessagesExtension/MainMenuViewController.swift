@@ -35,7 +35,7 @@ class MainMenuViewController :UIViewController{
     @IBAction func AddNewSurvey(_ sender: UIGestureRecognizer) {
         print("Add new survey")
         print(sender)
-        delegate?.switchState_StartMenu(newState: MessagesViewController.State.InitialSelection)
+        delegate?.switchState_StartMenu(newState: AppState.InitialSelection)
     }
     
     
@@ -88,6 +88,6 @@ class ScrollingFoodCell : UICollectionViewCell{
 protocol MainMenuViewControllerDelegate: class {
     
     /// Called to start a new survey
-    func switchState_StartMenu(newState:MessagesViewController.State)
+    func switchState_StartMenu(newState:AppState)
     
 }
