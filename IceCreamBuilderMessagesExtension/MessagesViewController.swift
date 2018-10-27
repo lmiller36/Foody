@@ -20,10 +20,11 @@ class MessagesViewController: MSMessagesAppViewController {
     
     //    var shouldStall = false
     
-    public static var GLOBAL_STATE_OF_APP = "GlobalStateOfApp"
-    public static var NUMBER_OF_RESTAURANTS = "NumberOfRestaurants"
-    public static var NUMBER_OF_PARTICIPANTS = "NumberOfParticipants"
-    public static var STATE_OF_APP = "StateOfApp"
+    public static let GLOBAL_STATE_OF_APP = "GlobalStateOfApp"
+    public static let NUMBER_OF_RESTAURANTS = "NumberOfRestaurants"
+    public static let NUMBER_OF_PARTICIPANTS = "NumberOfParticipants"
+    public static let NUMBER_OF_VOTES = "NumberOfVotes"
+    public static let STATE_OF_APP = "StateOfApp"
     
     override func willBecomeActive(with conversation: MSConversation) {
         super.willBecomeActive(with: conversation)
@@ -110,22 +111,22 @@ class MessagesViewController: MSMessagesAppViewController {
                         let restaurantInfo = queryItems.filter({$0.name == key}).first?.value ?? ""
                         let restaurantInfoData = restaurantInfo.data(using: .utf8)!
                         
+                        
                         guard let restaurant = try? JSONDecoder().decode(RestaurantInfo.self, from: restaurantInfoData) else {
                             print("Error: Couldn't decode data into restaurant")
                             return
                         }
-                        
+                        let numberOfVotes = Int(queryItems.filter({$0.name == restaurant.id}).first?.value ?? "0")
                         if (stateOfApp == AppState.VotingRound1 || stateOfApp == AppState.VotingRound2 || stateOfApp == AppState.VotingRound3){
-                            RestaurantsNearby.sharedInstance.add(restaurant: restaurant)
+                            RestaurantsNearby.sharedInstance.add(restaurant: restaurant,numVotes: numberOfVotes!)
                         }
                         else if (stateOfApp == AppState.InitialSelection) {
-                            RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurant: restaurant)
+                            RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurant: restaurant,votes: numberOfVotes!)
                         }
                         count+=1
                         
                     }
-                    print("LET ME AT IT")
-                    print(RestaurantsNearby.sharedInstance.getOtherParticipantsSelection())
+                
                 }
                 
             }
@@ -134,6 +135,7 @@ class MessagesViewController: MSMessagesAppViewController {
             //            self.knownParticipants.append(Participant.init(participantIdentifier: conversation.localParticipantIdentifier.uuidString, currentStage: self.stateOfApp))
             //        }
         }
+        
         self.myIdentifier =  conversation.localParticipantIdentifier
         print(self.knownParticipants)
         switchState(newState: self.stateOfApp)
@@ -306,9 +308,9 @@ class MessagesViewController: MSMessagesAppViewController {
         let votedOnRestaurants = RestaurantsNearby.sharedInstance.getVotedOnRestaurants()
             //            queryItems.append(URLQueryItem(name: MessagesViewController.STATE_OF_APP, value: AppState.VotingRound1.rawValue))
             //
-            
+        print(votedOnRestaurants)
             queryItems.append(URLQueryItem(name: MessagesViewController.NUMBER_OF_RESTAURANTS, value: String(votedOnRestaurants.count)))
-            
+            var restaurantIds =  [String]()
             var i = 0;
             for restaurant in votedOnRestaurants{
                 
@@ -320,6 +322,11 @@ class MessagesViewController: MSMessagesAppViewController {
                     
                     let key = "restaurant" + String(i)
                     queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
+                    let votesForRestaurant = RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) + 1
+                    print(votesForRestaurant)
+                    //queryItems.append(URLQueryItem(name: restaurant.id, value: String(votesForRestaurant)))
+                    restaurantIds.append(restaurant.id)
+                    
                 } catch {
                     //handle error
                     print(error)
@@ -327,6 +334,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 
                 i+=1
             }
+        print(restaurantIds)
         
         
         
@@ -342,10 +350,8 @@ class MessagesViewController: MSMessagesAppViewController {
                 self.knownParticipants.append(Participant.init(participantIdentifier: myIdentifier.uuidString, currentStage: self.stateOfApp))
             }
             
-            print(shouldUpdateParticipantsState())
             
             if(shouldUpdateParticipantsState()){
-                print("PLS UPDATE")
                 self.stateOfApp = AppState.Wait
                 
                 if let globalStateOfApp = self.globalStateOfApp {
@@ -384,8 +390,6 @@ class MessagesViewController: MSMessagesAppViewController {
                 
                 count+=1
             }
-            print("here we go again \(self.stateOfApp)")
-            
             switchState(newState: self.stateOfApp)
             
             
@@ -417,8 +421,7 @@ class MessagesViewController: MSMessagesAppViewController {
     
     func shouldUpdateParticipantsState()->Bool {
         if let knownNumberOfParticipants = self.knownNumberOfParticipants {
-            print(knownNumberOfParticipants)
-            print(self.knownParticipants)
+
             if(self.knownParticipants.count < knownNumberOfParticipants){
                 
                 return false
@@ -426,7 +429,6 @@ class MessagesViewController: MSMessagesAppViewController {
         }
         if let myIdentifier = self.myIdentifier {
             for participant in self.knownParticipants {
-                print(participant)
                 //a participant still needs to complete the round
                 if(participant.participantIdentifier != myIdentifier.uuidString && participant.currentStage != AppState.Wait){ //|| participant.currentStage.NextState() == self.stateOfApp) {
                     return false

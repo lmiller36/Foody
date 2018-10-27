@@ -15,6 +15,7 @@ class RestaurantsNearby{
     private var restaurants:[RestaurantInfo]
     private var selectedRows:[Int]
     private var otherParticipantsSelection : [RestaurantInfo]
+    private var votes: [String:Int]
     // private var originalJson:String
     
     private static var sortCriteria = SortCriteria.Distance
@@ -23,6 +24,7 @@ class RestaurantsNearby{
     fileprivate init() {
         self.restaurants = [RestaurantInfo]()
         // self.originalJson=""
+        self.votes = [String:Int]()
         self.hasBeenSorted = false
         self.selectedRows = [Int]()
         self.otherParticipantsSelection = [RestaurantInfo]()
@@ -45,7 +47,8 @@ class RestaurantsNearby{
         self.restaurants = restaurants
     }
     
-    func add(restaurant:RestaurantInfo){
+    func add(restaurant:RestaurantInfo,numVotes:Int){
+        self.votes[restaurant.id] = getVotesForARestaurant(id: restaurant.id) + 1
         self.restaurants.append(restaurant)
     }
     
@@ -70,8 +73,17 @@ class RestaurantsNearby{
     func getOtherParticipantsSelection()->[RestaurantInfo]{
         return self.otherParticipantsSelection
     }
-    func addOtherParticipantsSelection(restaurant : RestaurantInfo){
+    func addOtherParticipantsSelection(restaurant : RestaurantInfo,votes : Int){
         self.otherParticipantsSelection.append(restaurant)
+        self.votes[restaurant.id] = votes
+    }
+    
+    //queries based on id of the restaurant
+    func getVotesForARestaurant(id:String)->Int{
+        if let numVotes = votes[id] {
+            return numVotes
+        }
+        return 0
     }
     
     func getSelectedRestaurant()->[RestaurantInfo]{
