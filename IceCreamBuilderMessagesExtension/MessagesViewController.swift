@@ -7,7 +7,7 @@
 
 import UIKit
 import Messages
-
+import CoreLocation
 class MessagesViewController: MSMessagesAppViewController {
     
     // MARK: Properties
@@ -17,11 +17,16 @@ class MessagesViewController: MSMessagesAppViewController {
     var myIdentifier : UUID?
     var knownParticipants = [Participant]()
     var knownNumberOfParticipants : Int?
+    var appQueryItems = [URLQueryItem]()
+    var hasCached = false
     
     //    var shouldStall = false
     
     public static let GLOBAL_STATE_OF_APP = "GlobalStateOfApp"
     public static let NUMBER_OF_RESTAURANTS = "NumberOfRestaurants"
+    public static let SURVEY_STARTING_LOCATION_LAT = "SurveyStartingLocationLat"
+    public static let SURVEY_STARTING_LOCATION_LNG = "SurveyStartingLocationLng"
+    
     public static let NUMBER_OF_PARTICIPANTS = "NumberOfParticipants"
     public static let NUMBER_OF_VOTES = "NumberOfVotes"
     public static let STATE_OF_APP = "StateOfApp"
@@ -55,6 +60,9 @@ class MessagesViewController: MSMessagesAppViewController {
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
         
         let url = conversation.selectedMessage?.url
+        
+        //let attachment = conversation.selectedMessage
+        
         RestaurantsNearby.sharedInstance.clearAll()
         //        self.stateOfApp = AppState.MainMenu
         self.knownNumberOfParticipants = conversation.remoteParticipantIdentifiers.count + 1
@@ -82,14 +90,8 @@ class MessagesViewController: MSMessagesAppViewController {
                 //It is at least voiting round 1 since you are in the survey
                 if let storedAppState = queryItems.filter({$0.name == conversation.localParticipantIdentifier.uuidString}).first?.value
                 {
-                    print("STORED STATE = \(storedAppState)")
                     myPreviousStateOfApp = AppState(rawValue: storedAppState)!
                     stateOfApp = myPreviousStateOfApp.NextState()
-                    
-                    
-                    
-                    
-                    
                 }
                     // A survey has just been started
                 else{
@@ -99,6 +101,13 @@ class MessagesViewController: MSMessagesAppViewController {
                 //you are not waiting
                 if(stateOfApp != AppState.Wait && stateOfApp != AppState.Booted){
                     
+                    if let surveyStartingLocationLat = queryItems.filter({$0.name == MessagesViewController.SURVEY_STARTING_LOCATION_LAT}).first?.value  {
+                        if let surveyStartingLocationLng = queryItems.filter({$0.name == MessagesViewController.SURVEY_STARTING_LOCATION_LNG}).first?.value  {
+                            print("given app location \(App_Location)")
+                            App_Location = CLLocationCoordinate2D.init(latitude: Double(surveyStartingLocationLat)!,longitude: Double (surveyStartingLocationLng)!)
+                        }
+                    }
+                    
                     guard let numberOfRestaurants = queryItems.filter({$0.name == MessagesViewController.NUMBER_OF_RESTAURANTS}).first?.value else {
                         return
                     }
@@ -106,27 +115,29 @@ class MessagesViewController: MSMessagesAppViewController {
                     let intNumberOfRestaurants = Int(numberOfRestaurants) ?? 0
                     
                     var count = 0;
+                    //TODO IS THIS ENTERING FROM MAIN MENU?
                     while(count < intNumberOfRestaurants){
                         let key = "restaurant" + String(count)
-                        let restaurantInfo = queryItems.filter({$0.name == key}).first?.value ?? ""
-                        let restaurantInfoData = restaurantInfo.data(using: .utf8)!
-                        
-                        
-                        guard let restaurant = try? JSONDecoder().decode(RestaurantInfo.self, from: restaurantInfoData) else {
-                            print("Error: Couldn't decode data into restaurant")
-                            return
-                        }
-                        let numberOfVotes = Int(queryItems.filter({$0.name == restaurant.id}).first?.value ?? "0")
-                        if (stateOfApp == AppState.VotingRound1 || stateOfApp == AppState.VotingRound2 || stateOfApp == AppState.VotingRound3){
-                            RestaurantsNearby.sharedInstance.add(restaurant: restaurant,numVotes: numberOfVotes!)
-                        }
-                        else if (stateOfApp == AppState.InitialSelection) {
-                            RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurant: restaurant,votes: numberOfVotes!)
-                        }
+                        let restaurantId = queryItems.filter({$0.name == key}).first?.value ?? ""
+                        //                        let restaurantInfoData = restaurantInfo.data(using: .utf8)!
+                        //
+                        //
+                        //                        guard let restaurant = try? JSONDecoder().decode(RestaurantInfo.self, from: restaurantInfoData) else {
+                        //                            print("Error: Couldn't decode data into restaurant")
+                        //                            return
+                        //                        }
+                        let numberOfVotes = Int(queryItems.filter({$0.name == restaurantId}).first?.value ?? "0")
+                        RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurantID: restaurantId, votes: numberOfVotes!)
+                        //                        if (stateOfApp == AppState.VotingRound1 || stateOfApp == AppState.VotingRound2 || stateOfApp == AppState.VotingRound3){
+                        //                            RestaurantsNearby.sharedInstance.add(restaurant: restaurant,numVotes: numberOfVotes!)
+                        //                        }
+                        //                        else if (stateOfApp == AppState.InitialSelection) {
+                        //                            RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurant: restaurant,votes: numberOfVotes!)
+                        //                        }
                         count+=1
                         
                     }
-                
+                    
                 }
                 
             }
@@ -137,7 +148,6 @@ class MessagesViewController: MSMessagesAppViewController {
         }
         
         self.myIdentifier =  conversation.localParticipantIdentifier
-        print(self.knownParticipants)
         switchState(newState: self.stateOfApp)
         
     }
@@ -286,6 +296,7 @@ class MessagesViewController: MSMessagesAppViewController {
         
         let encoder = JSONEncoder()
         
+        self.appQueryItems.removeAll()
         
         print(self.myIdentifier)
         print(self.knownNumberOfParticipants)
@@ -306,34 +317,35 @@ class MessagesViewController: MSMessagesAppViewController {
         if(self.stateOfApp.Order()<=0){fatalError("\(self.stateOfApp) should never compose a message")}
         
         let votedOnRestaurants = RestaurantsNearby.sharedInstance.getVotedOnRestaurants()
-            //            queryItems.append(URLQueryItem(name: MessagesViewController.STATE_OF_APP, value: AppState.VotingRound1.rawValue))
-            //
+        //            queryItems.append(URLQueryItem(name: MessagesViewController.STATE_OF_APP, value: AppState.VotingRound1.rawValue))
+        //
         print(votedOnRestaurants)
-            queryItems.append(URLQueryItem(name: MessagesViewController.NUMBER_OF_RESTAURANTS, value: String(votedOnRestaurants.count)))
-            var restaurantIds =  [String]()
-            var i = 0;
-            for restaurant in votedOnRestaurants{
+        queryItems.append(URLQueryItem(name: MessagesViewController.NUMBER_OF_RESTAURANTS, value: String(votedOnRestaurants.count)))
+        var restaurantIds =  [String]()
+        var i = 0;
+        for restaurant in votedOnRestaurants{
+            
+            
+            do {
+                let data = try encoder.encode(restaurant)
                 
+                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
                 
-                do {
-                    let data = try encoder.encode(restaurant)
-                    
-                    let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-                    
-                    let key = "restaurant" + String(i)
-                    queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
-                    let votesForRestaurant = RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) + 1
-                    print(votesForRestaurant)
-                    //queryItems.append(URLQueryItem(name: restaurant.id, value: String(votesForRestaurant)))
-                    restaurantIds.append(restaurant.id)
-                    
-                } catch {
-                    //handle error
-                    print(error)
-                }
+                let key = "restaurant" + String(i)
+                //queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
+                queryItems.append(URLQueryItem(name: key, value: restaurant.id as String))
+                let votesForRestaurant = RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) + 1
+                print(votesForRestaurant)
+                queryItems.append(URLQueryItem(name: restaurant.id, value: String(votesForRestaurant)))
+                restaurantIds.append(restaurant.id)
                 
-                i+=1
+            } catch {
+                //handle error
+                print(error)
             }
+            
+            i+=1
+        }
         print(restaurantIds)
         
         
@@ -395,9 +407,16 @@ class MessagesViewController: MSMessagesAppViewController {
             
         }
         
+        if let app_location = App_Location {
+            queryItems.append(URLQueryItem(name: MessagesViewController.SURVEY_STARTING_LOCATION_LAT, value: String(app_location.latitude)))
+            queryItems.append(URLQueryItem(name: MessagesViewController.SURVEY_STARTING_LOCATION_LNG, value:String(app_location.longitude)))
+        }
         
-        
-        
+        //        for queryItem in queryItems {
+        //            self.appQueryItems.append(queryItem)
+        //        }
+        //
+        //        print(self.appQueryItems)
         
         print(queryItems)
         components.queryItems = queryItems
@@ -421,7 +440,7 @@ class MessagesViewController: MSMessagesAppViewController {
     
     func shouldUpdateParticipantsState()->Bool {
         if let knownNumberOfParticipants = self.knownNumberOfParticipants {
-
+            
             if(self.knownParticipants.count < knownNumberOfParticipants){
                 
                 return false
@@ -442,85 +461,90 @@ class MessagesViewController: MSMessagesAppViewController {
         
     }
 }
+
+/// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
+
+extension MessagesViewController: IceCreamsViewControllerDelegate {
     
-    /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
+    func iceCreamsViewControllerDidSelectAdd(_ controller: InitialSelectionViewController) {
+        
+        requestPresentationStyle(.expanded)
+    }
     
-    extension MessagesViewController: IceCreamsViewControllerDelegate {
+    func backToMainMenu() {
         
-        func iceCreamsViewControllerDidSelectAdd(_ controller: InitialSelectionViewController) {
-            
-            requestPresentationStyle(.expanded)
-        }
+        removeAllChildViewControllers()
         
-        func backToMainMenu() {
-            
-            removeAllChildViewControllers()
-            
-            /// - Tag: PresentViewController
-            let controller: UIViewController
-            
-            
-            controller = instantiateStartMenuController()
-            
-            
-            addChildViewController(controller)
-            controller.view.frame = view.bounds
-            controller.view.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(controller.view)
-            
-            NSLayoutConstraint.activate([
-                controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-                controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-                controller.view.topAnchor.constraint(equalTo: view.topAnchor),
-                controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-                ])
-            
-            controller.didMove(toParentViewController: self)
-            
-        }
+        /// - Tag: PresentViewController
+        let controller: UIViewController
         
         
-        func addMessageToConversation(_ restaurants:[RestaurantInfo], messageImage:Restaurant){
-            
-            guard let conversation = activeConversation else { fatalError("Expected a conversation") }
-            
-            
-            // Update the ice cream with the selected body part and determine a caption and description of the change.
-            var messageCaption: String
-            
-            messageCaption = NSLocalizedString("Here's a few places that look good", comment: "test")
-            
-            
-            // Create a new message with the same session as any currently selected message.
-            let message = composeMessage(with: restaurants,messageImage:messageImage , caption: messageCaption, session: conversation.selectedMessage?.session)
-            
-            
-            
-            /// - Tag: InsertMessageInConversation
-            // Add the message to the conversation.
-            conversation.insert(message) { error in
-                if let error = error {
-                    print(error)
-                    
-                }
-            }
-        }
+        controller = instantiateStartMenuController()
         
-        func changePresentationStyle(presentationStyle: MSMessagesAppPresentationStyle) {
-            requestPresentationStyle(.compact)
-        }
         
+        addChildViewController(controller)
+        controller.view.frame = view.bounds
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(controller.view)
+        
+        NSLayoutConstraint.activate([
+            controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+            controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+            controller.view.topAnchor.constraint(equalTo: view.topAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        
+        controller.didMove(toParentViewController: self)
         
     }
     
-    /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
     
-    extension MessagesViewController: MainMenuViewControllerDelegate {
+    func addMessageToConversation(_ restaurants:[RestaurantInfo], messageImage:Restaurant){
         
-        func switchState_StartMenu(newState:AppState) {
-            switchState(newState: newState)
+        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
+        
+        
+        // Update the ice cream with the selected body part and determine a caption and description of the change.
+        var messageCaption: String
+        
+        messageCaption = NSLocalizedString("Here's a few places that look good", comment: "test")
+        
+        
+        // Create a new message with the same session as any currently selected message.
+        let message = composeMessage(with: restaurants,messageImage:messageImage , caption: messageCaption, session: conversation.selectedMessage?.session)
+        
+        var components = URLComponents()
+        //components.string = "NAME"
+        //            message.md.set(value:7,forKey:"yo")
+        components.queryItems = self.appQueryItems
+        //conversation.insertAttachment(components.url!, withAlternateFilename: Optional<String>.none)
+        print(conversation)
+        
+        /// - Tag: InsertMessageInConversation
+        // Add the message to the conversation.
+        conversation.insert(message) { error in
+            if let error = error {
+                print(error)
+                
+            }
         }
-        
+    }
+    
+    func changePresentationStyle(presentationStyle: MSMessagesAppPresentationStyle) {
+        requestPresentationStyle(.compact)
+    }
+    
+    
+}
+
+/// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
+
+extension MessagesViewController: MainMenuViewControllerDelegate {
+    
+    func switchState_StartMenu(newState:AppState) {
+        switchState(newState: newState)
+    }
+    
 }
 
 

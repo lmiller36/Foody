@@ -17,6 +17,9 @@ class CurrentLocation{
     private let locationManager = CLLocationManager()
     //radius in meters
     private var radius: Int
+    
+    
+    
     public static var sharedInstance = CurrentLocation.init()
     fileprivate init() {
         // For use in foreground

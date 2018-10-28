@@ -14,7 +14,7 @@ class RestaurantsNearby{
     
     private var restaurants:[RestaurantInfo]
     private var selectedRows:[Int]
-    private var otherParticipantsSelection : [RestaurantInfo]
+   // private var otherParticipantsSelection : [RestaurantInfo]
     private var votes: [String:Int]
     // private var originalJson:String
     
@@ -23,11 +23,10 @@ class RestaurantsNearby{
     
     fileprivate init() {
         self.restaurants = [RestaurantInfo]()
-        // self.originalJson=""
         self.votes = [String:Int]()
         self.hasBeenSorted = false
         self.selectedRows = [Int]()
-        self.otherParticipantsSelection = [RestaurantInfo]()
+        //self.otherParticipantsSelection = [RestaurantInfo]()
     }
     
     func getApplicableRestaurantCategories()->Dictionary<String,String>{
@@ -70,12 +69,12 @@ class RestaurantsNearby{
         return 0
     }
     
-    func getOtherParticipantsSelection()->[RestaurantInfo]{
-        return self.otherParticipantsSelection
-    }
-    func addOtherParticipantsSelection(restaurant : RestaurantInfo,votes : Int){
-        self.otherParticipantsSelection.append(restaurant)
-        self.votes[restaurant.id] = votes
+//    func getOtherParticipantsSelection()->[RestaurantInfo]{
+//        return self.otherParticipantsSelection
+//    }
+    func addOtherParticipantsSelection(restaurantID : String,votes : Int){
+       // self.otherParticipantsSelection.append(restaurant)
+        self.votes[restaurantID] = votes
     }
     
     //queries based on id of the restaurant
@@ -84,6 +83,10 @@ class RestaurantsNearby{
             return numVotes
         }
         return 0
+    }
+    
+    func getVotes()->[String:Int]{
+        return self.votes
     }
     
     func getSelectedRestaurant()->[RestaurantInfo]{
@@ -102,26 +105,35 @@ class RestaurantsNearby{
         
     }
     
+    //TODO CHECK IF NOT FOUND RESTAURANTS ARE GETTING SKIPPED
     //combines the selection made by the current user as well as the other participants of the survey
     func getVotedOnRestaurants()->[RestaurantInfo]
     {
-        self.otherParticipantsSelection.mergeElements(newElements: self.getSelectedRestaurant())
-        return otherParticipantsSelection
+        var votesOnRestaurants = self.getSelectedRestaurant()
+        for restaurantId in self.votes.keys {
+            let matchedRestaurantList = self.restaurants.filter({$0.id == restaurantId})
+            if(matchedRestaurantList.count == 0)
+            {
+                print("ERROR, restaurant not Found")
+            }
+            else {
+                votesOnRestaurants.append(matchedRestaurantList[0])
+            }
+            
+        }
+//        self.otherParticipantsSelection.mergeElements(newElements: self.getSelectedRestaurant())
+        return votesOnRestaurants
     }
     
     func clearAll(){
         self.restaurants.removeAll()
         self.selectedRows.removeAll()
-        self.otherParticipantsSelection.removeAll()
+       // self.otherParticipantsSelection.removeAll()
     }
     
-    //    func setOriginalJson(string:String){
-    //        self.originalJson = string
-    //    }
-    
-    //    func getOriginalJson()->String{
-    //        return self.originalJson
-    //    }
+    func getKnownRestaurants ()-> [RestaurantInfo]{
+        return self.restaurants
+    }
     
     func getIceCreams()->[Restaurant]?{
         if(!self.hasBeenSorted){

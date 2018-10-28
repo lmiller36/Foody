@@ -10,6 +10,7 @@
 		4806D7612183B80300FC5912 /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7602183B80300FC5912 /* Participant.swift */; };
 		4806D7632183C2C100FC5912 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7622183C2C100FC5912 /* AppState.swift */; };
 		4806D7652183D8C300FC5912 /* WaitingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7642183D8C300FC5912 /* WaitingViewController.swift */; };
+		4806D76721862B0300FC5912 /* Cacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D76621862B0300FC5912 /* Cacher.swift */; };
 		4814047C217D505C00124E76 /* ThumbUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4814047B217D505C00124E76 /* ThumbUp.swift */; };
 		4815EBD0216518930043DC82 /* VotingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4815EBCF216518930043DC82 /* VotingViewController.swift */; };
 		4815EBD2216519090043DC82 /* VotingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4815EBD1216519090043DC82 /* VotingCell.swift */; };
@@ -145,6 +146,7 @@
 		4806D7602183B80300FC5912 /* Participant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
 		4806D7622183C2C100FC5912 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		4806D7642183D8C300FC5912 /* WaitingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingViewController.swift; sourceTree = "<group>"; };
+		4806D76621862B0300FC5912 /* Cacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacher.swift; sourceTree = "<group>"; };
 		4814047B217D505C00124E76 /* ThumbUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbUp.swift; sourceTree = "<group>"; };
 		4815EBCF216518930043DC82 /* VotingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingViewController.swift; sourceTree = "<group>"; };
 		4815EBD1216519090043DC82 /* VotingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingCell.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				B55F962E1CFF829D00B33E33 /* Info.plist */,
 				4816717D2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift */,
 				4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */,
+				482045792155EBE900989507 /* StickersNearby.swift */,
 				48B14F4A2155A4A300A05FEF /* YelpRequest.swift */,
 				4888F60E2180E311005EA28A /* RestaurantInfo.swift */,
 				48B14F4D2155A61700A05FEF /* Restaurant.swift */,
@@ -371,6 +374,7 @@
 				48EC4D312163D6140010FDE5 /* SelectedRestaurantViewController.swift */,
 				48EC4D37216438820010FDE5 /* SelectedRestaurantsCollectionView.swift */,
 				4814047B217D505C00124E76 /* ThumbUp.swift */,
+				4806D76621862B0300FC5912 /* Cacher.swift */,
 			);
 			path = IceCreamBuilderMessagesExtension;
 			sourceTree = "<group>";
@@ -384,7 +388,6 @@
 				B55F963B1CFF82E100B33E33 /* IceCreamPart.swift */,
 				B55F96401CFF82E100B33E33 /* QueryItemRepresentable.swift */,
 				B5B1E9F11D02717700BD5715 /* IceCreamStickerCache.swift */,
-				482045792155EBE900989507 /* StickersNearby.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -660,6 +663,7 @@
 				B55F96281CFF829D00B33E33 /* MessagesViewController.swift in Sources */,
 				4806D7632183C2C100FC5912 /* AppState.swift in Sources */,
 				B55F96431CFF82E100B33E33 /* IceCream+Image.swift in Sources */,
+				4806D76721862B0300FC5912 /* Cacher.swift in Sources */,
 				4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */,
 				4888F60F2180E311005EA28A /* RestaurantInfo.swift in Sources */,
 				B5B1E9F21D02717700BD5715 /* IceCreamStickerCache.swift in Sources */,

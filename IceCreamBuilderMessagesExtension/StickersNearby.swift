@@ -7,20 +7,49 @@
 //
 
 import Foundation
+import CoreLocation
+
+public var App_Location : CLLocationCoordinate2D?
+private var lastKnownLocationInstance : CLLocationCoordinate2D?
 
 func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [RestaurantInfo]) -> Void){
     // var iceCreams = [IceCream]()
     print("im generated nearby")
 
+    
     CurrentLocation.sharedInstance.lookUpCurrentLocation(callback: { (location) in
         
         guard let locationCoordinates = location?.location?.coordinate else{
             return
         }
+        var reloadFromYelp = true
+        print(lastKnownLocationInstance)
+
+        //check if data must be reloaded
+        if let lastKnownLocation = lastKnownLocationInstance {
+
+            //Data was already loaded from the given location
+            //TODO DETERMINE IF .01 is a good fit
+            if(abs(locationCoordinates.latitude - lastKnownLocation.latitude) < 0.01  && abs(locationCoordinates.longitude - lastKnownLocation.longitude) < 0.01){
+                reloadFromYelp = false
+            }
+            
+        }
+        print("SHOULD RELOAD DATA:\(reloadFromYelp)")
+        lastKnownLocationInstance = locationCoordinates
         
-        getNearby(coordinates: locationCoordinates,callback:{ (businesses) in
-            completionHandler(businesses.businesses)
-        })
+        let locationToUse = App_Location ?? locationCoordinates
+        App_Location = locationToUse
+        print(locationToUse)
+        //if(reloadFromYelp) {
+            getNearby(coordinates: locationToUse,callback:{ (businesses) in
+                completionHandler(businesses.businesses)
+            })
+//        }
+//        else {
+//            completionHandler(RestaurantsNearby.sharedInstance.getKnownRestaurants())
+//        }
+       
     })
     
 }

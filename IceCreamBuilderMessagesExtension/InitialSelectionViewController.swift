@@ -255,6 +255,7 @@ class InitialSelectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         
         generateNearbyRestaurants(completionHandler: { (restaurants) in
+            RestaurantsNearby.sharedInstance.clearAll()
             RestaurantsNearby.sharedInstance.add(restaurants: restaurants)
             guard let iceCreams = RestaurantsNearby.sharedInstance.getIceCreams() else{return}
             var newItems: [CollectionViewItem] = iceCreams.map { .iceCream($0) }
