@@ -83,9 +83,9 @@ class MessagesViewController: MSMessagesAppViewController {
                     self.knownNumberOfParticipants = Int(knownNumberOfParticipants)
                 }
                 
-                if let globalStateOfApp = queryItems.filter({$0.name == MessagesViewController.GLOBAL_STATE_OF_APP}).first?.value{
-                    self.globalStateOfApp = AppState.init(rawValue: globalStateOfApp)
-                }
+//                if let globalStateOfApp = queryItems.filter({$0.name == MessagesViewController.GLOBAL_STATE_OF_APP}).first?.value{
+//                    self.globalStateOfApp = AppState.init(rawValue: globalStateOfApp)
+//                }
                 
                 //It is at least voiting round 1 since you are in the survey
                 if let storedAppState = queryItems.filter({$0.name == conversation.localParticipantIdentifier.uuidString}).first?.value
@@ -287,6 +287,24 @@ class MessagesViewController: MSMessagesAppViewController {
         }
     }
     
+    func updateParticipants(appState:AppState,participants:[Participant])->[Participant]{
+       
+        var newParticipants = [Participant]()
+        for participant in participants {
+            print(participant)
+            var newAppState : AppState
+            if(participant.currentStage == AppState.Wait) {
+                newAppState = appState
+            }
+            else {
+                newAppState = participant.currentStage
+            }
+            print(newAppState)
+            newParticipants.append(Participant.init(participantIdentifier: participant.participantIdentifier, currentStage: newAppState))
+        }
+        return newParticipants
+    }
+    
     //Cannot be reached from wait or booted screens
     func composeMessage(with restaurants: [RestaurantInfo],messageImage: Restaurant, caption: String, session: MSSession? = nil) -> MSMessage {
         
@@ -302,14 +320,7 @@ class MessagesViewController: MSMessagesAppViewController {
         print(self.knownNumberOfParticipants)
         print(self.knownParticipants)
         print(self.stateOfApp)
-        
-        
-        
-        
-        
-        
-        
-        
+
         //        if let myIdentifier = self.myIdentifier {
         //            queryItems.append(URLQueryItem(name: myIdentifier.uuidString, value:self.stateOfApp.rawValue))
         //        }
@@ -319,7 +330,6 @@ class MessagesViewController: MSMessagesAppViewController {
         let votedOnRestaurants = RestaurantsNearby.sharedInstance.getVotedOnRestaurants()
         //            queryItems.append(URLQueryItem(name: MessagesViewController.STATE_OF_APP, value: AppState.VotingRound1.rawValue))
         //
-        print(votedOnRestaurants)
         queryItems.append(URLQueryItem(name: MessagesViewController.NUMBER_OF_RESTAURANTS, value: String(votedOnRestaurants.count)))
         var restaurantIds =  [String]()
         var i = 0;
@@ -329,13 +339,12 @@ class MessagesViewController: MSMessagesAppViewController {
             do {
                 let data = try encoder.encode(restaurant)
                 
-                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                //let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
                 
                 let key = "restaurant" + String(i)
                 //queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
                 queryItems.append(URLQueryItem(name: key, value: restaurant.id as String))
                 let votesForRestaurant = RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) + 1
-                print(votesForRestaurant)
                 queryItems.append(URLQueryItem(name: restaurant.id, value: String(votesForRestaurant)))
                 restaurantIds.append(restaurant.id)
                 
@@ -346,39 +355,39 @@ class MessagesViewController: MSMessagesAppViewController {
             
             i+=1
         }
-        print(restaurantIds)
-        
-        
-        
-        
-        
-        
         
         //switchState(newState: self.stateOfApp)
         
         if let myIdentifier = self.myIdentifier {
             
+            let nextState = self.stateOfApp.NextState()
+            self.stateOfApp = AppState.Wait
+            
             if(self.knownParticipants.filter({$0.participantIdentifier == myIdentifier.uuidString}).count == 0 ){
                 self.knownParticipants.append(Participant.init(participantIdentifier: myIdentifier.uuidString, currentStage: self.stateOfApp))
             }
             
-            
-            if(shouldUpdateParticipantsState()){
-                self.stateOfApp = AppState.Wait
-                
-                if let globalStateOfApp = self.globalStateOfApp {
-                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: self.stateOfApp.NextState().rawValue))
-                }
-                
+            print(self.knownParticipants)
+            if(shouldUpdateParticipantsState(knownParticipants: self.knownParticipants,knownNumberOfParticipants: self.knownNumberOfParticipants!,myIdentifier: self.myIdentifier!)){
+                self.knownParticipants = updateParticipants( appState: nextState,participants: self.knownParticipants)
             }
-            else {
-                self.stateOfApp = AppState.Wait
-                
-                if let globalStateOfApp = self.globalStateOfApp {
-                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: globalStateOfApp.rawValue))
-                }
-                
-            }
+            print(self.knownParticipants)
+
+//
+//
+//
+//                if let globalStateOfApp = self.globalStateOfApp {
+//                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: self.stateOfApp.NextState().rawValue))
+//                }
+//
+//            }
+//            else {
+//
+//                if let globalStateOfApp = self.globalStateOfApp {
+//                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: globalStateOfApp.rawValue))
+//                }
+//
+//            }
             
             
             
@@ -393,12 +402,12 @@ class MessagesViewController: MSMessagesAppViewController {
             for participant in self.knownParticipants {
                 queryItems.append(URLQueryItem(name: createParticipantKey(count: count), value:participant.participantIdentifier))
                 
-                if(participant.participantIdentifier != myIdentifier.uuidString) {
+               // if(participant.participantIdentifier != myIdentifier.uuidString) {
                     queryItems.append(URLQueryItem(name: participant.participantIdentifier, value:participant.currentStage.rawValue))
-                }else {
-                    queryItems.append(URLQueryItem(name: participant.participantIdentifier, value:self.stateOfApp.rawValue))
-                    
-                }
+//                }else {
+//                    queryItems.append(URLQueryItem(name: participant.participantIdentifier, value:self.stateOfApp.rawValue))
+//
+//                }
                 
                 count+=1
             }
@@ -438,23 +447,22 @@ class MessagesViewController: MSMessagesAppViewController {
         return message
     }
     
-    func shouldUpdateParticipantsState()->Bool {
-        if let knownNumberOfParticipants = self.knownNumberOfParticipants {
-            
-            if(self.knownParticipants.count < knownNumberOfParticipants){
+    func shouldUpdateParticipantsState(knownParticipants:[Participant],knownNumberOfParticipants:Int,myIdentifier:UUID)->Bool {
+ 
+            if(knownParticipants.count < knownNumberOfParticipants){
                 
                 return false
             }
-        }
-        if let myIdentifier = self.myIdentifier {
-            for participant in self.knownParticipants {
+        
+       
+            for participant in knownParticipants {
                 //a participant still needs to complete the round
                 if(participant.participantIdentifier != myIdentifier.uuidString && participant.currentStage != AppState.Wait){ //|| participant.currentStage.NextState() == self.stateOfApp) {
                     return false
                 }
             }
             
-        }
+        
         
         return true
         
