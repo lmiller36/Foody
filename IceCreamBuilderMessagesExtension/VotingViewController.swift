@@ -37,7 +37,7 @@ class VotingViewController:UICollectionViewController{
             
             return view
         }
-  
+        
         fatalError("Unexpected kind")
     }
     
@@ -125,6 +125,44 @@ class VotingViewController:UICollectionViewController{
             for restaurant in RestaurantsNearby.sharedInstance.getSelectedRestaurant(){
                 print(restaurant.name)
             }
+            
+        }
+    }
+    
+    override func viewDidLoad() {
+        //TODO SWITCH TO CACHE
+        if(RestaurantsNearby.sharedInstance.getKnownRestaurants().count == 0){
+            generateNearbyRestaurants(completionHandler: { (restaurants) in
+                //RestaurantsNearby.sharedInstance.clearAll()
+                print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
+                print(RestaurantsNearby.sharedInstance.getVotes())
+                
+                for restaurant in restaurants {
+                    if(RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) > 0)
+                    {
+                        RestaurantsNearby.sharedInstance.add(restaurant: restaurant)
+                    }
+                }
+                //            guard let iceCreams = RestaurantsNearby.sharedInstance.getIceCreams() else{return}
+                //            var newItems: [CollectionViewItem] = iceCreams.map { .iceCream($0) }
+                //            var i = 0;
+                //            // self.items.removeAll()
+                //            for _ in iceCreams{
+                //                self.items.append(newItems[i])
+                //                i=i+1
+                //            }
+                //
+                let nc = NotificationCenter.default
+                //nc.post(name: Notification.Name("DataFetched"), object: nil)
+                nc.post(name: Notification.Name("ToggleMapButton"), object: nil)
+                print("posted")
+                
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                    self.viewWillAppear(true)
+                }
+                
+            })
             
         }
     }

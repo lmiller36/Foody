@@ -128,15 +128,26 @@ class MessagesViewController: MSMessagesAppViewController {
                         //                        }
                         let numberOfVotes = Int(queryItems.filter({$0.name == restaurantId}).first?.value ?? "0")
                         RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurantID: restaurantId, votes: numberOfVotes!)
-                        //                        if (stateOfApp == AppState.VotingRound1 || stateOfApp == AppState.VotingRound2 || stateOfApp == AppState.VotingRound3){
-                        //                            RestaurantsNearby.sharedInstance.add(restaurant: restaurant,numVotes: numberOfVotes!)
-                        //                        }
+                        
+//                                                if (stateOfApp == AppState.VotingRound1 || stateOfApp == AppState.VotingRound2 || stateOfApp == AppState.VotingRound3){
+//                                                    let restaurantJSON = Cache.sharedInstance.object(forKey: restaurantId as NSString)! as String
+//                                                     let restaurantInfoData = restaurantJSON.data(using: .utf8)!
+//                                                    
+//                                                                            guard let restaurant = try? JSONDecoder().decode(RestaurantInfo.self, from: restaurantInfoData) else {
+//                                                                                print("Error: Couldn't decode data into restaurant")
+//                                                                                return
+//                                                                            }
+//                                                    
+//                                                    RestaurantsNearby.sharedInstance.add(restaurant: restaurant,numVotes: numberOfVotes!)
+//                                                }
                         //                        else if (stateOfApp == AppState.InitialSelection) {
                         //                            RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurant: restaurant,votes: numberOfVotes!)
                         //                        }
                         count+=1
                         
                     }
+                    
+
                     
                 }
                 
@@ -337,9 +348,9 @@ class MessagesViewController: MSMessagesAppViewController {
             
             
             do {
-                let data = try encoder.encode(restaurant)
-                
-                //let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+//                let data = try encoder.encode(restaurant)
+//
+//                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
                 
                 let key = "restaurant" + String(i)
                 //queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
@@ -347,6 +358,9 @@ class MessagesViewController: MSMessagesAppViewController {
                 let votesForRestaurant = RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) + 1
                 queryItems.append(URLQueryItem(name: restaurant.id, value: String(votesForRestaurant)))
                 restaurantIds.append(restaurant.id)
+              
+                //  Cache.sharedInstance.object(forKey: restaurant.id as NSString) = restaurantJSON
+                //cache data
                 
             } catch {
                 //handle error
@@ -356,11 +370,29 @@ class MessagesViewController: MSMessagesAppViewController {
             i+=1
         }
         
+//        //caching
+//        for restaurant in RestaurantsNearby.sharedInstance.getKnownRestaurants() {
+//            do {
+//                                let data = try encoder.encode(restaurant)
+//
+//                                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+//
+//
+//                Cache.sharedInstance.setObject(restaurant.id as NSString, forKey: restaurantJSON ?? "")                //cache data
+//
+//            } catch {
+//                //handle error
+//                print(error)
+//            }
+//
+//        }
+//
+        
         //switchState(newState: self.stateOfApp)
         
         if let myIdentifier = self.myIdentifier {
             
-            let nextState = self.stateOfApp.NextState()
+            let nextState = self.stateOfApp
             self.stateOfApp = AppState.Wait
             
             if(self.knownParticipants.filter({$0.participantIdentifier == myIdentifier.uuidString}).count == 0 ){
@@ -435,6 +467,7 @@ class MessagesViewController: MSMessagesAppViewController {
         layout.image = messageImage.renderSticker(opaque: true)
         layout.caption = caption
         
+
         
         
         let message = MSMessage(session: session ?? MSSession())

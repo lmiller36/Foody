@@ -46,6 +46,10 @@ class RestaurantsNearby{
         self.restaurants = restaurants
     }
     
+    func add(restaurant:RestaurantInfo){
+        self.restaurants.append(restaurant)
+    }
+    
     func add(restaurant:RestaurantInfo,numVotes:Int){
         self.votes[restaurant.id] = getVotesForARestaurant(id: restaurant.id) + 1
         self.restaurants.append(restaurant)

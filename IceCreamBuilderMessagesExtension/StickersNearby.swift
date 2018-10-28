@@ -17,11 +17,11 @@ func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [Rest
     print("im generated nearby")
 
     
-    CurrentLocation.sharedInstance.lookUpCurrentLocation(callback: { (location) in
-        
-        guard let locationCoordinates = location?.location?.coordinate else{
-            return
-        }
+//    CurrentLocation.sharedInstance.lookUpCurrentLocation(callback: { (location) in
+    guard let locationCoordinates = CurrentLocation.sharedInstance.getCurrentLocation()?.coordinate else {return}
+//        guard let locationCoordinates = location?.location?.coordinate else{
+//            return
+//        }
         var reloadFromYelp = true
         print(lastKnownLocationInstance)
 
@@ -50,7 +50,7 @@ func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [Rest
 //            completionHandler(RestaurantsNearby.sharedInstance.getKnownRestaurants())
 //        }
        
-    })
+   // })
     
 }
 func getType(type:String)->Icon{
