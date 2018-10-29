@@ -27,7 +27,7 @@ class InitialSelectionHeader: UICollectionReusableView {
     var isMapButton:Bool
     
     var availableTypes : Dictionary<String,String>
-     var typeIsBlackAndWhite : Dictionary<String,Bool>
+    var typeIsBlackAndWhite : Dictionary<String,Bool>
     
     required init?(coder aDecoder: NSCoder) {
         self.availableTypes=Dictionary<String,String>()
@@ -64,6 +64,7 @@ class InitialSelectionHeader: UICollectionReusableView {
     
     @objc func onDidReceiveData(_ notification: Notification)
     {
+        
         print("received")
         availableTypes = RestaurantsNearby.sharedInstance.getApplicableRestaurantCategories()
         print(availableTypes)
@@ -96,7 +97,7 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       
+        
         return dequeueIceCreamCell( at: indexPath)
         
     }
@@ -107,24 +108,17 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
         guard let cell = AvailableTypes.dequeueReusableCell(withReuseIdentifier: OptionCell.reuseIdentifier,
                                                             for: indexPath) as? OptionCell
             else { fatalError("Unable to dequeue am IceCreamCell") }
-    
-
-            let currentKey = Array(availableTypes.keys)[indexPath.row]
         
-            let isBlackAndWhite = self.typeIsBlackAndWhite[currentKey] ?? false
-            let icon = getType(type: currentKey)
-            //cell.isBlackAndWhite =
         
-//            cell.representedType = currentKey
-//            cell.icon = getType(type: currentKey)
-            cell.Name.text = availableTypes[currentKey]
-
+        let currentKey = Array(availableTypes.keys)[indexPath.row]
+        
+        let isBlackAndWhite = self.typeIsBlackAndWhite[currentKey] ?? false
+        let icon = getType(type: currentKey)
+        
+        cell.Name.text = availableTypes[currentKey]
+        
         let iceCream = Restaurant(icon: icon,blackAndWhite:isBlackAndWhite)
         
-       // print("\(cell.Name.text) : \(cell.isBlackAndWhite)")
-
-        
-        // cell.representedIceCream = iceCream
         
         // Fetch the sticker for the ice cream from the cache.
         IceCreamStickerCache.cache.sticker(for: iceCream) { sticker in
@@ -135,12 +129,22 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
             }
         }
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
+        
+        let forceTouchGestureRecognizer = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(doubleTappedHandler))
+        doubleTap.numberOfTapsRequired = 2
+        
+        singleTap.require(toFail: doubleTap)
+        singleTap.delaysTouchesBegan = true
+        doubleTap.delaysTouchesBegan = true
         
         cell.Sticker.isUserInteractionEnabled = true
         cell.Sticker.tag = indexPath.row
-        cell.Sticker.addGestureRecognizer(tap)
-        
+        cell.Sticker.addGestureRecognizer(singleTap)
+        cell.Sticker.addGestureRecognizer(forceTouchGestureRecognizer)
+        cell.Sticker.addGestureRecognizer(doubleTap)
         
         
         // cell.representedIceCream = iceCream
@@ -153,7 +157,7 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
         return cell
     }
     
-    @objc private func tapped(_ sender: UITapGestureRecognizer){
+    @objc private func tapHandler(_ sender: UITapGestureRecognizer){
         
         
         
@@ -167,19 +171,47 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
         
         
         let icon = getType(type: currentKey)
-
+        
         let iceCream = Restaurant(icon: icon,blackAndWhite:isBlackAndWhite)
+        
+        // Fetch the sticker for the ice cream from the cache.
+        IceCreamStickerCache.cache.sticker(for: iceCream) { sticker in
+            OperationQueue.main.addOperation {
+                // If the cell is still showing the same ice cream, update its sticker view.
+                //                guard cell.representedIceCream == iceCream else { return }
+                optionCell.Sticker.sticker = sticker
+            }
+        }
+        
+        //hide applicable restaurants
+        let nc = NotificationCenter.default
+        nc.post(name: Notification.Name("HideApplicableRestaurants"), object: nil)
 
-                // Fetch the sticker for the ice cream from the cache.
-                IceCreamStickerCache.cache.sticker(for: iceCream) { sticker in
-                    OperationQueue.main.addOperation {
-                        // If the cell is still showing the same ice cream, update its sticker view.
-                        //                guard cell.representedIceCream == iceCream else { return }
-                        optionCell.Sticker.sticker = sticker
-                    }
-                }
+        
     }
     
+    @objc private func forceTouchHandler(_ sender: UITapGestureRecognizer){
+        
+        guard let indexPath = AvailableTypes.indexPathForItem(at: sender.location(in: AvailableTypes)) else {return}
+        guard let optionCell = AvailableTypes.cellForItem(at: indexPath) as? OptionCell else {return}
+        
+        print("force touch!")
+        
+        
+        
+    }
+    
+    
+    @objc private func doubleTappedHandler(_ sender: UITapGestureRecognizer){
+        
+        guard let indexPath = AvailableTypes.indexPathForItem(at: sender.location(in: AvailableTypes)) else {return}
+        guard let optionCell = AvailableTypes.cellForItem(at: indexPath) as? OptionCell else {return}
+        
+        print("doubleTapped!")
+        
+        
+        
+    }
     
     
 }

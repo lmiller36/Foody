@@ -25,37 +25,21 @@ class InitialSelectionViewController: UICollectionViewController {
     
     static let storyboardIdentifier = "IceCreamsViewController"
     
-    private var showDetails=true;
+    private var showDetails = true;
     
     weak var delegate: IceCreamsViewControllerDelegate?
     
     private var items: [CollectionViewItem]
     private var showMap : Bool
     
-   
-    // private var restaurantsNearby: RestaurantsNearby
-    
     private let stickerCache = IceCreamStickerCache.cache
-    
-   // private var selectedRestaurants : [IceCream]
-    
-    // MARK: Initialization
-    
     required init?(coder aDecoder: NSCoder) {
-        // Map the previously completed ice creams to an array of `CollectionViewItem`s.
-        //let reversedHistory =
         
         let reversedHistory = IceCreamHistory.load().reversed()
-        var items: [CollectionViewItem] = reversedHistory.map { .iceCream($0) }
-        
-        // Add `CollectionViewItem` that the user can tap to start building a new ice cream.
-        // Add new ice cream
-        //         items.insert(.create, at: 0)
+        let items: [CollectionViewItem] = reversedHistory.map { .iceCream($0) }
         
         self.items = items
         self.showMap = false
-        //self.restaurantsNearby = RestaurantsNearby.sharedInstance
-        //self.selectedRestaurants = [IceCream]()
         super.init(coder: aDecoder)
         
     }
@@ -217,30 +201,7 @@ class InitialSelectionViewController: UICollectionViewController {
         
     }
     @objc private func forceTouchHandler(_ sender: UITapGestureRecognizer){
-        
-//        guard let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) else {return}
-//        guard let iceCreamCell = self.collectionView?.cellForItem(at: indexPath) as? InitialSelectionCell else {return}
-//        guard let selectedIceCream = iceCreamCell.representedIceCream else {return}
-//      //  let nearbyRestaurants = self.restaurantsNearby.getIceCreams() ?? [IceCream]()
-//        print("Force touch triggered")
-//
-//         let selectedRestaurants = RestaurantsNearby.sharedInstance.getSelectedRestaurant()
-//        // 5 is an arbitrary number
-//         let extraneousCount = selectedRestaurants.count - 5
-//        if(extraneousCount > 0){
-//            let alert = UIAlertController(title: "Up to 5 suggestions are alloted per person", message: "Please remove at least \(extraneousCount) \(extraneousCount == 1 ? "item":"items")", preferredStyle: .alert)
-//
-//            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-//
-//
-//            self.present(alert, animated: true)
-//        }
-//        else {
-//        delegate?.addMessageToConversation(selectedRestaurants,messageImage: selectedIceCream)
-//        }
-        
         print("force touch!")
-        
     }
     
     

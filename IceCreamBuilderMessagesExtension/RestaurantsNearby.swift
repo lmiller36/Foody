@@ -16,6 +16,9 @@ class RestaurantsNearby{
     private var selectedRows:[Int]
    // private var otherParticipantsSelection : [RestaurantInfo]
     private var votes: [String:Int]
+    
+    private var ignoredTypes : [String]
+    
     // private var originalJson:String
     
     private static var sortCriteria = SortCriteria.Distance
@@ -26,6 +29,7 @@ class RestaurantsNearby{
         self.votes = [String:Int]()
         self.hasBeenSorted = false
         self.selectedRows = [Int]()
+        self.ignoredTypes = [String]()
         //self.otherParticipantsSelection = [RestaurantInfo]()
     }
     
@@ -53,6 +57,18 @@ class RestaurantsNearby{
     func add(restaurant:RestaurantInfo,numVotes:Int){
         self.votes[restaurant.id] = getVotesForARestaurant(id: restaurant.id) + 1
         self.restaurants.append(restaurant)
+    }
+    
+    func addIgnoredType(ignoredType:String){
+        if(!self.ignoredTypes.contains(ignoredType)){
+            self.ignoredTypes.append(ignoredType)
+        }
+    }
+    
+    func removeIgnoredType(typeToRemove:String){
+        if let index = self.ignoredTypes.firstIndex(where: { $0.contains(typeToRemove) }) {
+             self.ignoredTypes.remove(at: index)
+        }
     }
     
     func toggleTappedRestaurant(row:Int){
