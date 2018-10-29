@@ -9,6 +9,7 @@
 import Foundation
 
 import UIKit
+import Messages
 
 class VotingViewController:UICollectionViewController{
     static let storyboardIdentifier = "VotingViewController"
@@ -17,7 +18,7 @@ class VotingViewController:UICollectionViewController{
     @IBOutlet var VotingCollectionView: UICollectionView!
     
     
-    //    weak var delegate: IceCreamsViewControllerDelegate?
+       weak var delegate: VotingMenuViewControllerDelegate?
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,8 +80,7 @@ class VotingViewController:UICollectionViewController{
         cell.cellInfo.text = restarauntName;
         cell.statement1.text = (address);
         cell.statement2.text = String(format: "%.1f", distance)+" miles"
-        //85bb65
-        //cell.statement3.textColor = UIColor.init(displayP3Red: 133, green: 187, blue: 101, alpha: 1.0)
+
         let bottomLine = "\(RestaurantsNearby.getRatingInStars(rating: representedRestaurant.rating)) "+price
         let textColor = UIColor.init(red: 133/255, green: 187/255, blue: 101/255, alpha: 1.0)
         let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: bottomLine)
@@ -131,15 +131,21 @@ class VotingViewController:UICollectionViewController{
     
     override func viewDidLoad() {
         //TODO SWITCH TO CACHE
+        print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
+        print(RestaurantsNearby.sharedInstance.getIceCreams())
+        print(RestaurantsNearby.sharedInstance.getVotes())
         if(RestaurantsNearby.sharedInstance.getKnownRestaurants().count == 0){
             generateNearbyRestaurants(completionHandler: { (restaurants) in
-                //RestaurantsNearby.sharedInstance.clearAll()
-                print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
+                //TODO CHECK IF HERE
+                RestaurantsNearby.sharedInstance.clearAll()
+                //print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
                 print(RestaurantsNearby.sharedInstance.getVotes())
                 
                 for restaurant in restaurants {
+                    
                     if(RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) > 0)
                     {
+                        print(restaurant.name)
                         RestaurantsNearby.sharedInstance.add(restaurant: restaurant)
                     }
                 }
@@ -167,5 +173,48 @@ class VotingViewController:UICollectionViewController{
         }
     }
     
+    @IBAction func submitSelection(_ sender: Any) {
+        let selectedRestaurants = RestaurantsNearby.sharedInstance.getSelectedRestaurant()
+        print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
+        print(RestaurantsNearby.sharedInstance.getSelectedRestaurant())
+        // 5 is an arbitrary number
+        let extraneousCount = selectedRestaurants.count - 3
+        
+        //TODO Ensure that this works
+        if(selectedRestaurants.count == 0){
+            let alert = UIAlertController(title: "At least 1 suggestions must be given",message:"Please add at least 1 item", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            
+            
+            self.present(alert, animated: true)
+        }
+        else if(extraneousCount > 0){
+            let alert = UIAlertController(title: "Up to 2 suggestions are alloted per person", message: "Please remove at least \(extraneousCount) \(extraneousCount == 1 ? "item":"items")", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            
+            
+            self.present(alert, animated: true)
+        }
+            
+        else {
+            
+            let selectedIceCream = Restaurant(restaurant:selectedRestaurants[0],blackAndWhite:false)
+            delegate?.changePresentationStyle(presentationStyle: .compact)
+            delegate?.addMessageToConversation(selectedRestaurants,messageImage: selectedIceCream)
+        }
+    }
+    
+    
 }
 
+
+protocol VotingMenuViewControllerDelegate: class {
+    
+    
+    func addMessageToConversation(_ restaurants:[RestaurantInfo],messageImage:Restaurant)
+    
+    func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
+    
+}

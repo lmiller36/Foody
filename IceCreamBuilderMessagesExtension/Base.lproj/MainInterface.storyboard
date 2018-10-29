@@ -473,6 +473,9 @@
                                     <rect key="frame" x="303" y="10" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" title="Button" image="submit"/>
+                                    <connections>
+                                        <action selector="submitSelection:" destination="aWS-pz-N5X" eventType="primaryActionTriggered" id="baM-AJ-FpN"/>
+                                    </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Submit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z8f-Zp-TO5">
                                     <rect key="frame" x="301" y="67" width="55" height="22"/>
@@ -529,7 +532,7 @@
                         </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="aWS-pz-N5X" id="afj-ZM-Z7D"/>
-                            <outlet property="delegate" destination="aWS-pz-N5X" id="4Mn-mb-gRp"/>
+                            <outlet property="delegate" destination="aWS-pz-N5X" id="Z2D-fB-5Sf"/>
                         </connections>
                     </collectionView>
                     <connections>

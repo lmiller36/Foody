@@ -132,12 +132,12 @@ class MessagesViewController: MSMessagesAppViewController {
 //                                                if (stateOfApp == AppState.VotingRound1 || stateOfApp == AppState.VotingRound2 || stateOfApp == AppState.VotingRound3){
 //                                                    let restaurantJSON = Cache.sharedInstance.object(forKey: restaurantId as NSString)! as String
 //                                                     let restaurantInfoData = restaurantJSON.data(using: .utf8)!
-//                                                    
+//
 //                                                                            guard let restaurant = try? JSONDecoder().decode(RestaurantInfo.self, from: restaurantInfoData) else {
 //                                                                                print("Error: Couldn't decode data into restaurant")
 //                                                                                return
 //                                                                            }
-//                                                    
+//
 //                                                    RestaurantsNearby.sharedInstance.add(restaurant: restaurant,numVotes: numberOfVotes!)
 //                                                }
                         //                        else if (stateOfApp == AppState.InitialSelection) {
@@ -214,6 +214,8 @@ class MessagesViewController: MSMessagesAppViewController {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: VotingViewController.storyboardIdentifier)
             as? VotingViewController
             else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
+        
+        controller.delegate = self
         
         return controller
     }
@@ -501,47 +503,8 @@ class MessagesViewController: MSMessagesAppViewController {
         
         
     }
-}
-
-/// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
-
-extension MessagesViewController: IceCreamsViewControllerDelegate {
     
-    func iceCreamsViewControllerDidSelectAdd(_ controller: InitialSelectionViewController) {
-        
-        requestPresentationStyle(.expanded)
-    }
-    
-    func backToMainMenu() {
-        
-        removeAllChildViewControllers()
-        
-        /// - Tag: PresentViewController
-        let controller: UIViewController
-        
-        
-        controller = instantiateStartMenuController()
-        
-        
-        addChildViewController(controller)
-        controller.view.frame = view.bounds
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(controller.view)
-        
-        NSLayoutConstraint.activate([
-            controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-            controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-            controller.view.topAnchor.constraint(equalTo: view.topAnchor),
-            controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-        
-        controller.didMove(toParentViewController: self)
-        
-    }
-    
-    
-    func addMessageToConversation(_ restaurants:[RestaurantInfo], messageImage:Restaurant){
-        
+    func createMessage(restaurants:[RestaurantInfo], messageImage:Restaurant){
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         
         
@@ -570,6 +533,26 @@ extension MessagesViewController: IceCreamsViewControllerDelegate {
             }
         }
     }
+}
+
+/// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
+
+extension MessagesViewController: IceCreamsViewControllerDelegate,VotingMenuViewControllerDelegate {
+    
+    func iceCreamsViewControllerDidSelectAdd(_ controller: InitialSelectionViewController) {
+        
+        requestPresentationStyle(.expanded)
+    }
+    
+    func backToMainMenu() {
+        stateOfApp = AppState.MainMenu
+        switchState(newState: stateOfApp)
+    }
+    
+    
+    func addMessageToConversation(_ restaurants:[RestaurantInfo], messageImage:Restaurant){
+        createMessage(restaurants: restaurants,messageImage: messageImage)
+    }
     
     func changePresentationStyle(presentationStyle: MSMessagesAppPresentationStyle) {
         requestPresentationStyle(.compact)
@@ -577,6 +560,7 @@ extension MessagesViewController: IceCreamsViewControllerDelegate {
     
     
 }
+
 
 /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
 
