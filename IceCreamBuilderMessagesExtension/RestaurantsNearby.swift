@@ -109,11 +109,19 @@ class RestaurantsNearby{
         
     }
     
+    func before(value1: String, value2: String) -> Bool {
+        return self.votes[value1] ?? 0 > self.votes[value2] ?? 0
+    }
+    
     //TODO CHECK IF NOT FOUND RESTAURANTS ARE GETTING SKIPPED
     //combines the selection made by the current user as well as the other participants of the survey
-    func getVotedOnRestaurants()->[RestaurantInfo]
+    func getVotedOnRestaurants(numberOfRestaurantsToReturn:Int)->[RestaurantInfo]
     {
         var votesOnRestaurants = self.getSelectedRestaurant()
+        
+        let sortedVotes = self.votes.keys.sorted(by: before)
+            
+        print(sortedVotes)
         for restaurantId in self.votes.keys {
             let matchedRestaurantList = self.restaurants.filter({$0.id == restaurantId})
             if(matchedRestaurantList.count == 0)
@@ -125,6 +133,21 @@ class RestaurantsNearby{
             }
             
         }
+        
+        var count = 0
+        
+        while(count < numberOfRestaurantsToReturn && count < self.votes.keys.count){
+            let matchedRestaurantList = self.restaurants.filter({$0.id == sortedVotes[count]})
+            if(matchedRestaurantList.count == 0)
+            {
+                print("ERROR, restaurant not Found")
+            }
+            else {
+                votesOnRestaurants.append(matchedRestaurantList[0])
+            }
+            count += 1
+        }
+        
 //        self.otherParticipantsSelection.mergeElements(newElements: self.getSelectedRestaurant())
         return votesOnRestaurants
     }

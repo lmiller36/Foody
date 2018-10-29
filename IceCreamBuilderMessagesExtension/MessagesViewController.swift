@@ -20,13 +20,10 @@ class MessagesViewController: MSMessagesAppViewController {
     var appQueryItems = [URLQueryItem]()
     var hasCached = false
     
-    public static let GLOBAL_STATE_OF_APP = "GlobalStateOfApp"
     public static let NUMBER_OF_RESTAURANTS = "NumberOfRestaurants"
     public static let SURVEY_STARTING_LOCATION_LAT = "SurveyStartingLocationLat"
     public static let SURVEY_STARTING_LOCATION_LNG = "SurveyStartingLocationLng"
     public static let NUMBER_OF_PARTICIPANTS = "NumberOfParticipants"
-    public static let NUMBER_OF_VOTES = "NumberOfVotes"
-    public static let STATE_OF_APP = "StateOfApp"
     
     override func willBecomeActive(with conversation: MSConversation) {
         super.willBecomeActive(with: conversation)
@@ -74,11 +71,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 if let knownNumberOfParticipants = queryItems.filter({$0.name == MessagesViewController.NUMBER_OF_PARTICIPANTS}).first?.value{
                     self.knownNumberOfParticipants = Int(knownNumberOfParticipants)
                 }
-                
-                //                if let globalStateOfApp = queryItems.filter({$0.name == MessagesViewController.GLOBAL_STATE_OF_APP}).first?.value{
-                //                    self.globalStateOfApp = AppState.init(rawValue: globalStateOfApp)
-                //                }
-                
+         
                 //It is at least voiting round 1 since you are in the survey
                 if let storedAppState = queryItems.filter({$0.name == conversation.localParticipantIdentifier.uuidString}).first?.value
                 {
@@ -221,18 +214,6 @@ class MessagesViewController: MSMessagesAppViewController {
         return controller
     }
     
-    //
-    //    private func instantiateCompletedIceCreamController(with iceCream: RestaurantIcon) -> UIViewController {
-    //        // Instantiate a `BuildIceCreamViewController`.
-    //        guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
-    //            as? CompletedIceCreamViewController
-    //            else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
-    //
-    //        controller.iceCream = iceCream
-    //
-    //        return controller
-    //    }
-    
     private func initializeController(){
         
         removeAllChildViewControllers()
@@ -281,8 +262,6 @@ class MessagesViewController: MSMessagesAppViewController {
         initializeController()
     }
     
-    // MARK: Convenience
-    
     private func removeAllChildViewControllers() {
         for child in childViewControllers {
             child.willMove(toParentViewController: nil)
@@ -317,16 +296,24 @@ class MessagesViewController: MSMessagesAppViewController {
         let encoder = JSONEncoder()
         
         self.appQueryItems.removeAll()
-        
-        //        if let myIdentifier = self.myIdentifier {
-        //            queryItems.append(URLQueryItem(name: myIdentifier.uuidString, value:self.stateOfApp.rawValue))
-        //        }
-        
+
         if(self.stateOfApp.Order()<=0){fatalError("\(self.stateOfApp) should never compose a message")}
         
-        let votedOnRestaurants = RestaurantsNearby.sharedInstance.getVotedOnRestaurants()
-        //            queryItems.append(URLQueryItem(name: MessagesViewController.STATE_OF_APP, value: AppState.VotingRound1.rawValue))
-        //
+        //TODO FIX
+        var numberOfRestaurantsToInclude = 5
+        switch self.stateOfApp.NextState() {
+        case AppState.VotingRound1:
+            numberOfRestaurantsToInclude = (3 * self.knownNumberOfParticipants!) / 5
+        case AppState.VotingRound2:
+            numberOfRestaurantsToInclude = 5
+        case AppState.VotingRound3:
+            numberOfRestaurantsToInclude = 3
+        default:
+            fatalError("Should never compose a message")
+        }
+        
+        let votedOnRestaurants = RestaurantsNearby.sharedInstance.getVotedOnRestaurants(numberOfRestaurantsToReturn: numberOfRestaurantsToInclude)
+ 
         queryItems.append(URLQueryItem(name: MessagesViewController.NUMBER_OF_RESTAURANTS, value: String(votedOnRestaurants.count)))
         var restaurantIds =  [String]()
         var i = 0;
@@ -339,7 +326,6 @@ class MessagesViewController: MSMessagesAppViewController {
                 //                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
                 
                 let key = "restaurant" + String(i)
-                //queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
                 queryItems.append(URLQueryItem(name: key, value: restaurant.id as String))
                 let votesForRestaurant = RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) + 1
                 queryItems.append(URLQueryItem(name: restaurant.id, value: String(votesForRestaurant)))
@@ -374,7 +360,6 @@ class MessagesViewController: MSMessagesAppViewController {
         //        }
         //
         
-        //switchState(newState: self.stateOfApp)
         
         if let myIdentifier = self.myIdentifier {
             
@@ -392,23 +377,6 @@ class MessagesViewController: MSMessagesAppViewController {
                 myNextState = nextState
                 self.knownParticipants = updateParticipants( appState: nextState,participants: self.knownParticipants)
             }
-            
-            //
-            //
-            //
-            //                if let globalStateOfApp = self.globalStateOfApp {
-            //                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: self.stateOfApp.NextState().rawValue))
-            //                }
-            //
-            //            }
-            //            else {
-            //
-            //                if let globalStateOfApp = self.globalStateOfApp {
-            //                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: globalStateOfApp.rawValue))
-            //                }
-            //
-            //            }
-            
             
             
             //add to list
