@@ -20,13 +20,10 @@ class MessagesViewController: MSMessagesAppViewController {
     var appQueryItems = [URLQueryItem]()
     var hasCached = false
     
-    //    var shouldStall = false
-    
     public static let GLOBAL_STATE_OF_APP = "GlobalStateOfApp"
     public static let NUMBER_OF_RESTAURANTS = "NumberOfRestaurants"
     public static let SURVEY_STARTING_LOCATION_LAT = "SurveyStartingLocationLat"
     public static let SURVEY_STARTING_LOCATION_LNG = "SurveyStartingLocationLng"
-    
     public static let NUMBER_OF_PARTICIPANTS = "NumberOfParticipants"
     public static let NUMBER_OF_VOTES = "NumberOfVotes"
     public static let STATE_OF_APP = "StateOfApp"
@@ -61,14 +58,9 @@ class MessagesViewController: MSMessagesAppViewController {
         
         let url = conversation.selectedMessage?.url
         
-        //let attachment = conversation.selectedMessage
         
         RestaurantsNearby.sharedInstance.clearAll()
-        //        self.stateOfApp = AppState.MainMenu
         self.knownNumberOfParticipants = conversation.remoteParticipantIdentifiers.count + 1
-        print("me \(self.myIdentifier)")
-        print("FRIENDS:\(self.knownParticipants)")
-        print(self.stateOfApp)
         //if in wait, we already did all of this
         if self.stateOfApp != AppState.Wait {
             
@@ -83,15 +75,15 @@ class MessagesViewController: MSMessagesAppViewController {
                     self.knownNumberOfParticipants = Int(knownNumberOfParticipants)
                 }
                 
-//                if let globalStateOfApp = queryItems.filter({$0.name == MessagesViewController.GLOBAL_STATE_OF_APP}).first?.value{
-//                    self.globalStateOfApp = AppState.init(rawValue: globalStateOfApp)
-//                }
+                //                if let globalStateOfApp = queryItems.filter({$0.name == MessagesViewController.GLOBAL_STATE_OF_APP}).first?.value{
+                //                    self.globalStateOfApp = AppState.init(rawValue: globalStateOfApp)
+                //                }
                 
                 //It is at least voiting round 1 since you are in the survey
                 if let storedAppState = queryItems.filter({$0.name == conversation.localParticipantIdentifier.uuidString}).first?.value
                 {
                     myPreviousStateOfApp = AppState(rawValue: storedAppState)!
-                    stateOfApp = myPreviousStateOfApp.NextState()
+                    stateOfApp = myPreviousStateOfApp
                 }
                     // A survey has just been started
                 else{
@@ -103,7 +95,6 @@ class MessagesViewController: MSMessagesAppViewController {
                     
                     if let surveyStartingLocationLat = queryItems.filter({$0.name == MessagesViewController.SURVEY_STARTING_LOCATION_LAT}).first?.value  {
                         if let surveyStartingLocationLng = queryItems.filter({$0.name == MessagesViewController.SURVEY_STARTING_LOCATION_LNG}).first?.value  {
-                            print("given app location \(App_Location)")
                             App_Location = CLLocationCoordinate2D.init(latitude: Double(surveyStartingLocationLat)!,longitude: Double (surveyStartingLocationLng)!)
                         }
                     }
@@ -129,17 +120,17 @@ class MessagesViewController: MSMessagesAppViewController {
                         let numberOfVotes = Int(queryItems.filter({$0.name == restaurantId}).first?.value ?? "0")
                         RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurantID: restaurantId, votes: numberOfVotes!)
                         
-//                                                if (stateOfApp == AppState.VotingRound1 || stateOfApp == AppState.VotingRound2 || stateOfApp == AppState.VotingRound3){
-//                                                    let restaurantJSON = Cache.sharedInstance.object(forKey: restaurantId as NSString)! as String
-//                                                     let restaurantInfoData = restaurantJSON.data(using: .utf8)!
-//
-//                                                                            guard let restaurant = try? JSONDecoder().decode(RestaurantInfo.self, from: restaurantInfoData) else {
-//                                                                                print("Error: Couldn't decode data into restaurant")
-//                                                                                return
-//                                                                            }
-//
-//                                                    RestaurantsNearby.sharedInstance.add(restaurant: restaurant,numVotes: numberOfVotes!)
-//                                                }
+                        //                                                if (stateOfApp == AppState.VotingRound1 || stateOfApp == AppState.VotingRound2 || stateOfApp == AppState.VotingRound3){
+                        //                                                    let restaurantJSON = Cache.sharedInstance.object(forKey: restaurantId as NSString)! as String
+                        //                                                     let restaurantInfoData = restaurantJSON.data(using: .utf8)!
+                        //
+                        //                                                                            guard let restaurant = try? JSONDecoder().decode(RestaurantInfo.self, from: restaurantInfoData) else {
+                        //                                                                                print("Error: Couldn't decode data into restaurant")
+                        //                                                                                return
+                        //                                                                            }
+                        //
+                        //                                                    RestaurantsNearby.sharedInstance.add(restaurant: restaurant,numVotes: numberOfVotes!)
+                        //                                                }
                         //                        else if (stateOfApp == AppState.InitialSelection) {
                         //                            RestaurantsNearby.sharedInstance.addOtherParticipantsSelection(restaurant: restaurant,votes: numberOfVotes!)
                         //                        }
@@ -147,7 +138,7 @@ class MessagesViewController: MSMessagesAppViewController {
                         
                     }
                     
-
+                    
                     
                 }
                 
@@ -216,7 +207,7 @@ class MessagesViewController: MSMessagesAppViewController {
             else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
         
         controller.delegate = self
-        
+        controller.appState = self.stateOfApp
         return controller
     }
     
@@ -301,10 +292,9 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     func updateParticipants(appState:AppState,participants:[Participant])->[Participant]{
-       
+        
         var newParticipants = [Participant]()
         for participant in participants {
-            print(participant)
             var newAppState : AppState
             if(participant.currentStage == AppState.Wait) {
                 newAppState = appState
@@ -312,14 +302,13 @@ class MessagesViewController: MSMessagesAppViewController {
             else {
                 newAppState = participant.currentStage
             }
-            print(newAppState)
             newParticipants.append(Participant.init(participantIdentifier: participant.participantIdentifier, currentStage: newAppState))
         }
         return newParticipants
     }
     
     //Cannot be reached from wait or booted screens
-    func composeMessage(with restaurants: [RestaurantInfo],messageImage: Restaurant, caption: String, session: MSSession? = nil) -> MSMessage {
+    func composeMessage(with restaurants: [RestaurantInfo], caption: String, session: MSSession? = nil) -> MSMessage {
         
         var components = URLComponents()
         
@@ -329,11 +318,6 @@ class MessagesViewController: MSMessagesAppViewController {
         
         self.appQueryItems.removeAll()
         
-        print(self.myIdentifier)
-        print(self.knownNumberOfParticipants)
-        print(self.knownParticipants)
-        print(self.stateOfApp)
-
         //        if let myIdentifier = self.myIdentifier {
         //            queryItems.append(URLQueryItem(name: myIdentifier.uuidString, value:self.stateOfApp.rawValue))
         //        }
@@ -350,9 +334,9 @@ class MessagesViewController: MSMessagesAppViewController {
             
             
             do {
-//                let data = try encoder.encode(restaurant)
-//
-//                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                //                let data = try encoder.encode(restaurant)
+                //
+                //                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
                 
                 let key = "restaurant" + String(i)
                 //queryItems.append(URLQueryItem(name: key, value: restaurantJSON! as String))
@@ -360,7 +344,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 let votesForRestaurant = RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) + 1
                 queryItems.append(URLQueryItem(name: restaurant.id, value: String(votesForRestaurant)))
                 restaurantIds.append(restaurant.id)
-              
+                
                 //  Cache.sharedInstance.object(forKey: restaurant.id as NSString) = restaurantJSON
                 //cache data
                 
@@ -372,56 +356,58 @@ class MessagesViewController: MSMessagesAppViewController {
             i+=1
         }
         
-//        //caching
-//        for restaurant in RestaurantsNearby.sharedInstance.getKnownRestaurants() {
-//            do {
-//                                let data = try encoder.encode(restaurant)
-//
-//                                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-//
-//
-//                Cache.sharedInstance.setObject(restaurant.id as NSString, forKey: restaurantJSON ?? "")                //cache data
-//
-//            } catch {
-//                //handle error
-//                print(error)
-//            }
-//
-//        }
-//
+        //        //caching
+        //        for restaurant in RestaurantsNearby.sharedInstance.getKnownRestaurants() {
+        //            do {
+        //                                let data = try encoder.encode(restaurant)
+        //
+        //                                let restaurantJSON = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+        //
+        //
+        //                Cache.sharedInstance.setObject(restaurant.id as NSString, forKey: restaurantJSON ?? "")                //cache data
+        //
+        //            } catch {
+        //                //handle error
+        //                print(error)
+        //            }
+        //
+        //        }
+        //
         
         //switchState(newState: self.stateOfApp)
         
         if let myIdentifier = self.myIdentifier {
             
-            let nextState = self.stateOfApp
+            let nextState = self.stateOfApp.NextState()
+            print(nextState)
             self.stateOfApp = AppState.Wait
+            
+            var myNextState = AppState.Wait
             
             if(self.knownParticipants.filter({$0.participantIdentifier == myIdentifier.uuidString}).count == 0 ){
                 self.knownParticipants.append(Participant.init(participantIdentifier: myIdentifier.uuidString, currentStage: self.stateOfApp))
             }
-            
-            print(self.knownParticipants)
+      
             if(shouldUpdateParticipantsState(knownParticipants: self.knownParticipants,knownNumberOfParticipants: self.knownNumberOfParticipants!,myIdentifier: self.myIdentifier!)){
+                myNextState = nextState
                 self.knownParticipants = updateParticipants( appState: nextState,participants: self.knownParticipants)
             }
-            print(self.knownParticipants)
-
-//
-//
-//
-//                if let globalStateOfApp = self.globalStateOfApp {
-//                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: self.stateOfApp.NextState().rawValue))
-//                }
-//
-//            }
-//            else {
-//
-//                if let globalStateOfApp = self.globalStateOfApp {
-//                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: globalStateOfApp.rawValue))
-//                }
-//
-//            }
+            
+            //
+            //
+            //
+            //                if let globalStateOfApp = self.globalStateOfApp {
+            //                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: self.stateOfApp.NextState().rawValue))
+            //                }
+            //
+            //            }
+            //            else {
+            //
+            //                if let globalStateOfApp = self.globalStateOfApp {
+            //                    queryItems.append(URLQueryItem(name: MessagesViewController.GLOBAL_STATE_OF_APP, value: globalStateOfApp.rawValue))
+            //                }
+            //
+            //            }
             
             
             
@@ -436,12 +422,12 @@ class MessagesViewController: MSMessagesAppViewController {
             for participant in self.knownParticipants {
                 queryItems.append(URLQueryItem(name: createParticipantKey(count: count), value:participant.participantIdentifier))
                 
-               // if(participant.participantIdentifier != myIdentifier.uuidString) {
+                if(participant.participantIdentifier != myIdentifier.uuidString) {
                     queryItems.append(URLQueryItem(name: participant.participantIdentifier, value:participant.currentStage.rawValue))
-//                }else {
-//                    queryItems.append(URLQueryItem(name: participant.participantIdentifier, value:self.stateOfApp.rawValue))
-//
-//                }
+                }else {
+                    queryItems.append(URLQueryItem(name: participant.participantIdentifier, value: myNextState.rawValue))
+                    
+                }
                 
                 count+=1
             }
@@ -464,12 +450,13 @@ class MessagesViewController: MSMessagesAppViewController {
         print(queryItems)
         components.queryItems = queryItems
         
+        let messageImage = Restaurant.init(icon: getType(type: "American"), blackAndWhite: false)
         
         let layout = MSMessageTemplateLayout()
         layout.image = messageImage.renderSticker(opaque: true)
         layout.caption = caption
         
-
+        
         
         
         let message = MSMessage(session: session ?? MSSession())
@@ -483,20 +470,20 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     func shouldUpdateParticipantsState(knownParticipants:[Participant],knownNumberOfParticipants:Int,myIdentifier:UUID)->Bool {
- 
-            if(knownParticipants.count < knownNumberOfParticipants){
-                
+        
+        if(knownParticipants.count < knownNumberOfParticipants){
+            
+            return false
+        }
+        
+        
+        for participant in knownParticipants {
+            //a participant still needs to complete the round
+            if(participant.participantIdentifier != myIdentifier.uuidString && participant.currentStage != AppState.Wait){ //|| participant.currentStage.NextState() == self.stateOfApp) {
                 return false
             }
+        }
         
-       
-            for participant in knownParticipants {
-                //a participant still needs to complete the round
-                if(participant.participantIdentifier != myIdentifier.uuidString && participant.currentStage != AppState.Wait){ //|| participant.currentStage.NextState() == self.stateOfApp) {
-                    return false
-                }
-            }
-            
         
         
         return true
@@ -504,7 +491,7 @@ class MessagesViewController: MSMessagesAppViewController {
         
     }
     
-    func createMessage(restaurants:[RestaurantInfo], messageImage:Restaurant){
+    func createMessage(restaurants:[RestaurantInfo]){
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         
         
@@ -515,7 +502,10 @@ class MessagesViewController: MSMessagesAppViewController {
         
         
         // Create a new message with the same session as any currently selected message.
-        let message = composeMessage(with: restaurants,messageImage:messageImage , caption: messageCaption, session: conversation.selectedMessage?.session)
+        let message = composeMessage(with: restaurants , caption: messageCaption, session: conversation.selectedMessage?.session)
+        
+        //todo is this the timeout tool?
+        //message.shouldExpire = true
         
         var components = URLComponents()
         //components.string = "NAME"
@@ -551,7 +541,7 @@ extension MessagesViewController: IceCreamsViewControllerDelegate,VotingMenuView
     
     
     func addMessageToConversation(_ restaurants:[RestaurantInfo], messageImage:Restaurant){
-        createMessage(restaurants: restaurants,messageImage: messageImage)
+        createMessage(restaurants: restaurants)
     }
     
     func changePresentationStyle(presentationStyle: MSMessagesAppPresentationStyle) {

@@ -451,12 +451,12 @@
                                 <size key="customSize" width="360" height="110"/>
                                 <connections>
                                     <outlet property="cellInfo" destination="st9-pN-esQ" id="1Ar-KY-1uY"/>
+                                    <outlet property="imageView" destination="08E-Pa-crG" id="IAZ-2J-sqo"/>
                                     <outlet property="labelView" destination="abX-zi-4sj" id="7qG-Er-86d"/>
                                     <outlet property="statement1" destination="Yhy-Es-wdi" id="hAd-kG-hdr"/>
                                     <outlet property="statement2" destination="E8a-86-xAQ" id="y0i-Jz-CAp"/>
                                     <outlet property="statement3" destination="c7P-rM-ydC" id="8lq-Jb-Hiq"/>
                                     <outlet property="stickerView" destination="VGG-hc-ngh" id="u2d-tz-o6e"/>
-                                    <outlet property="thumbsUp" destination="08E-Pa-crG" id="IAZ-2J-sqo"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>

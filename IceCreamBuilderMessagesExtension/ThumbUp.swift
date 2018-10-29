@@ -8,31 +8,45 @@
 
 import Foundation
 import UIKit
-enum ThumbsUp_state: String {
+enum ImageState: String {
     case selected,unselected
 }
 
-class ThumbsUp {
+class VotingCellImage {
 
     static private var thumbsUpSelected = UIImage(named: "thumbsUp_selected.png")
     static private var thumbsUpUnselected = UIImage(named: "thumbsUp_unselected.png")
     
-    private var state : ThumbsUp_state
+    static private var heartSelected = UIImage(named: "heart_selected.png")
+    static private var heartUnselected = UIImage(named: "heart_unselected.png")
+    
+    private var imageState : ImageState
+    private var appState : AppState
     private var image:UIImage?
-    init() {
+    init(appState:AppState) {
        
-        self.state = ThumbsUp_state.unselected
+        self.appState = appState
+        self.imageState = ImageState.unselected
         self.setImage()
     }
     
     func setImage(){
-        switch self.state {
+        switch (self.imageState,self.appState) {
             
-        case ThumbsUp_state.selected:
-            self.image = ThumbsUp.thumbsUpSelected
-            
-        case ThumbsUp_state.unselected:
-            self.image = ThumbsUp.thumbsUpUnselected
+        case (ImageState.selected,AppState.VotingRound1):
+           self.image = VotingCellImage.thumbsUpSelected
+        case (ImageState.unselected,AppState.VotingRound1):
+            self.image = VotingCellImage.thumbsUpUnselected
+        
+        case (ImageState.selected,AppState.VotingRound2):
+            self.image = VotingCellImage.heartSelected
+        case (ImageState.unselected,AppState.VotingRound2):
+            self.image = VotingCellImage.heartUnselected
+//
+//        case (Image_state.selected,AppState.VotingRound3):
+//            self.image = VotingCellImage.thumbsUpSelected
+//        case (Image_state.unselected,AppState.VotingRound3):
+//            self.image = VotingCellImage.thumbsUpSelected
             
         default:
             print("Unreachable")
@@ -40,16 +54,13 @@ class ThumbsUp {
     }
 
     func switchState()->UIImage? {
-        switch self.state {
+        switch self.imageState {
         
-        case ThumbsUp_state.selected:
-            self.state = ThumbsUp_state.unselected
+        case ImageState.selected:
+            self.imageState = ImageState.unselected
         
-        case ThumbsUp_state.unselected:
-            self.state = ThumbsUp_state.selected
-        
-        default:
-            print("Unreachable")
+        case ImageState.unselected:
+            self.imageState = ImageState.selected
     }
         
         self.setImage()

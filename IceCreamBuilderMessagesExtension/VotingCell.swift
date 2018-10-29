@@ -15,7 +15,7 @@ class VotingCell:UICollectionViewCell {
     static let reuseIdentifier = "VotingCell"
     
     var restaurant:RestaurantInfo?
-    var thumbsUpObj : ThumbsUp?
+    var votingCellImage : VotingCellImage?
     
     @IBOutlet weak var labelView: UILabel!
     @IBOutlet weak var stickerView: MSStickerView!
@@ -25,6 +25,6 @@ class VotingCell:UICollectionViewCell {
     @IBOutlet weak var statement2: UILabel!
     @IBOutlet weak var statement3: UILabel!
     
-    @IBOutlet weak var thumbsUp: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     
 }

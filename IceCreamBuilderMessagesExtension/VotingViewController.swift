@@ -17,7 +17,8 @@ class VotingViewController:UICollectionViewController{
     
     @IBOutlet var VotingCollectionView: UICollectionView!
     
-    
+    var appState = AppState.NotInApp
+
        weak var delegate: VotingMenuViewControllerDelegate?
     
     
@@ -52,7 +53,7 @@ class VotingViewController:UICollectionViewController{
             return cell
         }
         cell.restaurant = representedRestaurant
-        cell.thumbsUpObj = ThumbsUp.init()
+        cell.votingCellImage = VotingCellImage.init(appState: self.appState)
         // Use a placeholder sticker while we fetch the real one from the cache.
         let cache = IceCreamStickerCache.cache
         cell.stickerView.sticker = cache.placeholderSticker
@@ -87,12 +88,12 @@ class VotingViewController:UICollectionViewController{
         attributedString.setColor(color: textColor, forText: price)
         cell.statement3.attributedText = attributedString
         
-        cell.thumbsUp.image = cell.thumbsUpObj?.getImage()
+        cell.imageView.image = cell.votingCellImage?.getImage()
         //        cell.thumbsDown.image = UIImage(named: "thumbsDown_unselected.png")
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
-        cell.thumbsUp.isUserInteractionEnabled = true
-        cell.thumbsUp.tag = indexPath.row
-        cell.thumbsUp.addGestureRecognizer(tap)
+        cell.imageView.isUserInteractionEnabled = true
+        cell.imageView.tag = indexPath.row
+        cell.imageView.addGestureRecognizer(tap)
         //        cell.statement3.text =
         //#TODO Remove this
         let iceCream = Restaurant(restaurant:representedRestaurant,blackAndWhite:false)
@@ -118,14 +119,10 @@ class VotingViewController:UICollectionViewController{
         guard let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) else {return}
         guard let votingCell = self.collectionView?.cellForItem(at: indexPath) as? VotingCell else {return}
         
-        votingCell.thumbsUp.image = votingCell.thumbsUpObj?.switchState()
+        votingCell.imageView.image = votingCell.votingCellImage?.switchState()
         if let selectedRestaurant = votingCell.restaurant {
             RestaurantsNearby.sharedInstance.toggleTappedRestaurant(row: indexPath.row)
-            
-            for restaurant in RestaurantsNearby.sharedInstance.getSelectedRestaurant(){
-                print(restaurant.name)
-            }
-            
+            print(selectedRestaurant.name)
         }
     }
     
