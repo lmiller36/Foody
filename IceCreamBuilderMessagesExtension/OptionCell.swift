@@ -13,8 +13,10 @@ import Messages
 class OptionCell : UICollectionViewCell {
     
     static let reuseIdentifier = "OptionCell"
-    var representedType : String?
-    var representedIceCream : Restaurant?
+    //var representedType : String?
+    //var isBlackAndWhite = false
+   // var icon : Icon?
+   // var representedRestaurantInfo : RestaurantInfo?
     
     @IBOutlet weak var Name: UILabel!
     @IBOutlet weak var Sticker: MSStickerView!
