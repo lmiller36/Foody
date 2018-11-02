@@ -17,7 +17,8 @@ class RestaurantsNearby{
    // private var otherParticipantsSelection : [RestaurantInfo]
     private var votes: [String:Int]
     
-    private var ignoredTypes : [String]
+   // private var ignoredTypes : [String]
+    private var categories : [RestaurantCategory:Bool]
     
     // private var originalJson:String
     
@@ -29,29 +30,41 @@ class RestaurantsNearby{
         self.votes = [String:Int]()
         self.hasBeenSorted = false
         self.selectedRows = [Int]()
-        self.ignoredTypes = [String]()
+      //  self.ignoredTypes = [String]()
+        self.categories = [RestaurantCategory:Bool]()
         //self.otherParticipantsSelection = [RestaurantInfo]()
     }
     
-    func getApplicableRestaurantCategories()->Dictionary<String,String>{
-        var restaurantCategories = Dictionary<String,String>()
-        for restaurant in restaurants {
-            let category_title = restaurant.categories[0].title
-            let category_alias = restaurant.categories[0].alias
-            if(!restaurantCategories.keys.contains(category_alias)){
-                restaurantCategories[category_alias] = category_title
-            }
-            
-        }
-        return restaurantCategories
+    func getApplicableRestaurantCategories()->[RestaurantCategory]{
+        print(self.categories)
+        return Array(self.categories.keys)
+//        var restaurantCategories = Dictionary<String,String>()
+//        for restaurant in restaurants {
+//            let category_title = restaurant.categories[0].title
+//            let category_alias = restaurant.categories[0].alias
+//            if(!restaurantCategories.keys.contains(category_alias)){
+//                restaurantCategories[category_alias] = category_title
+//            }
+//
+//        }
+//        return restaurantCategories
     }
     
     func add(restaurants:[RestaurantInfo]){
-        self.restaurants = restaurants
+        for restaurant in restaurants {
+            self.add(restaurant:restaurant)
+        }
     }
     
     func add(restaurant:RestaurantInfo){
         self.restaurants.append(restaurant)
+        let key = restaurant.categories[0].alias
+        let displayName = restaurant.categories[0].title
+
+        let category = RestaurantCategory.init(key: key, displayName: displayName)
+        //if(!Array(self.categories.keys).contains(category)){
+            self.categories[category]=true
+        //}
     }
     
     func add(restaurant:RestaurantInfo,numVotes:Int){
@@ -59,17 +72,30 @@ class RestaurantsNearby{
         self.restaurants.append(restaurant)
     }
     
-    func addIgnoredType(ignoredType:String){
-        if(!self.ignoredTypes.contains(ignoredType)){
-            self.ignoredTypes.append(ignoredType)
+    func setIgnoredStatus(ignoredType:RestaurantCategory,status:Bool){
+        self.categories[ignoredType] = status
+    }
+    
+    func toggleIgnoredStatus(ignoredType:RestaurantCategory){
+        if let currentStatus = self.categories[ignoredType]{
+            self.categories[ignoredType] = !currentStatus
         }
     }
     
-    func removeIgnoredType(typeToRemove:String){
-        if let index = self.ignoredTypes.firstIndex(where: { $0.contains(typeToRemove) }) {
-             self.ignoredTypes.remove(at: index)
-        }
-    }
+//    func addIgnoredType(ignoredType:RestaurantCategory){
+//       // if(self.categories.contains(where: ignoredType)){
+//            self.categories[ignoredType] = true
+//        //}
+////        if(!self.ignoredTypes.contains(ignoredType)){
+////            self.ignoredTypes.append(ignoredType)
+////        }
+//    }
+//
+//    func removeIgnoredType(typeToRemove : RestaurantCategory){
+////        if let index = self.ignoredTypes.firstIndex(where: { $0.contains(typeToRemove) }) {
+////             self.ignoredTypes.remove(at: index)
+////        }
+//    }
     
     func toggleTappedRestaurant(row:Int){
         if(selectedRows.contains(row)){
@@ -175,7 +201,34 @@ class RestaurantsNearby{
     }
     
     func getKnownRestaurants ()-> [RestaurantInfo]{
+        
+//        if(!self.hasBeenSorted){
+//            self.sort(sortCriteria: RestaurantsNearby.sortCriteria)
+//
+//            self.hasBeenSorted = true
+//        }
+//
+//        var iceCreams:[Restaurant] = []
+//        for restaraunt in restaurants{
+//            iceCreams.append(Restaurant(restaurant:restaraunt,blackAndWhite:false))
+//        }
+//        return iceCreams
+//    }
         return self.restaurants
+    }
+    
+    func getApplicableRestaurants()->[RestaurantInfo] {
+        //print(self.ignoredTypes)
+        var applicableRestaurants = [RestaurantInfo]()
+        for restaurant in self.restaurants {
+            let key = restaurant.categories[0].alias
+            let displayName = restaurant.categories[0].title
+
+            let category = RestaurantCategory.init(key: key, displayName: displayName)
+            if(self.categories[category] ?? false){applicableRestaurants.append(restaurant)}
+        }
+        
+        return applicableRestaurants
     }
     
     func getIceCreams()->[Restaurant]?{

@@ -156,8 +156,8 @@ class VotingViewController:UICollectionViewController{
                 //            }
                 //
                 let nc = NotificationCenter.default
-                //nc.post(name: Notification.Name("DataFetched"), object: nil)
-                nc.post(name: Notification.Name("ToggleMapButton"), object: nil)
+                nc.post(name: Notification.Name("DataFetched"), object: nil)
+                //nc.post(name: Notification.Name("ToggleMapButton"), object: nil)
                 print("posted")
                 
                 DispatchQueue.main.async {

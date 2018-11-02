@@ -26,12 +26,17 @@ class InitialSelectionHeader: UICollectionReusableView {
     
     var isMapButton:Bool
     
-    var availableTypes : Dictionary<String,String>
-    var typeIsBlackAndWhite : Dictionary<String,Bool>
+    var availableTypes : [RestaurantCategory]
+    var typeIsBlackAndWhite : [RestaurantCategory:Bool]
+    
+    var items : [RestaurantCategory]
     
     required init?(coder aDecoder: NSCoder) {
-        self.availableTypes=Dictionary<String,String>()
-        self.typeIsBlackAndWhite=Dictionary<String,Bool>()
+        self.availableTypes = [RestaurantCategory]()
+        self.typeIsBlackAndWhite = [RestaurantCategory:Bool]()
+        
+        self.items = [RestaurantCategory]()
+        
         self.isMapButton = true
         super.init(coder: aDecoder)
         let nc = NotificationCenter.default
@@ -55,9 +60,7 @@ class InitialSelectionHeader: UICollectionReusableView {
             
         }
         
-        DispatchQueue.main.async {
-            self.AvailableTypes.reloadData()
-        }
+        self.reloadData()
         
         
     }
@@ -67,20 +70,16 @@ class InitialSelectionHeader: UICollectionReusableView {
         
         print("received")
         availableTypes = RestaurantsNearby.sharedInstance.getApplicableRestaurantCategories()
+        self.items = availableTypes
         print(availableTypes)
         print("Loaded")
         
-        if let collectionView = AvailableTypes{
+        if let collectionView = AvailableTypes {
             collectionView.layer.borderWidth = CGFloat(1)
             collectionView.layer.borderColor = UIColor.black.cgColor
         }
         
-        print(availableTypes.keys)
-        print(availableTypes.keys.count)
-        
-        DispatchQueue.main.async {
-            self.AvailableTypes.reloadData()
-        }
+        self.reloadData()
         
     }
     
@@ -93,7 +92,7 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.availableTypes.count
+        return self.items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -110,12 +109,12 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
             else { fatalError("Unable to dequeue am IceCreamCell") }
         
         
-        let currentKey = Array(availableTypes.keys)[indexPath.row]
+       // let currentKey = Array(availableTypes.keys)[indexPath.row]
+        let category = items[indexPath.row]
+        let isBlackAndWhite = self.typeIsBlackAndWhite[category] ?? false
+        let icon = getType(type: category.key)
         
-        let isBlackAndWhite = self.typeIsBlackAndWhite[currentKey] ?? false
-        let icon = getType(type: currentKey)
-        
-        cell.Name.text = availableTypes[currentKey]
+        cell.Name.text = category.displayName
         
         let iceCream = Restaurant(icon: icon,blackAndWhite:isBlackAndWhite)
         
@@ -160,20 +159,22 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
     @objc private func tapHandler(_ sender: UITapGestureRecognizer){
         
         
-        
         guard let indexPath = AvailableTypes.indexPathForItem(at: sender.location(in: AvailableTypes)) else {return}
+
+
+
         guard let optionCell = AvailableTypes.cellForItem(at: indexPath) as? OptionCell else {return}
-        
-        let currentKey = Array(availableTypes.keys)[indexPath.row]
-        let isBlackAndWhite = !(self.typeIsBlackAndWhite[currentKey] ?? false)
-        
-        self.typeIsBlackAndWhite[currentKey] = isBlackAndWhite
-        
-        
-        let icon = getType(type: currentKey)
-        
+
+        let category = self.items[indexPath.row]
+
+        let isBlackAndWhite = !(self.typeIsBlackAndWhite[category] ?? false)
+
+        self.typeIsBlackAndWhite[category] = isBlackAndWhite
+
+        let icon = getType(type: category.key)
+
         let iceCream = Restaurant(icon: icon,blackAndWhite:isBlackAndWhite)
-        
+
         // Fetch the sticker for the ice cream from the cache.
         IceCreamStickerCache.cache.sticker(for: iceCream) { sticker in
             OperationQueue.main.addOperation {
@@ -182,11 +183,12 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
                 optionCell.Sticker.sticker = sticker
             }
         }
-        
+
+
         //hide applicable restaurants
+        RestaurantsNearby.sharedInstance.toggleIgnoredStatus(ignoredType: category)
         let nc = NotificationCenter.default
         nc.post(name: Notification.Name("HideApplicableRestaurants"), object: nil)
-
         
     }
     
@@ -195,9 +197,18 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
         guard let indexPath = AvailableTypes.indexPathForItem(at: sender.location(in: AvailableTypes)) else {return}
         guard let optionCell = AvailableTypes.cellForItem(at: indexPath) as? OptionCell else {return}
         
-        print("force touch!")
+        for category in self.items{
+            self.typeIsBlackAndWhite[category] = false
+            
+            //hide applicable restaurants
+            RestaurantsNearby.sharedInstance.setIgnoredStatus(ignoredType: category, status: true)
+            
+        }
         
+        let nc = NotificationCenter.default
+        nc.post(name: Notification.Name("HideApplicableRestaurants"), object: nil)
         
+        self.reloadData()
         
     }
     
@@ -206,12 +217,45 @@ extension InitialSelectionHeader: UICollectionViewDataSource {
         
         guard let indexPath = AvailableTypes.indexPathForItem(at: sender.location(in: AvailableTypes)) else {return}
         guard let optionCell = AvailableTypes.cellForItem(at: indexPath) as? OptionCell else {return}
-        
-        print("doubleTapped!")
-        
+
+        for category in self.items{
+            self.typeIsBlackAndWhite[category] = true
+
+            //hide applicable restaurants
+            RestaurantsNearby.sharedInstance.setIgnoredStatus(ignoredType: category, status: false)
+
+        }
+
+        let category = items[indexPath.row]
+
+        RestaurantsNearby.sharedInstance.setIgnoredStatus(ignoredType: category, status: true)
+
+        self.typeIsBlackAndWhite[category] = false
+
+        let nc = NotificationCenter.default
+        nc.post(name: Notification.Name("HideApplicableRestaurants"), object: nil)
+
+        self.reloadData()
+
         
         
     }
+    
+    func toggleBlackAndWhite(key:Int){
+//        let currentKey = Array(availableTypes.keys)[key]
+//        let isBlackAndWhite = !(self.typeIsBlackAndWhite[currentKey] ?? false)
+//        self.typeIsBlackAndWhite[currentKey] = isBlackAndWhite
+    }
+    
+    func reloadData(){
+        DispatchQueue.main.async {
+            self.AvailableTypes.reloadData()
+        }
+    }
+    
+//    private func updateVisibleRestaurants(restaurants:[Res]){
+//        
+//    }
     
     
 }
