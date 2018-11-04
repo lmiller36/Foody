@@ -68,11 +68,8 @@ class InitialSelectionHeader: UICollectionReusableView {
     @objc func onDidReceiveData(_ notification: Notification)
     {
         
-        print("received")
         availableTypes = RestaurantsNearby.sharedInstance.getApplicableRestaurantCategories()
         self.items = availableTypes
-        print(availableTypes)
-        print("Loaded")
         
         if let collectionView = AvailableTypes {
             collectionView.layer.borderWidth = CGFloat(1)
@@ -82,7 +79,6 @@ class InitialSelectionHeader: UICollectionReusableView {
         self.reloadData()
         
     }
-    
     
     
 }

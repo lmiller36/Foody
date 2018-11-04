@@ -9,36 +9,64 @@
 import Foundation
 
 struct Businesses:Codable{
-    let businesses:[RestaurantInfo]
-    
+    let businesses:[Safe<RestaurantInfo>]
 }
 
-extension Businesses: Sequence {
-    
-    typealias Iterator = AnyIterator<RestaurantInfo>
-    
-    func makeIterator() -> Iterator {
-        var index = 0
+extension Businesses {
+    func getRestaurants()->[RestaurantInfo]{
+        var restaurants = [RestaurantInfo]()
         
-        return Iterator {
-            guard index < self.businesses.count else { return nil }
-            
-            let restaraunt = self.businesses[index]
-            index += 1
-            
-            return restaraunt
+        for restaurant in self.businesses{
+            if let restaurantValue = restaurant.value {
+                restaurants.append(restaurantValue)
+            }
+        }
+        return restaurants
+    }
+}
+
+public struct Safe<Base: Decodable>: Codable {
+    let value: RestaurantInfo?
+    
+    public init(from decoder: Decoder) throws {
+        do {
+            let container = try decoder.singleValueContainer()
+            print(container)
+            self.value = try container.decode(RestaurantInfo.self)
+        } catch {
+            assertionFailure("ERROR: \(error)")
+            // TODO: automatically send a report about a corrupted data
+            self.value = nil
         }
     }
 }
+
+//extension Businesses: Sequence {
+//    
+//    typealias Iterator = AnyIterator<RestaurantInfo>
+//    
+//    func makeIterator() -> Iterator {
+//        var index = 0
+//        
+//        return Iterator {
+//            guard index < self.businesses.count else { return nil }
+//            
+//            let restaraunt = self.businesses[index]
+//            index += 1
+//            
+//            return restaraunt
+//        }
+//    }
+//}
 
 //#TODO combine into one class with RestaurantIcon
 struct RestaurantInfo: Codable {
     let id: String
     let alias: String
     let name:String
-    let imageUrl: URL
+    let imageUrl: String
     let isClosed:Bool
-    let url:URL
+    let url: String
     let reviewCount:Int
     let categories: [Category]
     let rating: Double
@@ -79,7 +107,7 @@ struct Category:Codable{
 }
 
 struct Location:Codable{
-    let address1    : String
+    let address1    : String?
     let address2    : String?
     let address3    : String?
     let city    :    String

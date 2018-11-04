@@ -30,9 +30,12 @@ func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [Rest
 
             //Data was already loaded from the given location
             //TODO DETERMINE IF .01 is a good fit
-            if(abs(locationCoordinates.latitude - lastKnownLocation.latitude) < 0.01  && abs(locationCoordinates.longitude - lastKnownLocation.longitude) < 0.01){
-                reloadFromYelp = false
+            if let appLocation = App_Location{
+                if(coordinatesEqual(rhs: lastKnownLocation, lhs: appLocation)){
+                    reloadFromYelp = false
+                }
             }
+            
             
         }
         print("SHOULD RELOAD DATA:\(reloadFromYelp)")
@@ -40,10 +43,11 @@ func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [Rest
         
         let locationToUse = App_Location ?? locationCoordinates
         App_Location = locationToUse
-        print(locationToUse)
+        //        print(locationToUse)
         //if(reloadFromYelp) {
             getNearby(coordinates: locationToUse,callback:{ (businesses) in
-                completionHandler(businesses.businesses)
+                print(businesses)
+                completionHandler(businesses)
             })
 //        }
 //        else {
@@ -53,6 +57,12 @@ func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [Rest
    // })
     
 }
+
+//true if coordinates are
+func coordinatesEqual(rhs: CLLocationCoordinate2D,lhs:CLLocationCoordinate2D)->Bool {
+    return abs(rhs.latitude - lhs.latitude) < 0.01  && abs(rhs.longitude - lhs.longitude) < 0.01
+}
+
 func getType(type:String)->Icon{
     switch type{
     case "newamerican":

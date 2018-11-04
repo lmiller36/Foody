@@ -236,25 +236,26 @@
                                 <outlet property="MapButton" destination="ecf-Ql-8R7" id="emF-gp-OkG"/>
                             </connections>
                         </collectionReusableView>
-                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="MapReusableView" id="zhW-k4-4Oi" customClass="Map" customModule="IceCreamBuilderMessagesExtension" customModuleProvider="target">
+                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="MapReusableView" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="MapReusableView" id="zhW-k4-4Oi" customClass="Map" customModule="IceCreamBuilderMessagesExtension" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="410" width="375" height="236"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="bPc-hB-kUg">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="236"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <gestureRecognizers/>
                                     <connections>
-                                        <outlet property="delegate" destination="zhW-k4-4Oi" id="7vh-9y-nHu"/>
+                                        <outlet property="delegate" destination="zhW-k4-4Oi" id="aKf-DC-0fH"/>
                                     </connections>
                                 </mapView>
                             </subviews>
+                            <gestureRecognizers/>
                             <connections>
-                                <outlet property="mapView" destination="bPc-hB-kUg" id="1rm-wG-fMA"/>
+                                <outlet property="mapView" destination="bPc-hB-kUg" id="HBi-hB-Mmx"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="kmd-6I-dGt" id="LKU-5b-4Sz"/>
-                            <outlet property="delegate" destination="kmd-6I-dGt" id="wlW-Dg-48H"/>
                         </connections>
                     </collectionView>
                 </collectionViewController>

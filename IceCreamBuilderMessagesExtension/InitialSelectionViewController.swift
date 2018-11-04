@@ -14,10 +14,10 @@ class InitialSelectionViewController: UICollectionViewController {
     /// An enumeration that represents an item in the collection view.
     
     
-//    enum CollectionViewItem {
-//        case iceCream(Restaurant)
-//        case create
-//    }
+    //    enum CollectionViewItem {
+    //        case iceCream(Restaurant)
+    //        case create
+    //    }
     
     // MARK: Properties
     
@@ -29,14 +29,15 @@ class InitialSelectionViewController: UICollectionViewController {
     
     weak var delegate: IceCreamsViewControllerDelegate?
     
-   // private var items: [CollectionViewItem]
+    
+    // private var items: [CollectionViewItem]
     private var showMap : Bool
     private var items : [RestaurantInfo]
     private let stickerCache = IceCreamStickerCache.cache
     
     required init?(coder aDecoder: NSCoder) {
         
-       // let reversedHistory = IceCreamHistory.load().reversed()
+        // let reversedHistory = IceCreamHistory.load().reversed()
         //let items: [CollectionViewItem] = reversedHistory.map { .iceCream($0) }
         
         self.items = RestaurantsNearby.sharedInstance.getApplicableRestaurants()
@@ -57,19 +58,35 @@ class InitialSelectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
             let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: InitialSelectionHeader.reuseIdentifier, for: indexPath) 
-            // do any programmatic customization, if any, here
             
             return view
         }
         else if kind == UICollectionElementKindSectionFooter {
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Map.reuseIdentifier, for: indexPath)
-            // do any programmatic customization, if any, here
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Map.reuseIdentifier, for: indexPath) as! Map
+            
+            let doubleTap = UITapGestureRecognizer(target: self, action: #selector(mapTap))
+            view.addGestureRecognizer(doubleTap)
             
             return view
         }
         fatalError("Unexpected kind")
     }
     
+    @objc func mapTap(_ sender: Any){
+        if let gestureRecognizer = sender as? UIGestureRecognizer{
+            let location = gestureRecognizer.location(in: gestureRecognizer.view)
+            
+            if let map = gestureRecognizer.view as? Map {
+                let coordinates = map.mapView.convert(location, toCoordinateFrom: map.mapView)
+                print(coordinates)
+                App_Location = coordinates
+                updateLocalRestaurants(completionHandler: { () -> (Void) in
+                    map.RepopulateMap()
+                    
+                })
+            }
+        }
+    }
     
     // MARK: UICollectionViewDataSource
     
@@ -81,7 +98,7 @@ class InitialSelectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InitialSelectionCell.reuseIdentifier,
-                                                             for: indexPath) as? InitialSelectionCell
+                                                            for: indexPath) as? InitialSelectionCell
             else { fatalError("Unable to dequeue am IceCreamCell") }
         
         let index = indexPath.row
@@ -91,7 +108,7 @@ class InitialSelectionViewController: UICollectionViewController {
         
         // Use a placeholder sticker while we fetch the real one from the cache.
         let cache = IceCreamStickerCache.cache
-//        cell.stickerView.sticker = cache.placeholderSticker
+        //        cell.stickerView.sticker = cache.placeholderSticker
         
         guard let restaraunt = iceCream.restaurantInfo else {return cell}
         let restarauntName = restaraunt.name
@@ -140,7 +157,7 @@ class InitialSelectionViewController: UICollectionViewController {
         
         return cell
     }
-
+    
     @IBAction func expandedViewSwitchChanged(_ sender: Any) {
         
         guard let expandedSwitch = sender as? UISwitch else{return;}
@@ -148,73 +165,76 @@ class InitialSelectionViewController: UICollectionViewController {
     }
     
     func changeExpandedView(shouldShowExpandedView:Bool){
+        //TODO hide this and switch or show something more useful
+        if(!self.showMap){
         self.showDetails = shouldShowExpandedView;
         self.reloadData(populateItems: true)
-  
+        }
+        
     }
     
     
     // MARK: Convenience
     
-//    private func dequeueIceCreamCell(for iceCream: Restaurant, at indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView?.dequeueReusableCell(withReuseIdentifier: InitialSelectionCell.reuseIdentifier,
-//                                                             for: indexPath) as? InitialSelectionCell
-//            else { fatalError("Unable to dequeue am IceCreamCell") }
-//
-//
-//        cell.representedIceCream = iceCream
-//
-//        // Use a placeholder sticker while we fetch the real one from the cache.
-//        let cache = IceCreamStickerCache.cache
-//        cell.stickerView.sticker = cache.placeholderSticker
-//
-//        guard let restaraunt = iceCream.restaurantInfo else {return cell}
-//        let restarauntName = restaraunt.name
-//        guard let price = restaraunt.price else {return cell}
-//        let rating = restaraunt.rating
-//        let category = restaraunt.categories[0].title
-//        let address = restaraunt.location.address1
-//        let distance =  Measurement(value: restaraunt.distance, unit: UnitLength.meters).converted(to: UnitLength.miles).value
-//
-//
-//        cell.labelView.textAlignment = NSTextAlignment.center
-//        cell.labelView.text = self.showDetails ? category : restarauntName
-//
-//
-//        let forceTouchGestureRecognizer = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
-//
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
-//        cell.addGestureRecognizer(tap)
-//        cell.addGestureRecognizer(forceTouchGestureRecognizer)
-//
-//        cell.isUserInteractionEnabled = true
-//        cell.cellInfo.text = restarauntName;
-//        cell.statement1.text = (address);
-//        cell.statement2.text = String(format: "%.1f", distance)+" miles"
-//        //85bb65
-//        //cell.statement3.textColor = UIColor.init(displayP3Red: 133, green: 187, blue: 101, alpha: 1.0)
-//        let bottomLine = "\(RestaurantsNearby.getRatingInStars(rating: restaraunt.rating)) "+price
-//        let textColor = UIColor.init(red: 133/255, green: 187/255, blue: 101/255, alpha: 1.0)
-//        let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: bottomLine)
-//        attributedString.setColor(color: textColor, forText: price)
-//        cell.statement3.attributedText = attributedString
-//        cell.layer.borderWidth = CGFloat(RestaurantsNearby.sharedInstance.getRowStatus(row: indexPath.row))
-//        cell.layer.borderColor = UIColor.black.cgColor
-//
-//
-//        //        cell.statement3.text =
-//
-//        // Fetch the sticker for the ice cream from the cache.
-//        cache.sticker(for: iceCream) { sticker in
-//            OperationQueue.main.addOperation {
-//                // If the cell is still showing the same ice cream, update its sticker view.
-//                guard cell.representedIceCream?.icon == iceCream.icon else { return }
-//                cell.stickerView.sticker = sticker
-//            }
-//        }
-//
-//        return cell
-//    }
+    //    private func dequeueIceCreamCell(for iceCream: Restaurant, at indexPath: IndexPath) -> UICollectionViewCell {
+    //        guard let cell = collectionView?.dequeueReusableCell(withReuseIdentifier: InitialSelectionCell.reuseIdentifier,
+    //                                                             for: indexPath) as? InitialSelectionCell
+    //            else { fatalError("Unable to dequeue am IceCreamCell") }
+    //
+    //
+    //        cell.representedIceCream = iceCream
+    //
+    //        // Use a placeholder sticker while we fetch the real one from the cache.
+    //        let cache = IceCreamStickerCache.cache
+    //        cell.stickerView.sticker = cache.placeholderSticker
+    //
+    //        guard let restaraunt = iceCream.restaurantInfo else {return cell}
+    //        let restarauntName = restaraunt.name
+    //        guard let price = restaraunt.price else {return cell}
+    //        let rating = restaraunt.rating
+    //        let category = restaraunt.categories[0].title
+    //        let address = restaraunt.location.address1
+    //        let distance =  Measurement(value: restaraunt.distance, unit: UnitLength.meters).converted(to: UnitLength.miles).value
+    //
+    //
+    //        cell.labelView.textAlignment = NSTextAlignment.center
+    //        cell.labelView.text = self.showDetails ? category : restarauntName
+    //
+    //
+    //        let forceTouchGestureRecognizer = ForceTouchGestureRecognizer(target: self, action: #selector(forceTouchHandler))
+    //
+    //        let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
+    //        cell.addGestureRecognizer(tap)
+    //        cell.addGestureRecognizer(forceTouchGestureRecognizer)
+    //
+    //        cell.isUserInteractionEnabled = true
+    //        cell.cellInfo.text = restarauntName;
+    //        cell.statement1.text = (address);
+    //        cell.statement2.text = String(format: "%.1f", distance)+" miles"
+    //        //85bb65
+    //        //cell.statement3.textColor = UIColor.init(displayP3Red: 133, green: 187, blue: 101, alpha: 1.0)
+    //        let bottomLine = "\(RestaurantsNearby.getRatingInStars(rating: restaraunt.rating)) "+price
+    //        let textColor = UIColor.init(red: 133/255, green: 187/255, blue: 101/255, alpha: 1.0)
+    //        let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: bottomLine)
+    //        attributedString.setColor(color: textColor, forText: price)
+    //        cell.statement3.attributedText = attributedString
+    //        cell.layer.borderWidth = CGFloat(RestaurantsNearby.sharedInstance.getRowStatus(row: indexPath.row))
+    //        cell.layer.borderColor = UIColor.black.cgColor
+    //
+    //
+    //        //        cell.statement3.text =
+    //
+    //        // Fetch the sticker for the ice cream from the cache.
+    //        cache.sticker(for: iceCream) { sticker in
+    //            OperationQueue.main.addOperation {
+    //                // If the cell is still showing the same ice cream, update its sticker view.
+    //                guard cell.representedIceCream?.icon == iceCream.icon else { return }
+    //                cell.stickerView.sticker = sticker
+    //            }
+    //        }
+    //
+    //        return cell
+    //    }
     
     @objc private func tapped(_ sender: UITapGestureRecognizer){
         
@@ -223,12 +243,12 @@ class InitialSelectionViewController: UICollectionViewController {
         guard let selectedIceCream = iceCreamCell.representedIceCream else {return}
         
         //self.selectedRestaurants.append(selectedIceCream)
-//        RestaurantsNearby.sharedInstance.addSelectedRestaurant(restaurant: selectedIceCream.restaraunt ?? default )
+        //        RestaurantsNearby.sharedInstance.addSelectedRestaurant(restaurant: selectedIceCream.restaraunt ?? default )
         if let selectedRestaurant = selectedIceCream.restaurantInfo {
             RestaurantsNearby.sharedInstance.toggleTappedRestaurant(row: indexPath.row)
         }
         
-       
+        
         iceCreamCell.layer.borderWidth = CGFloat(RestaurantsNearby.sharedInstance.getRowStatus(row: indexPath.row))
         
         for restaurant in RestaurantsNearby.sharedInstance.getSelectedRestaurant()
@@ -244,32 +264,34 @@ class InitialSelectionViewController: UICollectionViewController {
     }
     
     
-//    private func dequeueIceCreamAddCell(at indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView?.dequeueReusableCell(withReuseIdentifier: InitialSelectionAddCell.reuseIdentifier,
-//                                                             for: indexPath) as? InitialSelectionAddCell
-//            else { fatalError("Unable to dequeue a IceCreamAddCell") }
-//        return cell
-//    }
+    //    private func dequeueIceCreamAddCell(at indexPath: IndexPath) -> UICollectionViewCell {
+    //        guard let cell = collectionView?.dequeueReusableCell(withReuseIdentifier: InitialSelectionAddCell.reuseIdentifier,
+    //                                                             for: indexPath) as? InitialSelectionAddCell
+    //            else { fatalError("Unable to dequeue a IceCreamAddCell") }
+    //        return cell
+    //    }
     
     
     override func viewDidLoad() {
-        
+        updateLocalRestaurants(completionHandler: {
+            self.reloadData(populateItems: true)
+        })
+    }
+    
+    func updateLocalRestaurants(completionHandler:@escaping ()->(Void)){
         generateNearbyRestaurants(completionHandler: { (restaurants) in
             RestaurantsNearby.sharedInstance.clearAll()
             RestaurantsNearby.sharedInstance.add(restaurants: restaurants)
-           
+            
             let nc = NotificationCenter.default
             nc.post(name: Notification.Name("DataFetched"), object: nil)
             //nc.post(name: Notification.Name("ToggleMapButton"), object: nil)
             
-            self.reloadData(populateItems: true)
-            
+            completionHandler()
         })
-        
-        
     }
-
-
+    
+    
     
     @IBAction func GoBackToMainMenu(_ sender: UIGestureRecognizer) {
         delegate?.backToMainMenu()
@@ -288,20 +310,20 @@ class InitialSelectionViewController: UICollectionViewController {
         
         self.showMap = !self.showMap
         print(self.showMap)
-
+        
         if(!self.showMap) { self.items = RestaurantsNearby.sharedInstance.getApplicableRestaurants() }
         else { self.items.removeAll()}
-
+        
         let nc = NotificationCenter.default
         nc.post(name: Notification.Name("ToggleMap"), object: nil)
         
         self.reloadData(populateItems: false)
-
+        
         
         //collectionView?.isHidden = true
     }
     @IBAction func SubmitSelection(_ sender: Any) {
-
+        
         let selectedRestaurants = RestaurantsNearby.sharedInstance.getSelectedRestaurant()
         // 5 is an arbitrary number
         let extraneousCount = selectedRestaurants.count - 4
@@ -315,7 +337,7 @@ class InitialSelectionViewController: UICollectionViewController {
             
             self.present(alert, animated: true)
         }
-       else if(extraneousCount > 0){
+        else if(extraneousCount > 0){
             let alert = UIAlertController(title: "Up to 4 suggestions are alloted per person", message: "Please remove at least \(extraneousCount) \(extraneousCount == 1 ? "item":"items")", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -323,7 +345,7 @@ class InitialSelectionViewController: UICollectionViewController {
             
             self.present(alert, animated: true)
         }
-        
+            
         else {
             
             let selectedIceCream = Restaurant(restaurant:selectedRestaurants[0],blackAndWhite:false)
@@ -345,6 +367,8 @@ class InitialSelectionViewController: UICollectionViewController {
         
         print("selected: \(sender.selectedSegmentIndex)")
         
+        if(!self.showMap){
+        
         switch sender.selectedSegmentIndex {
         case 0:
             RestaurantsNearby.sharedInstance.sort(sortCriteria: RestaurantsNearby.SortCriteria.Distance)
@@ -359,11 +383,11 @@ class InitialSelectionViewController: UICollectionViewController {
         
         //todo are remove alls necessary?
         self.items.removeAll()
-      //  guard let iceCreams = RestaurantsNearby.sharedInstance.getIceCreams() else{return}
-  
+        //  guard let iceCreams = RestaurantsNearby.sharedInstance.getIceCreams() else{return}
+        
         self.reloadData(populateItems: true)
         
-        
+        }
     }
     
     
@@ -408,7 +432,7 @@ protocol IceCreamsViewControllerDelegate: class {
     func addMessageToConversation(_ restaurants:[RestaurantInfo],messageImage:Restaurant)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
-
+    
 }
 
 //extension IceCreamsViewController: SelectedRestaurantControllerDelegate {

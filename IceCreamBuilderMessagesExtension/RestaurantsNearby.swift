@@ -36,7 +36,6 @@ class RestaurantsNearby{
     }
     
     func getApplicableRestaurantCategories()->[RestaurantCategory]{
-        print(self.categories)
         return Array(self.categories.keys)
 //        var restaurantCategories = Dictionary<String,String>()
 //        for restaurant in restaurants {

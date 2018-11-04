@@ -23,7 +23,7 @@ class CurrentLocation{
     public static var sharedInstance = CurrentLocation.init()
     fileprivate init() {
         // For use in foreground
-       self.radius = 1000
+       self.radius = 500
         self.locationManager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
