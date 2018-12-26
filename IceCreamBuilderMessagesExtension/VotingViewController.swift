@@ -113,7 +113,7 @@ class VotingViewController:UICollectionViewController{
     
     @objc private func tapped(_ sender: UITapGestureRecognizer){
         
-        print("tapped image!")
+       // print("tapped image!")
         
         
         guard let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) else {return}
@@ -128,21 +128,21 @@ class VotingViewController:UICollectionViewController{
     
     override func viewDidLoad() {
         //TODO SWITCH TO CACHE
-        print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
-        print(RestaurantsNearby.sharedInstance.getIceCreams())
-        print(RestaurantsNearby.sharedInstance.getVotes())
+//        print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
+//        print(RestaurantsNearby.sharedInstance.getIceCreams())
+//        print(RestaurantsNearby.sharedInstance.getVotes())
         if(RestaurantsNearby.sharedInstance.getKnownRestaurants().count == 0){
             generateNearbyRestaurants(completionHandler: { (restaurants) in
                 //TODO CHECK IF HERE
                 RestaurantsNearby.sharedInstance.clearAll()
                 //print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
-                print(RestaurantsNearby.sharedInstance.getVotes())
+               // print(RestaurantsNearby.sharedInstance.getVotes())
                 
                 for restaurant in restaurants {
                     
                     if(RestaurantsNearby.sharedInstance.getVotesForARestaurant(id: restaurant.id) > 0)
                     {
-                        print(restaurant.name)
+                        //print(restaurant.name)
                         RestaurantsNearby.sharedInstance.add(restaurant: restaurant)
                     }
                 }
@@ -172,8 +172,8 @@ class VotingViewController:UICollectionViewController{
     
     @IBAction func submitSelection(_ sender: Any) {
         let selectedRestaurants = RestaurantsNearby.sharedInstance.getSelectedRestaurant()
-        print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
-        print(RestaurantsNearby.sharedInstance.getSelectedRestaurant())
+//        print(RestaurantsNearby.sharedInstance.getKnownRestaurants())
+//        print(RestaurantsNearby.sharedInstance.getSelectedRestaurant())
         // 5 is an arbitrary number
         let extraneousCount = selectedRestaurants.count - 3
         

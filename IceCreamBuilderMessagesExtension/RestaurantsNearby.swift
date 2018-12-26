@@ -189,7 +189,6 @@ class RestaurantsNearby{
             count += 1
         }
         
-//        self.otherParticipantsSelection.mergeElements(newElements: self.getSelectedRestaurant())
         return votesOnRestaurants
     }
     
@@ -200,24 +199,10 @@ class RestaurantsNearby{
     }
     
     func getKnownRestaurants ()-> [RestaurantInfo]{
-        
-//        if(!self.hasBeenSorted){
-//            self.sort(sortCriteria: RestaurantsNearby.sortCriteria)
-//
-//            self.hasBeenSorted = true
-//        }
-//
-//        var iceCreams:[Restaurant] = []
-//        for restaraunt in restaurants{
-//            iceCreams.append(Restaurant(restaurant:restaraunt,blackAndWhite:false))
-//        }
-//        return iceCreams
-//    }
         return self.restaurants
     }
     
     func getApplicableRestaurants()->[RestaurantInfo] {
-        //print(self.ignoredTypes)
         var applicableRestaurants = [RestaurantInfo]()
         for restaurant in self.restaurants {
             let key = restaurant.categories[0].alias
@@ -244,6 +229,13 @@ class RestaurantsNearby{
         return iceCreams
     }
     
+    static func filter(unfiltered_restaurants:[RestaurantInfo])->[RestaurantInfo]{
+        let maxDistance = 3.0 // max distance is set to be 2 miles
+        let undesired_categories = [""]
+
+        return unfiltered_restaurants.filter { $0.distance >= maxDistance }
+    }
+    
     func sort(sortCriteria: SortCriteria) {
         //        guard let restaurants = self.restaurants else{return}
         
@@ -259,14 +251,6 @@ class RestaurantsNearby{
         }
     }
     
-    
-    //    func sortIfNecessary(){
-    //        if(!self.hasBeenSorted){
-    //            self.hasBeenSorted = true
-    //            self.sort(sortCriteria: RestaurantsNearby.SortCriteria.Distance)
-    //        }
-    //
-    //    }
     
     enum SortCriteria{
         case Distance

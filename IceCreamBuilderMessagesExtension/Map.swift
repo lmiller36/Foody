@@ -69,9 +69,9 @@ class Map : UICollectionReusableView,MKMapViewDelegate,UIGestureRecognizerDelega
                 x = MKMapRectUnion(x,rect)
         }
         
-        print(rects)
-        print(x)
-            print(x.width + 0.01,x.height + 0.01)
+//        print(rects)
+//        print(x)
+//            print(x.width + 0.01,x.height + 0.01)
             self.radius = max(x.width + 0.01,x.height + 0.01)
 
         }
@@ -86,7 +86,7 @@ class Map : UICollectionReusableView,MKMapViewDelegate,UIGestureRecognizerDelega
     }
     
     func drawCircle(){
-        print(App_Location)
+       // print(App_Location)
         //if let lastDrawnCircleCoordinates = self.lastDrawnCircleCoordinates {
         
         if let current_location_2dcoordinate = App_Location{

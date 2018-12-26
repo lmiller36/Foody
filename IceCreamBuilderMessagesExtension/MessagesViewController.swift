@@ -63,7 +63,6 @@ class MessagesViewController: MSMessagesAppViewController {
             
             //If in loop, someone has started a survey
             if let queryItems = URLComponents(string: url?.absoluteString ?? "")?.queryItems {
-                print(queryItems)
                 var myPreviousStateOfApp = AppState.NotInApp
                 
                 self.knownParticipants = getAllParticipantUUIDStrings(queryItems: queryItems)
@@ -415,7 +414,6 @@ class MessagesViewController: MSMessagesAppViewController {
         //
         //        print(self.appQueryItems)
         
-        print(queryItems)
         components.queryItems = queryItems
         
         let messageImage = Restaurant.init(icon: getType(type: "American"), blackAndWhite: false)
@@ -480,7 +478,7 @@ class MessagesViewController: MSMessagesAppViewController {
         //            message.md.set(value:7,forKey:"yo")
         components.queryItems = self.appQueryItems
         //conversation.insertAttachment(components.url!, withAlternateFilename: Optional<String>.none)
-        print(conversation)
+ 
         
         /// - Tag: InsertMessageInConversation
         // Add the message to the conversation.

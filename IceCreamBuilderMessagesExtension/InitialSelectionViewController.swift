@@ -251,10 +251,10 @@ class InitialSelectionViewController: UICollectionViewController {
         
         iceCreamCell.layer.borderWidth = CGFloat(RestaurantsNearby.sharedInstance.getRowStatus(row: indexPath.row))
         
-        for restaurant in RestaurantsNearby.sharedInstance.getSelectedRestaurant()
-        {
-            print(restaurant.name)
-        }
+//        for restaurant in RestaurantsNearby.sharedInstance.getSelectedRestaurant()
+//        {
+//            print(restaurant.name)
+//        }
         
         
         
@@ -281,7 +281,7 @@ class InitialSelectionViewController: UICollectionViewController {
     func updateLocalRestaurants(completionHandler:@escaping ()->(Void)){
         generateNearbyRestaurants(completionHandler: { (restaurants) in
             RestaurantsNearby.sharedInstance.clearAll()
-            RestaurantsNearby.sharedInstance.add(restaurants: restaurants)
+            RestaurantsNearby.sharedInstance.add(restaurants: RestaurantsNearby.filter(unfiltered_restaurants: restaurants))
             
             let nc = NotificationCenter.default
             nc.post(name: Notification.Name("DataFetched"), object: nil)
@@ -309,7 +309,7 @@ class InitialSelectionViewController: UICollectionViewController {
         print("xpand map!")
         
         self.showMap = !self.showMap
-        print(self.showMap)
+     
         
         if(!self.showMap) { self.items = RestaurantsNearby.sharedInstance.getApplicableRestaurants() }
         else { self.items.removeAll()}
