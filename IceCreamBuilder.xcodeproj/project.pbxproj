@@ -117,6 +117,10 @@
 		B5E0A56A1D01079C006A77D2 /* base02_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E0A54F1D01079C006A77D2 /* base02_sticker.png */; };
 		B5E0A56B1D01079C006A77D2 /* base03_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E0A5501D01079C006A77D2 /* base03_sticker.png */; };
 		B5E0A56C1D01079C006A77D2 /* base04_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E0A5511D01079C006A77D2 /* base04_sticker.png */; };
+		CE31F7E621D44840007EE827 /* LeaderVotingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31F7E521D44840007EE827 /* LeaderVotingView.swift */; };
+		CE31F7E821D44EA7007EE827 /* VoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31F7E721D44EA7007EE827 /* VoteCell.swift */; };
+		CE31F7ED21D462B8007EE827 /* TopThreeSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31F7EC21D462B8007EE827 /* TopThreeSelection.swift */; };
+		CE31F7EF21D46809007EE827 /* Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31F7EE21D46809007EE827 /* Categories.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -260,6 +264,10 @@
 		B5E0A54F1D01079C006A77D2 /* base02_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base02_sticker.png; sourceTree = "<group>"; };
 		B5E0A5501D01079C006A77D2 /* base03_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base03_sticker.png; sourceTree = "<group>"; };
 		B5E0A5511D01079C006A77D2 /* base04_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base04_sticker.png; sourceTree = "<group>"; };
+		CE31F7E521D44840007EE827 /* LeaderVotingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderVotingView.swift; sourceTree = "<group>"; };
+		CE31F7E721D44EA7007EE827 /* VoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCell.swift; sourceTree = "<group>"; };
+		CE31F7EC21D462B8007EE827 /* TopThreeSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopThreeSelection.swift; sourceTree = "<group>"; };
+		CE31F7EE21D46809007EE827 /* Categories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Categories.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -344,16 +352,12 @@
 			isa = PBXGroup;
 			children = (
 				B55F96271CFF829D00B33E33 /* MessagesViewController.swift */,
-				B55F963E1CFF82E100B33E33 /* InitialSelectionViewController.swift */,
-				B55F96381CFF82E100B33E33 /* InitialSelectionCell.swift */,
-				B55F963A1CFF82E100B33E33 /* InitialSelectionAddCell.swift */,
 				4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */,
 				4806D7642183D8C300FC5912 /* WaitingViewController.swift */,
 				48163197217ED33D0003F334 /* Map.swift */,
-				4875BBC2215C5FB7005D0C09 /* InitialSelectionHeader.swift */,
-				484F2CF1217D63970083B3CE /* OptionCell.swift */,
-				4815EBD1216519090043DC82 /* VotingCell.swift */,
-				4815EBCF216518930043DC82 /* VotingViewController.swift */,
+				CE31F7EB21D45356007EE827 /* Old */,
+				CE31F7E521D44840007EE827 /* LeaderVotingView.swift */,
+				CE31F7E721D44EA7007EE827 /* VoteCell.swift */,
 				4888F60C2180D06D005EA28A /* VotingHeader.swift */,
 				4806D7602183B80300FC5912 /* Participant.swift */,
 				4806D7622183C2C100FC5912 /* AppState.swift */,
@@ -370,14 +374,14 @@
 				4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */,
 				482045792155EBE900989507 /* StickersNearby.swift */,
 				48B14F4A2155A4A300A05FEF /* YelpRequest.swift */,
+				CE31F7EC21D462B8007EE827 /* TopThreeSelection.swift */,
 				4888F60E2180E311005EA28A /* RestaurantInfo.swift */,
 				4852138C218B673000517D65 /* RestaurantCategory.swift */,
 				48B14F4D2155A61700A05FEF /* Restaurant.swift */,
 				48B14F502155DA0100A05FEF /* CurrentLocation.swift */,
-				48EC4D312163D6140010FDE5 /* SelectedRestaurantViewController.swift */,
-				48EC4D37216438820010FDE5 /* SelectedRestaurantsCollectionView.swift */,
 				4814047B217D505C00124E76 /* ThumbUp.swift */,
 				4806D76621862B0300FC5912 /* Cacher.swift */,
+				CE31F7EE21D46809007EE827 /* Categories.swift */,
 			);
 			path = IceCreamBuilderMessagesExtension;
 			sourceTree = "<group>";
@@ -473,6 +477,22 @@
 				B5E0A5511D01079C006A77D2 /* base04_sticker.png */,
 			);
 			name = Bases;
+			sourceTree = "<group>";
+		};
+		CE31F7EB21D45356007EE827 /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				48EC4D312163D6140010FDE5 /* SelectedRestaurantViewController.swift */,
+				48EC4D37216438820010FDE5 /* SelectedRestaurantsCollectionView.swift */,
+				484F2CF1217D63970083B3CE /* OptionCell.swift */,
+				4815EBD1216519090043DC82 /* VotingCell.swift */,
+				4815EBCF216518930043DC82 /* VotingViewController.swift */,
+				B55F963E1CFF82E100B33E33 /* InitialSelectionViewController.swift */,
+				B55F96381CFF82E100B33E33 /* InitialSelectionCell.swift */,
+				B55F963A1CFF82E100B33E33 /* InitialSelectionAddCell.swift */,
+				4875BBC2215C5FB7005D0C09 /* InitialSelectionHeader.swift */,
+			);
+			path = Old;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -659,6 +679,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B55F96461CFF82E100B33E33 /* InitialSelectionAddCell.swift in Sources */,
+				CE31F7ED21D462B8007EE827 /* TopThreeSelection.swift in Sources */,
 				B55F964A1CFF82E100B33E33 /* InitialSelectionViewController.swift in Sources */,
 				4815EBD0216518930043DC82 /* VotingViewController.swift in Sources */,
 				4888F60D2180D06D005EA28A /* VotingHeader.swift in Sources */,
@@ -669,12 +690,15 @@
 				4806D76721862B0300FC5912 /* Cacher.swift in Sources */,
 				4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */,
 				4888F60F2180E311005EA28A /* RestaurantInfo.swift in Sources */,
+				CE31F7E821D44EA7007EE827 /* VoteCell.swift in Sources */,
 				B5B1E9F21D02717700BD5715 /* IceCreamStickerCache.swift in Sources */,
 				B55F964B1CFF82E100B33E33 /* IceCreamView.swift in Sources */,
 				4806D7612183B80300FC5912 /* Participant.swift in Sources */,
 				48163198217ED33D0003F334 /* Map.swift in Sources */,
+				CE31F7EF21D46809007EE827 /* Categories.swift in Sources */,
 				B55F96491CFF82E100B33E33 /* IceCreamPartCollectionViewLayout.swift in Sources */,
 				B55F964F1CFF9FB800B33E33 /* CompletedIceCreamViewController.swift in Sources */,
+				CE31F7E621D44840007EE827 /* LeaderVotingView.swift in Sources */,
 				B55F964C1CFF82E100B33E33 /* QueryItemRepresentable.swift in Sources */,
 				4852138D218B673000517D65 /* RestaurantCategory.swift in Sources */,
 				4875BBC3215C5FB7005D0C09 /* InitialSelectionHeader.swift in Sources */,

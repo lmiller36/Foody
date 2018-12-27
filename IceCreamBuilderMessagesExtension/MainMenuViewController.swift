@@ -32,12 +32,14 @@ class MainMenuViewController :UIViewController{
         
     }
     
+
+    
+    
     @IBAction func AddNewSurvey(_ sender: UIGestureRecognizer) {
         print("Add new survey")
         print(sender)
         delegate?.switchState_StartMenu(newState: AppState.InitialSelection)
     }
-    
     
     
     
