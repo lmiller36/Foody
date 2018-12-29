@@ -33,9 +33,9 @@ class VotingCellImage {
     func setImage(){
         switch (self.imageState,self.appState) {
             
-        case (ImageState.selected,AppState.VotingRound1):
+        case (ImageState.selected,AppState.RestaurantSelection):
            self.image = VotingCellImage.thumbsUpSelected
-        case (ImageState.unselected,AppState.VotingRound1):
+        case (ImageState.unselected,AppState.RestaurantSelection):
             self.image = VotingCellImage.thumbsUpUnselected
         
         case (ImageState.selected,AppState.VotingRound2):

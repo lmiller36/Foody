@@ -199,7 +199,7 @@ class VotingViewController:UICollectionViewController{
             
             let selectedIceCream = Restaurant(restaurant:selectedRestaurants[0],blackAndWhite:false)
             delegate?.changePresentationStyle(presentationStyle: .compact)
-            delegate?.addMessageToConversation(selectedRestaurants,messageImage: selectedIceCream)
+           // delegate?.addMessageToConversation(selectedRestaurants)
         }
     }
     
@@ -210,7 +210,7 @@ class VotingViewController:UICollectionViewController{
 protocol VotingMenuViewControllerDelegate: class {
     
     
-    func addMessageToConversation(_ restaurants:[RestaurantInfo],messageImage:Restaurant)
+    func addMessageToConversation(_ dictionary:[String:String],caption:String)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     

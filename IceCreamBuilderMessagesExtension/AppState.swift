@@ -13,8 +13,8 @@ import Foundation
 enum AppState : String {
     case NotInApp
     case MainMenu
-    case InitialSelection
-    case VotingRound1
+    case CategorySelection
+    case RestaurantSelection
     case VotingRound2
     case VotingRound3
     case Done
@@ -25,8 +25,8 @@ enum AppState : String {
         switch self {
         case .NotInApp: return 0
         case .MainMenu: return 0
-        case .InitialSelection: return 1
-        case .VotingRound1: return 2
+        case .CategorySelection: return 1
+        case .RestaurantSelection: return 2
         case .VotingRound2: return 3
         case .VotingRound3: return 4
         case .Done: return 5
@@ -40,9 +40,9 @@ enum AppState : String {
         switch self {
         
         case .NotInApp: return .MainMenu
-        case .MainMenu: return .InitialSelection
-        case .InitialSelection: return .VotingRound1
-        case .VotingRound1: return .VotingRound2
+        case .MainMenu: return .CategorySelection
+        case .CategorySelection: return .RestaurantSelection
+        case .RestaurantSelection: return .VotingRound2
         case .VotingRound2: return .VotingRound3
         case .VotingRound3: return .Done
         case.Wait: return .Wait

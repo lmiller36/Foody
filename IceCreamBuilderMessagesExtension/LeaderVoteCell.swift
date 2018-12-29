@@ -9,9 +9,10 @@
 import Foundation
 import UIKit
 
-class VoteCell : UICollectionViewCell{
+class LeaderVoteCell : UICollectionViewCell{
     static let reuseIdentifier = "VoteCell"
     
     @IBOutlet weak var food_icon: UIImageView!
     @IBOutlet weak var label: UILabel!
+    
 }

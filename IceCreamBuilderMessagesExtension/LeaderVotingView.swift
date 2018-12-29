@@ -27,7 +27,7 @@ class LeaderVotingViewController:UIViewController{
     
     weak var delegate: LeaderVotingViewControllerDelegate?
     
-    var category1,category2,category3 : Icon?
+    var category1,category2,category3 : RestaurantGroup?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -35,7 +35,10 @@ class LeaderVotingViewController:UIViewController{
     }
     
     override func viewDidLoad() {
-        
+        loadAll()
+    }
+    
+    func loadAll(){
         self.category1 = Categories.sharedInstance.removeItem(index: 0)
         self.category2 = Categories.sharedInstance.removeItem(index: 0)
         self.category3 = Categories.sharedInstance.removeItem(index: 0)
@@ -44,56 +47,86 @@ class LeaderVotingViewController:UIViewController{
         setCategory2()
         setCategory3()
         
-        
     }
     
     func setCategory1(){
-        Icon1.image = category1?.image
-        Label1.text = category1?.rawValue
+        Icon1.image = category1?.displayIcon.image
+        Label1.text = category1?.grouping.rawValue
     }
     func setCategory2(){
-        Icon2.image = category2?.image
-        Label2.text = category2?.rawValue
+        Icon2.image = category2?.displayIcon.image
+        Label2.text = category2?.grouping.rawValue
     }
     func setCategory3(){
-        Icon3.image = category3?.image
-        Label3.text = category3?.rawValue
+        Icon3.image = category3?.displayIcon.image
+        Label3.text = category3?.grouping.rawValue
     }
     
     @IBAction func Remove1(_ sender: Any) {
-        print("here1")
-        category1 = category2
-        setCategory1()
-        Remove2((Any).self)
+        if(Categories.sharedInstance.getAvailableRestaurauntGroupsCount() > 0 ) {
+            print("here1")
+            category1 = category2
+            setCategory1()
+            Remove2((Any).self)
+        }
     }
     
     @IBAction func Remove2(_ sender: Any) {
-        print("here2")
-        category2 = category3
-        setCategory2()
-        Remove3((Any).self)
-        // Categories.sharedInstance.removeItem(index: 1)
+        if(Categories.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
+            print("here2")
+            category2 = category3
+            setCategory2()
+            Remove3((Any).self)
+            // Categories.sharedInstance.removeItem(index: 1)
+        }
     }
     
     @IBAction func Remove3(_ sender: Any) {
-        print("here3")
-        category3 = Categories.sharedInstance.removeItem(index: 0)
-        Queue.reloadData()
+        if(Categories.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
+            print("here3")
+            category3 = Categories.sharedInstance.removeItem(index: 0)
+            Queue.reloadData()
+            setCategory3()
+        }
+        
+    }
+    
+    
+    
+    @IBAction func SubmitSelection(_ sender: Any) {
+        let dict = ["1" : Label1.text,"2" : Label2.text, "3" :Label3.text]
+        delegate?.addMessageToConversation(dict as! [String : String],caption: "Paul has selected some yummy categories!")
+    }
+    
+    @IBAction func Swap12(_ sender: Any) {
+        let temp = category1
+        category1 = category2
+        category2 = temp
+        setCategory1()
+        setCategory2()
+    }
+    
+    
+    @IBAction func Swap23(_ sender: Any) {
+        let temp = category2
+        category2 = category3
+        category3 = temp
+        setCategory2()
         setCategory3()
         
     }
     
-    @IBAction func SubmitSelection(_ sender: Any) {
-        print("I VOTED!")
-        
+    
+    @IBAction func Shuffle(_ sender: Any) {
+        Categories.sharedInstance.shuffle()
+        loadAll()
+        Queue.reloadData()
     }
-    
-    
 }
 
 extension LeaderVotingViewController : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Categories.sharedInstance.getFilteredTypesCount()
+        return Categories.sharedInstance.getAvailableRestaurauntGroupsCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -105,15 +138,15 @@ extension LeaderVotingViewController : UICollectionViewDataSource {
     
     
     private func dequeueVoteCell( at indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = Queue.dequeueReusableCell(withReuseIdentifier: VoteCell.reuseIdentifier,
-                                                   for: indexPath) as? VoteCell
+        guard let cell = Queue.dequeueReusableCell(withReuseIdentifier: LeaderVoteCell.reuseIdentifier,
+                                                   for: indexPath) as? LeaderVoteCell
             else { fatalError("Unable to dequeue a VoteCell") }
         
         let row = indexPath.row
-        let representedType =  Categories.sharedInstance.getFilteredTypes()[row]
+        let representedRestaurantGroup =  Categories.sharedInstance.getRestaurantGroup(index: row)
         
-        cell.food_icon.image = representedType.image
-        cell.label.text = representedType.rawValue
+        cell.food_icon.image = representedRestaurantGroup.displayIcon.image
+        cell.label.text = representedRestaurantGroup.grouping.rawValue
         
         return cell
     }
@@ -125,7 +158,7 @@ protocol LeaderVotingViewControllerDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ restaurants:[RestaurantInfo],messageImage:Restaurant)
+    func addMessageToConversation(_ dictionary:[String:String],caption:String)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     
