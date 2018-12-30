@@ -10,9 +10,8 @@ import Messages
 import CoreLocation
 class MessagesViewController: MSMessagesAppViewController {
     
-    // MARK: Properties
+    static var presentationStyle = MSMessagesAppPresentationStyle.compact
     
-    //var globalStateOfApp : AppState?
     var stateOfApp = AppState.MainMenu
     var leaderOfSurvey : String?
     
@@ -24,7 +23,7 @@ class MessagesViewController: MSMessagesAppViewController {
     //    var knownParticipants = [Participant]()
     //    var knownNumberOfParticipants : Int?
     var appQueryItems = [URLQueryItem]()
-    var savedAppData = [String]()
+    var savedAppData = [String : Int]()
     //    var hasCached = false
     
     public static let LEADER = "Leader"
@@ -47,6 +46,7 @@ class MessagesViewController: MSMessagesAppViewController {
     // MARK: MSMessagesAppViewController overrides
     
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        print(presentationStyle)
         super.willTransition(to: presentationStyle)
         
         // Hide child view controllers during the transition.
@@ -116,19 +116,25 @@ class MessagesViewController: MSMessagesAppViewController {
             
             if(!self.isLeader){
                 if let first = queryItems.filter({$0.name == "1"}).first?.value {
-                    savedAppData.append(first)
+                    let votesForFirst = queryItems.filter({$0.name == first}).first?.value
+                    savedAppData[first] = Int(votesForFirst ?? "0")
+
                 }
                 
                 if let second = queryItems.filter({$0.name == "2"}).first?.value {
-                    savedAppData.append(second)
+                    let votesForSecond = queryItems.filter({$0.name == second}).first?.value
+                    savedAppData[second] = Int(votesForSecond ?? "0")
                 }
                 
                 if let third = queryItems.filter({$0.name == "3"}).first?.value {
-                    savedAppData.append(third)
+                    let votesForThird = queryItems.filter({$0.name == third}).first?.value
+                    savedAppData[third] = Int(votesForThird ?? "0")
                 }
                 
+                print(savedAppData)
+                
                 if(currentRound == AppState.CategorySelection){
-                    Categories.sharedInstance.setCategories(categories: self.savedAppData)
+                    Categories.sharedInstance.setCategories(categories: Array(self.savedAppData.keys))
                 }
             }
             
@@ -246,7 +252,7 @@ class MessagesViewController: MSMessagesAppViewController {
             as? ParticipantViewController
             else { fatalError("Unable to instantiate an ParticipantViewController from the storyboard") }
         
-        //        controller.delegate = self
+                controller.delegate = self
         
         return controller
     }
@@ -283,6 +289,7 @@ class MessagesViewController: MSMessagesAppViewController {
             print("NOT IN APP")
         }
         
+        MessagesViewController.presentationStyle = self.presentationStyle
         
         addChildViewController(controller)
         controller.view.frame = view.bounds
@@ -450,7 +457,7 @@ class MessagesViewController: MSMessagesAppViewController {
 
 /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
 
-extension MessagesViewController: IceCreamsViewControllerDelegate,VotingMenuViewControllerDelegate,LeaderVotingViewControllerDelegate {
+extension MessagesViewController: IceCreamsViewControllerDelegate,VotingMenuViewControllerDelegate,LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate {
     
     func iceCreamsViewControllerDidSelectAdd(_ controller: InitialSelectionViewController) {
         

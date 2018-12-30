@@ -9,7 +9,7 @@
 import Foundation
 
 import UIKit
-
+import Messages
 
 class MainMenuViewController :UIViewController{
     
@@ -19,12 +19,16 @@ class MainMenuViewController :UIViewController{
     @IBOutlet weak var Continue: UIButton!
     @IBOutlet weak var ContinueLabel: UILabel!
     
+    @IBOutlet weak var NewSurveyView: UIView!
     @IBOutlet weak var NewSurvey: UIButton!
     @IBOutlet weak var NewSurveyLabel: UILabel!
     
+    
+    @IBOutlet weak var HelpView: UIView!
     @IBOutlet weak var Help: UIButton!
     @IBOutlet weak var HelpLabel: UILabel!
     
+    @IBOutlet weak var SettingsView: UIView!
     @IBOutlet weak var Settings: UIButton!
     @IBOutlet weak var SettingsLabel: UILabel!
     
@@ -41,6 +45,37 @@ class MainMenuViewController :UIViewController{
     }
     
     override func viewDidLoad() {
+    
+        //if view is compact, hide buttons
+       
+       let viewIsCompact = MessagesViewController.presentationStyle == MSMessagesAppPresentationStyle.compact
+      
+            self.NewSurveyView.isHidden = viewIsCompact
+            self.SettingsView.isHidden = viewIsCompact
+            self.HelpView.isHidden = viewIsCompact
+
+        
+//        print(self.traitCollection.horizontalSizeClass)
+//    
+//        print(self.traitCollection.layoutDirection)
+//        
+//        print(self.wid)
+//        
+//        switch (self.modalPresentationStyle) {
+//        case PresentationSty. :
+//            print("here")
+//            // horizontal is compact class.. do stuff...
+//            break;
+//        case UIUserInterfaceSizeClass.regular:
+//            print("reg")
+//            // horizontal is regular class.. do stuff...
+//            break;
+//        default :
+//            // horizontal is unknown..
+//            break;
+//        }
+        //print(MSMessagesAppPresentationStyle)
+        
         //#TODO fix magic number
         
 //        self.Logo.font = UIFont.systemFont(ofSize: CGFloat((MainMenu.headerHeight * 4) / 5))

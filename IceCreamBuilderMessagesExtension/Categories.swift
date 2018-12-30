@@ -20,7 +20,7 @@ class RestaurantGroup {
     }
 }
 
-enum Grouping : String {
+public enum Grouping : String {
     case American
     case Breakfast
     case Asian

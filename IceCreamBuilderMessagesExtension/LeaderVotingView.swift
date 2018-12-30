@@ -27,6 +27,8 @@ class LeaderVotingViewController:UIViewController{
     
     weak var delegate: LeaderVotingViewControllerDelegate?
     
+    
+    
     var category1,category2,category3 : RestaurantGroup?
     
     required init?(coder aDecoder: NSCoder) {
@@ -85,7 +87,7 @@ class LeaderVotingViewController:UIViewController{
         if(Categories.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
             print("here3")
             category3 = Categories.sharedInstance.removeItem(index: 0)
-            Queue.reloadData()
+           
             setCategory3()
         }
         
@@ -95,7 +97,7 @@ class LeaderVotingViewController:UIViewController{
     
     @IBAction func SubmitSelection(_ sender: Any) {
         let dict = ["1" : Label1.text,"2" : Label2.text, "3" :Label3.text]
-        delegate?.addMessageToConversation(dict as! [String : String],caption: "Paul has selected some yummy categories!")
+        delegate?.addMessageToConversation(dict as! [String : String],caption: "Here's what Paul is in the mood for")
     }
     
     @IBAction func Swap12(_ sender: Any) {
@@ -120,37 +122,11 @@ class LeaderVotingViewController:UIViewController{
     @IBAction func Shuffle(_ sender: Any) {
         Categories.sharedInstance.shuffle()
         loadAll()
-        Queue.reloadData()
+       
     }
 }
 
-extension LeaderVotingViewController : UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Categories.sharedInstance.getAvailableRestaurauntGroupsCount()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        return dequeueVoteCell( at: indexPath)
-        
-    }
-    
-    
-    
-    private func dequeueVoteCell( at indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = Queue.dequeueReusableCell(withReuseIdentifier: LeaderVoteCell.reuseIdentifier,
-                                                   for: indexPath) as? LeaderVoteCell
-            else { fatalError("Unable to dequeue a VoteCell") }
-        
-        let row = indexPath.row
-        let representedRestaurantGroup =  Categories.sharedInstance.getRestaurantGroup(index: row)
-        
-        cell.food_icon.image = representedRestaurantGroup.displayIcon.image
-        cell.label.text = representedRestaurantGroup.grouping.rawValue
-        
-        return cell
-    }
-}
+
 
 protocol LeaderVotingViewControllerDelegate: class {
     
@@ -163,3 +139,5 @@ protocol LeaderVotingViewControllerDelegate: class {
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     
 }
+
+
