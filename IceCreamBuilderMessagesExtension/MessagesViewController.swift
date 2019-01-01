@@ -61,6 +61,10 @@ class MessagesViewController: MSMessagesAppViewController {
         presentViewController(for: conversation, with: presentationStyle)
     }
     
+    override func didReceive(_ message: MSMessage, conversation: MSConversation) {
+        print("yo, in here!")
+    }
+    
     // MARK: Child view controller presentation
     
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
@@ -73,8 +77,6 @@ class MessagesViewController: MSMessagesAppViewController {
         // self.remainingParticipants = conversation.remoteParticipantIdentifiers.map{$0.uuidString}
         
         self.myIdentifier = conversation.localParticipantIdentifier
-        // var remainingParticipants = [String]()
-        // var completedParticipants = [String]()
         
         //there has been at least one round
         if let queryItems = URLComponents(string: url?.absoluteString ?? "")?.queryItems {
@@ -118,7 +120,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 if let first = queryItems.filter({$0.name == "1"}).first?.value {
                     let votesForFirst = queryItems.filter({$0.name == first}).first?.value
                     savedAppData[first] = Int(votesForFirst ?? "0")
-
+                    
                 }
                 
                 if let second = queryItems.filter({$0.name == "2"}).first?.value {
@@ -243,7 +245,7 @@ class MessagesViewController: MSMessagesAppViewController {
             else { fatalError("Unable to instantiate an WaitingViewController from the storyboard") }
         
         //        controller.delegate = self
-       
+        
         return controller
     }
     
@@ -252,7 +254,7 @@ class MessagesViewController: MSMessagesAppViewController {
             as? ParticipantViewController
             else { fatalError("Unable to instantiate an ParticipantViewController from the storyboard") }
         
-                controller.delegate = self
+        controller.delegate = self
         
         return controller
     }
@@ -339,35 +341,46 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     func addConversationDetails(dictionary : [String : String]) ->  [String : String] {
-        var dataToAppend = [String : String]()
-        if let leader = self.leaderOfSurvey { dataToAppend[MessagesViewController.LEADER] = leader}
+        var data = [String : String]()
+        if let leader = self.leaderOfSurvey { data[MessagesViewController.LEADER] = leader}
         
         if let remainingParticipants = self.remainingParticipants {
-            dataToAppend[MessagesViewController.REMAINING_PARTICIPANTS] = remainingParticipants.joined(separator: MessagesViewController.DELIMETER)
+            data[MessagesViewController.REMAINING_PARTICIPANTS] = remainingParticipants.joined(separator: MessagesViewController.DELIMETER)
         }
         
         if let completedParticipants = self.completedParticipants {
-            dataToAppend[MessagesViewController.COMPLETED_PARTICIPANTS] = completedParticipants.joined(separator: MessagesViewController.DELIMETER)
+            data[MessagesViewController.COMPLETED_PARTICIPANTS] = completedParticipants.joined(separator: MessagesViewController.DELIMETER)
         }
         
-        dataToAppend[MessagesViewController.CURRENT_ROUND] = self.stateOfApp.rawValue
+        data[MessagesViewController.CURRENT_ROUND] = self.stateOfApp.rawValue
         self.stateOfApp = AppState.Wait
         
-        //advancing to next state
-        //        if(completedParticipants?.count == 0)
-        //        {
-        //            self.stateOfApp = self.stateOfApp.NextState()
-        //        }
-        //        else {
+        //further down the road
+        //        for key in savedAppData.keys {
+        //            guard let savedVotes = savedAppData[key] else {return dictionary}
+        //            guard let participantsVotes = dictionary[key] else { return dictionary}
+        //            let participantVotesCount = Int(participantsVotes)
         //
-        //        }
-        //        else{
-        //            let uuid_arr =
+        //            let combinedVotes = savedVotes + participantsVotes
+        //            print(key + ":"+String(combinedVotes))
+        //            data[key] =
         //        }
         
-        //        if let remainingParticipants = self.remainingParticipants { remainingParticipants.joined(separator: DELIMETER) }
         
-        return dataToAppend.merging(dictionary, uniquingKeysWith: { (first, _) in first })
+        for key in dictionary.keys {
+            if let value = dictionary[key] {
+                let integerValue = Int(value ) ?? 0
+                if (integerValue > 0) {
+                    print(key + ": "+value)
+                }
+                data[key] = String(integerValue)
+            }
+        }
+        
+        print(data)
+        
+        return data
+        //return data.merging(dictionary, uniquingKeysWith: { (first, _) in first })
     }
     
     //Cannot be reached from wait or booted screens
@@ -472,8 +485,8 @@ extension MessagesViewController: IceCreamsViewControllerDelegate,VotingMenuView
     func addMessageToConversation(_ dictionary:[String:String],caption:String){
         
         let conversation_dict = addConversationDetails(dictionary:dictionary)
+        print(conversation_dict)
         createMessage(dictionary: conversation_dict,caption:caption)
-        //self.stateOfApp = AppState.Wait
         switchState(newState: self.stateOfApp)
         requestPresentationStyle(.compact)
     }

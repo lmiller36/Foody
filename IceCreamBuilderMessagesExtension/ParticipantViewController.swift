@@ -87,7 +87,7 @@ class ParticipantViewController:UIViewController{
             
             if(votedOnAllOptions){
                 print("LETS DO THIS THING")
-                //self.delegate?.addMessageToConversation(votes, caption: "Lorne has voted!")
+                self.delegate?.addMessageToConversation(votes, caption: "Lorne has voted!")
             }
             else {
                 AvailableTypes.reloadData()
