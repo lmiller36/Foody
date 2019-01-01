@@ -54,58 +54,60 @@ class MainMenuViewController :UIViewController{
             self.SettingsView.isHidden = viewIsCompact
             self.HelpView.isHidden = viewIsCompact
 
-        
-//        print(self.traitCollection.horizontalSizeClass)
-//    
-//        print(self.traitCollection.layoutDirection)
-//        
-//        print(self.wid)
-//        
-//        switch (self.modalPresentationStyle) {
-//        case PresentationSty. :
-//            print("here")
-//            // horizontal is compact class.. do stuff...
-//            break;
-//        case UIUserInterfaceSizeClass.regular:
-//            print("reg")
-//            // horizontal is regular class.. do stuff...
-//            break;
-//        default :
-//            // horizontal is unknown..
-//            break;
-//        }
-        //print(MSMessagesAppPresentationStyle)
-        
-        //#TODO fix magic number
-        
-//        self.Logo.font = UIFont.systemFont(ofSize: CGFloat((MainMenu.headerHeight * 4) / 5))
-//        self.Logo.adjustsFontSizeToFitWidth = true
-//        self.Logo.frame = CGRect.init(x:0,y:0,width:Int(Screen.sharedInstance.width()), height:MainMenu.headerHeight)
-//        self.Logo.center = CGPoint(x: Screen.sharedInstance.centerWidth(), y: Screen.sharedInstance.height() * 0.1)
-//        self.Logo.numberOfLines = 0
-//        self.Logo.minimumScaleFactor = 0.1
-//        self.Logo.baselineAdjustment = .alignCenters
-//        self.Logo.textAlignment  = .center
-//
-//
-////        ScrollView.frame = CGRect.init(x:0,y:MainMenu.headerHeight,width:Int(Screen.sharedInstance.width()), height:MainMenu.frameHeight)
-////        ScrollView.contentSize = CGSize(width: ScrollView.contentSize.width, height:  Screen.sharedInstance.height())
-//        print(Screen.sharedInstance.width())
-//        print(Screen.sharedInstance.height())
-////        ScrollView.center = CGPoint(x: Screen.sharedInstance.width()/2, y: MainMenu.headerHeight + MainMenu.frameHeight / 2)
-//        Continue.isHidden = true
-//        ContinueLabel.isHidden = true
-//
-//        NewSurvey.center = CGPoint(x:Screen.sharedInstance.centerWidth(),y : 10)
-//
-//
-//        let fontSizeForLorne = Screen.sharedInstance.height() * 0.05
-//        self.MadeByLorne.textAlignment = .center
-////        self.MadeByLorne.frame = CGRect.init(x:0,y:Screen.sharedInstance.height() * 0.05,width:Int(Screen.sharedInstance.width()), height:MainMenu.headerHeight)
-//        self.MadeByLorne.font = UIFont.systemFont(ofSize: fontSizeForLorne * 0.8 )
-//        self.MadeByLorne.center = CGPoint(x:Screen.sharedInstance.centerWidth(),y : Screen.sharedInstance.height() - fontSizeForLorne)
-//        self.MadeByLorne.frame = CGRect.init(x:0,y:Int(Screen.sharedInstance.height() - 3 * fontSizeForLorne),width:Int(Screen.sharedInstance.width()), height: Int(fontSizeForLorne))
+            encodeDataCheck()
 
+    }
+    
+    
+    
+    func encodeDataCheck(){
+        
+        let now = Date()
+        
+        let formatter = DateFormatter()
+        
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "yyyy-MM-dd HH:mm.ss"
+        
+        let dateString = formatter.string(from: now)
+        
+        
+   
+        
+        if Storage.fileExists("messages.json", in: .documents) {
+            // we have messages to retrieve
+            let messagesFromDisk = Storage.retrieve("messages.json", from: .documents, as: [Message].self)
+
+            print(messagesFromDisk)
+        }
+        
+            var messages = [Message]()
+            
+
+                let newMessage = Message(title: "Message", body: dateString)
+                messages.append(newMessage)
+    
+            
+            Storage.store(messages, to: .documents, as: "messages.json")
+        
+            
+        
+        print(dateString)
+        
+
+//        let cache = NSCache<NSString, NSString>()
+//        let myObject: NSString
+//
+//        if let cachedVersion = cache.object(forKey: "CachedObject") {
+//            // use the cached version
+//            myObject = cachedVersion
+//            print("found in cache")
+//        } else {
+//            // create it from scratch then store in the cache
+//            myObject = dateString as NSString
+//            cache.setObject(dateString as NSString, forKey: "CachedObject")
+//        }
+//
     }
     
 
@@ -122,36 +124,6 @@ class MainMenuViewController :UIViewController{
     
     
 }
-
-//class ScrollingFoodDataSource: UICollectionViewDataSource {
-//
-//     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 0
-//    }
-//
-//     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//
-//
-//        return dequeueIceCreamCell(for: "", at: indexPath)
-//
-//    }
-//
-//
-//
-//     func dequeueIceCreamCell(for restaurantType: String, at indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView?.dequeueReusableCell(withReuseIdentifier: ScrollingFoodCell.reuseIdentifier,
-//                                                             for: indexPath) as? ScrollingFoodCell
-//            else { fatalError("Unable to dequeue am IceCreamCell") }
-//
-//
-//
-//
-//
-//        return cell
-//    }
-//
-//
-//}
 
 class MainMenu{
     static let headerHeight = Int(0.3 * Screen.sharedInstance.height())

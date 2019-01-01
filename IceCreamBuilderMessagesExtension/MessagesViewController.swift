@@ -195,16 +195,6 @@ class MessagesViewController: MSMessagesAppViewController {
         return "participantUUID_" + String(count)
     }
     
-    private func instantiateInitialSelectionController() -> UIViewController {
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: InitialSelectionViewController.storyboardIdentifier)
-            as? InitialSelectionViewController
-            else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
-        
-        controller.delegate = self
-        
-        return controller
-    }
-    
     private func instantiateLeaderVotingController() -> UIViewController {
         // Instantiate a `StartMenuViewController`.
         guard let controller = storyboard?.instantiateViewController(withIdentifier: LeaderVotingViewController.storyboardIdentifier)
@@ -228,16 +218,6 @@ class MessagesViewController: MSMessagesAppViewController {
         return controller
     }
     
-    private func instantiateVotingController() -> UIViewController {
-        // Instantiate a `VotingViewController`.
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: VotingViewController.storyboardIdentifier)
-            as? VotingViewController
-            else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
-        
-        controller.delegate = self
-        controller.appState = self.stateOfApp
-        return controller
-    }
     
     private func instantiateWaitingViewController() -> UIViewController {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: WaitingViewController.storyboardIdentifier)
@@ -470,12 +450,7 @@ class MessagesViewController: MSMessagesAppViewController {
 
 /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
 
-extension MessagesViewController: IceCreamsViewControllerDelegate,VotingMenuViewControllerDelegate,LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate {
-    
-    func iceCreamsViewControllerDidSelectAdd(_ controller: InitialSelectionViewController) {
-        
-        requestPresentationStyle(.expanded)
-    }
+extension MessagesViewController: LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate {
     
     func backToMainMenu() {
         stateOfApp = AppState.MainMenu
@@ -492,7 +467,7 @@ extension MessagesViewController: IceCreamsViewControllerDelegate,VotingMenuView
     }
     
     func changePresentationStyle(presentationStyle: MSMessagesAppPresentationStyle) {
-        requestPresentationStyle(.compact)
+        requestPresentationStyle(presentationStyle)
     }
     
     
