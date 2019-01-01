@@ -10,6 +10,8 @@ import Foundation
 
 import UIKit
 import Messages
+import SCSDKLoginKit
+
 
 class MainMenuViewController :UIViewController{
     
@@ -38,6 +40,9 @@ class MainMenuViewController :UIViewController{
     static let storyboardIdentifier = "MainMenuViewController"
     
 
+    
+    @IBAction func LoginSnapchat(_ sender: Any) {
+    }
     
     
     required init?(coder aDecoder: NSCoder) {

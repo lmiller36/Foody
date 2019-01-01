@@ -45,6 +45,21 @@
 	<string>This might also happen</string>
 	<key>location-services</key>
 	<string>yo</string>
+	<key>SCSDKRedirectUrl</key>
+	<string>Foody://snap-kit/oauth2</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>bitmoji-sdk</string>
+		<string>itms-apps</string>
+		<string>snapchat</string>
+	</array>
+	<key>CFBundleURLSchemes</key>
+	<string>Foody</string>
+	<key>SCSDKScopes</key>
+	<array>
+		<string>https://auth.snapchat.com/oauth2/api/user.display_name</string>
+		<string>https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar</string>
+	</array>
 	<key>SCSDKClientId</key>
 	<string>26b7e4c9-41ac-40e5-86d4-06384e14e172</string>
 </dict>
