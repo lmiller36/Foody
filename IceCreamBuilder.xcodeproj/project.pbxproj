@@ -111,6 +111,7 @@
 		CE5CFC6D21D7166D002A7BCD /* ParticipantVoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC6C21D7166D002A7BCD /* ParticipantVoteCell.swift */; };
 		CE5CFC6F21D716DE002A7BCD /* ParticipantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */; };
 		CE5CFC7121D726B5002A7BCD /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC7021D726B5002A7BCD /* Screen.swift */; };
+		CE5CFC7321DC0980002A7BCD /* InitialSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -248,6 +249,7 @@
 		CE5CFC6C21D7166D002A7BCD /* ParticipantVoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantVoteCell.swift; sourceTree = "<group>"; };
 		CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantViewController.swift; sourceTree = "<group>"; };
 		CE5CFC7021D726B5002A7BCD /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSetupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				B55F96271CFF829D00B33E33 /* MessagesViewController.swift */,
+				CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */,
 				4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */,
 				4806D76621862B0300FC5912 /* Cacher.swift */,
 				4806D7642183D8C300FC5912 /* WaitingViewController.swift */,
@@ -663,6 +666,7 @@
 				CE5CFC6D21D7166D002A7BCD /* ParticipantVoteCell.swift in Sources */,
 				B55F96451CFF82E100B33E33 /* IceCreamHistory.swift in Sources */,
 				B55F96471CFF82E100B33E33 /* IceCreamPart.swift in Sources */,
+				CE5CFC7321DC0980002A7BCD /* InitialSetupViewController.swift in Sources */,
 				48B14F522155DA0100A05FEF /* CurrentLocation.swift in Sources */,
 				4888F60B2180C4CE005EA28A /* MainMenuViewController.swift in Sources */,
 				48B14F4F2155A61700A05FEF /* Restaurant.swift in Sources */,

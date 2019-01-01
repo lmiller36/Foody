@@ -72,7 +72,9 @@ class MessagesViewController: MSMessagesAppViewController {
         let url = conversation.selectedMessage?.url
         
         var leader = conversation.localParticipantIdentifier.uuidString
-        var currentRound = AppState.MainMenu
+        
+        // go to setup if need
+        var currentRound = UserData.sharedInstance.isCacheDataAvailable() ? AppState.MainMenu : AppState.Setup
         
         // self.remainingParticipants = conversation.remoteParticipantIdentifiers.map{$0.uuidString}
         
@@ -195,16 +197,17 @@ class MessagesViewController: MSMessagesAppViewController {
         return "participantUUID_" + String(count)
     }
     
-    private func instantiateLeaderVotingController() -> UIViewController {
+    private func instantiateInitialSetupController() -> UIViewController {
         // Instantiate a `StartMenuViewController`.
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: LeaderVotingViewController.storyboardIdentifier)
-            as? LeaderVotingViewController
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: InitialSetupViewController.storyboardIdentifier)
+            as? InitialSetupViewController
             else { fatalError("Unable to instantiate a StartMenuViewController from the storyboard") }
         
-        controller.delegate = self
+       controller.delegate = self
         
         return controller
     }
+    
     
     private func instantiateStartMenuController() -> UIViewController {
         // Instantiate a `StartMenuViewController`.
@@ -212,7 +215,6 @@ class MessagesViewController: MSMessagesAppViewController {
             as? MainMenuViewController
             else { fatalError("Unable to instantiate a StartMenuViewController from the storyboard") }
         
-        print( controller.preferredContentSize)
         controller.delegate = self
         
         return controller
@@ -228,6 +230,18 @@ class MessagesViewController: MSMessagesAppViewController {
         
         return controller
     }
+    
+    private func instantiateLeaderVotingController() -> UIViewController {
+        // Instantiate a `StartMenuViewController`.
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: LeaderVotingViewController.storyboardIdentifier)
+            as? LeaderVotingViewController
+            else { fatalError("Unable to instantiate a StartMenuViewController from the storyboard") }
+        
+        controller.delegate = self
+        
+        return controller
+    }
+    
     
     private func instantiateParticipantViewController() -> UIViewController {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: ParticipantViewController.storyboardIdentifier)
@@ -248,6 +262,8 @@ class MessagesViewController: MSMessagesAppViewController {
         let controller: UIViewController
         
         switch self.stateOfApp {
+        case AppState.Setup :
+            controller = instantiateInitialSetupController()
         case AppState.MainMenu:
             controller = instantiateStartMenuController()
         case AppState.CategorySelection:
@@ -450,7 +466,7 @@ class MessagesViewController: MSMessagesAppViewController {
 
 /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
 
-extension MessagesViewController: LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate {
+extension MessagesViewController: InitialSetupViewControllerDelegate,LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate {
     
     func backToMainMenu() {
         stateOfApp = AppState.MainMenu

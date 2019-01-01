@@ -12,6 +12,7 @@ import Foundation
 
 enum AppState : String {
     case NotInApp
+    case Setup
     case MainMenu
     case CategorySelection
     case RestaurantSelection
@@ -23,6 +24,7 @@ enum AppState : String {
     
     func Order()->Int {
         switch self {
+        case .Setup : return 0
         case .NotInApp: return 0
         case .MainMenu: return 0
         case .CategorySelection: return 1
@@ -40,6 +42,7 @@ enum AppState : String {
         switch self {
         
         case .NotInApp: return .MainMenu
+        case .Setup: return .MainMenu
         case .MainMenu: return .CategorySelection
         case .CategorySelection: return .RestaurantSelection
         case .RestaurantSelection: return .VotingRound2

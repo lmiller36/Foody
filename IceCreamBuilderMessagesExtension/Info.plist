@@ -45,5 +45,7 @@
 	<string>This might also happen</string>
 	<key>location-services</key>
 	<string>yo</string>
+	<key>SCSDKClientId</key>
+	<string>26b7e4c9-41ac-40e5-86d4-06384e14e172</string>
 </dict>
 </plist>

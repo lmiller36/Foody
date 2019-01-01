@@ -54,61 +54,61 @@ class MainMenuViewController :UIViewController{
             self.SettingsView.isHidden = viewIsCompact
             self.HelpView.isHidden = viewIsCompact
 
-            encodeDataCheck()
+            //encodeDataCheck()
 
     }
     
     
     
-    func encodeDataCheck(){
-        
-        let now = Date()
-        
-        let formatter = DateFormatter()
-        
-        formatter.timeZone = TimeZone.current
-        formatter.dateFormat = "yyyy-MM-dd HH:mm.ss"
-        
-        let dateString = formatter.string(from: now)
-        
-        
-   
-        
-        if Storage.fileExists("messages.json", in: .documents) {
-            // we have messages to retrieve
-            let messagesFromDisk = Storage.retrieve("messages.json", from: .documents, as: [Message].self)
-
-            print(messagesFromDisk)
-        }
-        
-            var messages = [Message]()
-            
-
-                let newMessage = Message(title: "Message", body: dateString)
-                messages.append(newMessage)
-    
-            
-            Storage.store(messages, to: .documents, as: "messages.json")
-        
-            
-        
-        print(dateString)
-        
-
-//        let cache = NSCache<NSString, NSString>()
-//        let myObject: NSString
+//    func encodeDataCheck(){
 //
-//        if let cachedVersion = cache.object(forKey: "CachedObject") {
-//            // use the cached version
-//            myObject = cachedVersion
-//            print("found in cache")
-//        } else {
-//            // create it from scratch then store in the cache
-//            myObject = dateString as NSString
-//            cache.setObject(dateString as NSString, forKey: "CachedObject")
+//        let now = Date()
+//
+//        let formatter = DateFormatter()
+//
+//        formatter.timeZone = TimeZone.current
+//        formatter.dateFormat = "yyyy-MM-dd HH:mm.ss"
+//
+//        let dateString = formatter.string(from: now)
+//
+//
+//
+//
+//        if Storage.fileExists("messages.json", in: .documents) {
+//            // we have messages to retrieve
+//            let messagesFromDisk = Storage.retrieve("messages.json", from: .documents, as: [Message].self)
+//
+//            print(messagesFromDisk)
 //        }
 //
-    }
+//            var messages = [Message]()
+//
+//
+//                let newMessage = Message(title: "Message", body: dateString)
+//                messages.append(newMessage)
+//
+//
+//            Storage.store(messages, to: .documents, as: "messages.json")
+//
+//
+//
+//        print(dateString)
+//
+//
+////        let cache = NSCache<NSString, NSString>()
+////        let myObject: NSString
+////
+////        if let cachedVersion = cache.object(forKey: "CachedObject") {
+////            // use the cached version
+////            myObject = cachedVersion
+////            print("found in cache")
+////        } else {
+////            // create it from scratch then store in the cache
+////            myObject = dateString as NSString
+////            cache.setObject(dateString as NSString, forKey: "CachedObject")
+////        }
+////
+//    }
     
 
     
