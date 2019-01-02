@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.LSMInc.Foody.IceCreamBuilderMessagesExtension2</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>FoodyMessageUrlScheme://foody</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -46,7 +57,7 @@
 	<key>location-services</key>
 	<string>yo</string>
 	<key>SCSDKRedirectUrl</key>
-	<string>Foody://snap-kit/oauth2</string>
+	<string>FoodyMessageUrlScheme://foody</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>bitmoji-sdk</string>
@@ -54,7 +65,7 @@
 		<string>snapchat</string>
 	</array>
 	<key>CFBundleURLSchemes</key>
-	<string>Foody</string>
+	<string>FoodyMessageUrlScheme</string>
 	<key>SCSDKScopes</key>
 	<array>
 		<string>https://auth.snapchat.com/oauth2/api/user.display_name</string>

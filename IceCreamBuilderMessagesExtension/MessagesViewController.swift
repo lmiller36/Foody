@@ -253,6 +253,19 @@ class MessagesViewController: MSMessagesAppViewController {
         return controller
     }
     
+    private func instantiateSnapchatViewController() -> UIViewController {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: SnapchatViewController.storyboardIdentifier)
+            as? SnapchatViewController
+            else { fatalError("Unable to instantiate an ParticipantViewController from the storyboard") }
+        
+       // controller.delegate = self
+        
+        return controller
+    }
+    
+    
+    
+    
     
     private func initializeController(){
         
@@ -265,7 +278,8 @@ class MessagesViewController: MSMessagesAppViewController {
         case AppState.Setup :
             controller = instantiateInitialSetupController()
         case AppState.MainMenu:
-            controller = instantiateStartMenuController()
+           // controller = instantiateStartMenuController()
+            controller = instantiateSnapchatViewController()
         case AppState.CategorySelection:
             if(self.isLeader){
                 controller = instantiateLeaderVotingController()

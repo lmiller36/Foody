@@ -10,7 +10,6 @@ import Foundation
 
 import UIKit
 import Messages
-import SCSDKLoginKit
 
 
 class MainMenuViewController :UIViewController{
@@ -39,9 +38,14 @@ class MainMenuViewController :UIViewController{
     
     static let storyboardIdentifier = "MainMenuViewController"
     
-
-    
+    @IBOutlet weak var SnapchatLogin: UIButton!
+        
     @IBAction func LoginSnapchat(_ sender: Any) {
+//        let loginButton = SCSDKLoginButton() { (success : Bool, error : Error?) in
+//            // do something
+//        }
+//
+        
     }
     
     

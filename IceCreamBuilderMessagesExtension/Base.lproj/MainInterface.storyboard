@@ -229,14 +229,6 @@
                                             <constraint firstAttribute="height" constant="145" id="oO4-He-l30"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sca-P1-TQ5">
-                                        <rect key="frame" x="289" y="177" width="46" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="LoginSnapchat:" destination="Ru4-bQ-gwN" eventType="primaryActionTriggered" id="EYL-gj-Ocp"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.98039215690000003" green="0.88235294119999996" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -828,6 +820,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8FX-iH-WjH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2178" y="-834"/>
+        </scene>
+        <!--Snapchat View Controller-->
+        <scene sceneID="1eL-wG-DI8">
+            <objects>
+                <viewController storyboardIdentifier="SnapchatViewController" id="ATi-NX-OrE" customClass="SnapchatViewController" customModule="IceCreamBuilderMessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KOp-0t-3eV"/>
+                        <viewControllerLayoutGuide type="bottom" id="hjW-Lq-xM8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XuZ-0V-OPB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6IL-i4-q3g">
+                                <rect key="frame" x="16" y="20" width="343" height="647"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9S-T4-6R0">
+                                        <rect key="frame" x="144.5" y="306.5" width="54" height="34"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="SnapchatLogin:" destination="ATi-NX-OrE" eventType="primaryActionTriggered" id="2mp-0H-2We"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.98039215690000003" green="0.88235294119999996" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="P9S-T4-6R0" firstAttribute="centerX" secondItem="6IL-i4-q3g" secondAttribute="centerX" id="IZb-3y-pij"/>
+                                    <constraint firstItem="P9S-T4-6R0" firstAttribute="centerY" secondItem="6IL-i4-q3g" secondAttribute="centerY" id="wlH-dw-QmR"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ch4-Z9-yQo">
+                                <rect key="frame" x="170" y="420" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="Button2:" destination="ATi-NX-OrE" eventType="primaryActionTriggered" id="aw3-Ut-qSG"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="6IL-i4-q3g" secondAttribute="trailing" id="7mx-nX-fG1"/>
+                            <constraint firstItem="6IL-i4-q3g" firstAttribute="centerX" secondItem="XuZ-0V-OPB" secondAttribute="centerX" id="IEN-th-OjG"/>
+                            <constraint firstItem="6IL-i4-q3g" firstAttribute="leading" secondItem="XuZ-0V-OPB" secondAttribute="leadingMargin" id="Vca-UI-3Mn"/>
+                            <constraint firstItem="hjW-Lq-xM8" firstAttribute="top" secondItem="6IL-i4-q3g" secondAttribute="bottom" id="iaW-6q-rVn"/>
+                            <constraint firstItem="6IL-i4-q3g" firstAttribute="top" secondItem="KOp-0t-3eV" secondAttribute="bottom" id="w3W-6t-ZlO"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="SnapchatView" destination="6IL-i4-q3g" id="o0D-ga-yYU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CRK-m2-xvT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="408.80000000000001" y="-175.86206896551727"/>
         </scene>
     </scenes>
     <resources>

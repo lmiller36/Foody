@@ -23,6 +23,7 @@ class InitialSetupViewController : UIViewController {
 
     override func viewDidLoad() {//        Username.on
         //Username.resignFirstResponder()
+        
     }
     
     @IBAction func SubmitUserData(_ sender: Any) {
