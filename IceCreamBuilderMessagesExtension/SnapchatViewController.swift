@@ -29,7 +29,7 @@ class SnapchatViewController : UIViewController,SCSDKBitmojiStickerPickerViewCon
     }
     
     
-    @IBOutlet weak var SnapchatView: SCSDKLoginButton!
+    @IBOutlet weak var SnapchatView: UIView!
     static let storyboardIdentifier = "SnapchatViewController"
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,26 +37,43 @@ class SnapchatViewController : UIViewController,SCSDKBitmojiStickerPickerViewCon
     }
     
     @IBAction func SnapchatLogin(_ sender: Any) {
-        
+        print("doing something")
+
        fetchSnapUserInfo()
-        
-        SCSDKLoginClient.login(from: self, completion: { success, error in
+        let loginButton = SCSDKLoginButton() { (success : Bool, error : Error?) in
+            // do something
+            print("doing something2")
 
-                if let error = error {
-                    print(error.localizedDescription)
-                    return
-                }
-
-                if success {
-                    print("success!")
-                    self.fetchSnapUserInfo()
-                   // fetchSnapUserInfo()
-                    //SnapchatView.fetchSnapUserInfo() //example code
-                }
-            })
+                            if let error = error {
+                                print(error.localizedDescription)
+                                return
+                            }
+            
+                            if success {
+                                print("success!")
+                                self.fetchSnapUserInfo()
+                               // fetchSnapUserInfo()
+                                //SnapchatView.fetchSnapUserInfo() //example code
+                            }
+                        }
+        }
+//        SCSDKLoginClient.login(from: self, completion: { success, error in
 //
+//                if let error = error {
+//                    print(error.localizedDescription)
+//                    return
+//                }
+//
+//                if success {
+//                    print("success!")
+//                    self.fetchSnapUserInfo()
+//                   // fetchSnapUserInfo()
+//                    //SnapchatView.fetchSnapUserInfo() //example code
+//                }
+//            })
+
     
-    }
+    
     
     @IBAction func Button2(_ sender: Any) {
         self.fetchSnapUserInfo()
@@ -66,11 +83,6 @@ class SnapchatViewController : UIViewController,SCSDKBitmojiStickerPickerViewCon
         }
     }
     
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        print("trying!")
-        return SCSDKLoginClient.application(app, open: url, options: options)
-    }
     
     private func fetchSnapUserInfo(){
         let graphQLQuery = "{me{displayName, bitmoji{avatar}}}"

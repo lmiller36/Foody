@@ -9,7 +9,7 @@
 			<string>com.LSMInc.Foody.IceCreamBuilderMessagesExtension2</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>FoodyMessageUrlScheme://foody</string>
+				<string>FoodyMessageUrlScheme</string>
 			</array>
 		</dict>
 	</array>
