@@ -69,32 +69,19 @@ class ParticipantViewController:UIViewController{
         
         var votedOnAllOptions = true
         
-        var votes = [String:String]()
+//        var votes = [String:String]()
         self.showBorder = true
         
-            //check if any values still unselected
-            for key in self.categoryStates.keys{
-                if let value = self.categoryStates[key] {
-                if(value == SelectionState.unselected){votedOnAllOptions = false}
-                
-                votes[key.rawValue] = String(value.isApproved())
-                }
-            }
-            
-            
-            print(votedOnAllOptions)
-            print(votes)
-            
-            if(votedOnAllOptions){
-                print("LETS DO THIS THING")
-                self.delegate?.addMessageToConversation(votes, caption: "Lorne has voted!")
-            }
-            else {
-                AvailableTypes.reloadData()
-            }
-        }
+        var votes = [Vote]()
         
+       let selection = self.categoryStates.filter({$0.value != SelectionState.unselected})
+        print(selection)
+    }
         
+    @IBAction func Back_Main_Menu(_ sender: Any) {
+         self.delegate?.backToMainMenu()
+    }
+    
     
     
 }
@@ -203,7 +190,7 @@ protocol ParticipantVotingViewControllerDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ dictionary:[String:String],caption:String)
+    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote, caption:String)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     

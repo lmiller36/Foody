@@ -372,6 +372,9 @@
                                     <constraint firstAttribute="width" constant="75" id="dgH-sC-NXi"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="backButton"/>
+                                <connections>
+                                    <action selector="Back_Main_Menu:" destination="YPc-Z6-cDv" eventType="primaryActionTriggered" id="FAn-Af-w0b"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Submit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCa-XU-dCO">
                                 <rect key="frame" x="288" y="123" width="75" height="20.5"/>
@@ -656,6 +659,9 @@
                                     <constraint firstAttribute="height" constant="75" id="gar-5i-jLM"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="backButton"/>
+                                <connections>
+                                    <action selector="Back_Main_Menu:" destination="jPY-PR-hxV" eventType="primaryActionTriggered" id="bSP-C9-7YE"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y7a-RI-Mr9">
                                 <rect key="frame" x="4" y="122.5" width="75" height="21"/>

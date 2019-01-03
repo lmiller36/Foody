@@ -112,6 +112,7 @@
 		CE5CFC6F21D716DE002A7BCD /* ParticipantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */; };
 		CE5CFC7121D726B5002A7BCD /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC7021D726B5002A7BCD /* Screen.swift */; };
 		CE5CFC7321DC0980002A7BCD /* InitialSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */; };
+		CEE0DA4621DE8FF000BFA92C /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0DA4521DE8FF000BFA92C /* Vote.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -250,6 +251,7 @@
 		CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantViewController.swift; sourceTree = "<group>"; };
 		CE5CFC7021D726B5002A7BCD /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSetupViewController.swift; sourceTree = "<group>"; };
+		CEE0DA4521DE8FF000BFA92C /* Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,6 +365,7 @@
 				4814047B217D505C00124E76 /* ThumbUp.swift */,
 				CE31F7EE21D46809007EE827 /* Categories.swift */,
 				CE5CFC7021D726B5002A7BCD /* Screen.swift */,
+				CEE0DA4521DE8FF000BFA92C /* Vote.swift */,
 			);
 			path = IceCreamBuilderMessagesExtension;
 			sourceTree = "<group>";
@@ -646,6 +649,7 @@
 				CE31F7ED21D462B8007EE827 /* TopThreeSelection.swift in Sources */,
 				CE5CFC7121D726B5002A7BCD /* Screen.swift in Sources */,
 				4888F60D2180D06D005EA28A /* VotingHeader.swift in Sources */,
+				CEE0DA4621DE8FF000BFA92C /* Vote.swift in Sources */,
 				4816717E2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift in Sources */,
 				B55F96281CFF829D00B33E33 /* MessagesViewController.swift in Sources */,
 				4806D7632183C2C100FC5912 /* AppState.swift in Sources */,

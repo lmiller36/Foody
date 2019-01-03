@@ -87,7 +87,7 @@ class LeaderVotingViewController:UIViewController{
         if(Categories.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
             print("here3")
             category3 = Categories.sharedInstance.removeItem(index: 0)
-           
+            
             setCategory3()
         }
         
@@ -96,8 +96,24 @@ class LeaderVotingViewController:UIViewController{
     
     
     @IBAction func SubmitSelection(_ sender: Any) {
-        let dict = ["1" : Label1.text,"2" : Label2.text, "3" :Label3.text]
-        delegate?.addMessageToConversation(dict as! [String : String],caption: "Here's what Paul is in the mood for")
+        guard let firstSelection = Label1.text else {fatalError("No first selection")}
+        guard let secondSelection = Label2.text else {fatalError("No second selection")}
+        guard let thirdSelection = Label3.text else {fatalError("No third selection")}
+        
+        //by nature, all of the leaders selection are approved
+        
+        let vote1 = Vote.init(category: firstSelection, restaurantId: Optional<String>.none, approved: true, ranking: 1)
+        
+        let vote2 = Vote.init(category: secondSelection, restaurantId: Optional<String>.none, approved: true, ranking: 2)
+        
+        let vote3 = Vote.init(category: thirdSelection, restaurantId: Optional<String>.none, approved: true, ranking: 3)
+        
+       
+        
+        //        let dict = ["1" : firstSelection,"2" : secondSelection, "3" :thirdSelection]
+        //        print(dict)
+        
+        delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,caption: "Here's what Paul is in the mood for")
     }
     
     @IBAction func Swap12(_ sender: Any) {
@@ -122,8 +138,13 @@ class LeaderVotingViewController:UIViewController{
     @IBAction func Shuffle(_ sender: Any) {
         Categories.sharedInstance.shuffle()
         loadAll()
-       
     }
+    
+    @IBAction func Back_Main_Menu(_ sender: Any) {
+        self.delegate?.backToMainMenu()
+    }
+    
+    
 }
 
 
@@ -134,7 +155,7 @@ protocol LeaderVotingViewControllerDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ dictionary:[String:String],caption:String)
+    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote, caption:String)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     

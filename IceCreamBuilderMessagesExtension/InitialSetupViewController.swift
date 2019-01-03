@@ -64,7 +64,7 @@ protocol InitialSetupViewControllerDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ dictionary:[String:String],caption:String)
+//    func addMessageToConversation(_ dictionary:[String:String],caption:String)
     
     func changePresentationStyle(presentationStyle: MSMessagesAppPresentationStyle)
     
