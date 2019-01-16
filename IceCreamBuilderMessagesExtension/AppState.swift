@@ -16,8 +16,6 @@ enum AppState : String {
     case MainMenu
     case CategorySelection
     case RestaurantSelection
-    case VotingRound2
-    case VotingRound3
     case Done
     case Wait
     case Booted
@@ -29,8 +27,6 @@ enum AppState : String {
         case .MainMenu: return 0
         case .CategorySelection: return 1
         case .RestaurantSelection: return 2
-        case .VotingRound2: return 3
-        case .VotingRound3: return 4
         case .Done: return 5
         case .Wait: return -1
         case .Booted: return -1
@@ -45,9 +41,7 @@ enum AppState : String {
         case .Setup: return .MainMenu
         case .MainMenu: return .CategorySelection
         case .CategorySelection: return .RestaurantSelection
-        case .RestaurantSelection: return .VotingRound2
-        case .VotingRound2: return .VotingRound3
-        case .VotingRound3: return .Done
+        case .RestaurantSelection: return .Done
         case.Wait: return .Wait
         case .Done: return .Done
         case .Booted: return .Booted

@@ -96,7 +96,10 @@ struct RestaurantInfo: Codable {
         case displayPhone = "display_phone"
         case distance
         
-        
+    }
+    
+    func getCategory()->Category{
+        return self.categories[0]
     }
     
 }

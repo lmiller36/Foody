@@ -30,8 +30,8 @@ class ParticipantVoteCell : UICollectionViewCell{
         case approved
         case denied
         
-        func isApproved() -> Int{
-            return self == .approved ? 1 : 0
+        func isApproved() -> Bool{
+            return self == .approved
         }
         
     }

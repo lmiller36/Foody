@@ -16,52 +16,50 @@ func generateNearbyRestaurants(completionHandler:@escaping (_ restaurants: [Rest
     // var iceCreams = [IceCream]()
     print("im generated nearby")
 
-    
-//    CurrentLocation.sharedInstance.lookUpCurrentLocation(callback: { (location) in
+
+    CurrentLocation.sharedInstance.lookUpCurrentLocation(callback: { (location) in
     guard let locationCoordinates = CurrentLocation.sharedInstance.getCurrentLocation()?.coordinate else {return}
-//        guard let locationCoordinates = location?.location?.coordinate else{
-//            return
-//        }
+
         var reloadFromYelp = true
         print(lastKnownLocationInstance)
 
         //check if data must be reloaded
-        if let lastKnownLocation = lastKnownLocationInstance {
-
-            //Data was already loaded from the given location
-            //TODO DETERMINE IF .01 is a good fit
-            if let appLocation = App_Location{
-                if(coordinatesEqual(rhs: lastKnownLocation, lhs: appLocation)){
-                    reloadFromYelp = false
-                }
-            }
-            
-            
-        }
-        print("SHOULD RELOAD DATA:\(reloadFromYelp)")
-        lastKnownLocationInstance = locationCoordinates
-        
-        let locationToUse = App_Location ?? locationCoordinates
-        App_Location = locationToUse
-        //        print(locationToUse)
-        //if(reloadFromYelp) {
-            getNearby(coordinates: locationToUse,callback:{ (businesses) in
-                print(businesses)
-                completionHandler(businesses)
-            })
+//        if let lastKnownLocation = lastKnownLocationInstance {
+//
+//            //Data was already loaded from the given location
+//            //TODO DETERMINE IF .01 is a good fit
+//            if let appLocation = App_Location{
+//                if(coordinatesEqual(rhs: lastKnownLocation, lhs: appLocation)){
+//                    reloadFromYelp = false
+//                }
+//            }
+//
+//
+//        }
+//        print("SHOULD RELOAD DATA:\(reloadFromYelp)")
+//        lastKnownLocationInstance = locationCoordinates
+//
+//        let locationToUse = App_Location ?? locationCoordinates
+//        App_Location = locationToUse
+//        //        print(locationToUse)
+//        //if(reloadFromYelp) {
+//            getNearby(coordinates: locationToUse,callback:{ (businesses) in
+//                print(businesses)
+//                completionHandler(businesses)
+//            })
 //        }
 //        else {
 //            completionHandler(RestaurantsNearby.sharedInstance.getKnownRestaurants())
 //        }
-       
-   // })
-    
+
+    })
+
 }
 
-//true if coordinates are
-func coordinatesEqual(rhs: CLLocationCoordinate2D,lhs:CLLocationCoordinate2D)->Bool {
-    return abs(rhs.latitude - lhs.latitude) < 0.01  && abs(rhs.longitude - lhs.longitude) < 0.01
-}
+////true if coordinates are
+//func coordinatesEqual(rhs: CLLocationCoordinate2D,lhs:CLLocationCoordinate2D)->Bool {
+//    return abs(rhs.latitude - lhs.latitude) < 0.01  && abs(rhs.longitude - lhs.longitude) < 0.01
+//}
 
 func getType(type:String)->Icon{
     switch type{

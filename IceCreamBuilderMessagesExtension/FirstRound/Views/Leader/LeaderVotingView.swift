@@ -27,9 +27,7 @@ class LeaderVotingViewController:UIViewController{
     
     weak var delegate: LeaderVotingViewControllerDelegate?
     
-    
-    
-    var category1,category2,category3 : RestaurantGroup?
+    var diningOptionTuplet : DiningOptionTuplet?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -41,54 +39,60 @@ class LeaderVotingViewController:UIViewController{
     }
     
     func loadAll(){
-        self.category1 = Categories.sharedInstance.removeItem(index: 0)
-        self.category2 = Categories.sharedInstance.removeItem(index: 0)
-        self.category3 = Categories.sharedInstance.removeItem(index: 0)
         
-        setCategory1()
-        setCategory2()
-        setCategory3()
+        
+        let option1 = Cuisines.sharedInstance.removeItem(index: 0)
+        let option2 = Cuisines.sharedInstance.removeItem(index: 0)
+        let option3 = Cuisines.sharedInstance.removeItem(index: 0)
+        
+        let newDiningTuplet = DiningOptionTuplet.init(option1: option1, option2: option2, option3: option3)
+        
+        self.diningOptionTuplet = newDiningTuplet
+        
+        update()
         
     }
     
-    func setCategory1(){
-        Icon1.image = category1?.displayIcon.image
-        Label1.text = category1?.grouping.rawValue
-    }
-    func setCategory2(){
-        Icon2.image = category2?.displayIcon.image
-        Label2.text = category2?.grouping.rawValue
-    }
-    func setCategory3(){
-        Icon3.image = category3?.displayIcon.image
-        Label3.text = category3?.grouping.rawValue
+    func update(){
+        
+        guard let diningTuplet = self.diningOptionTuplet else {fatalError("No option present")}
+        
+        Icon1.image = diningTuplet.option1.image
+        Label1.text = diningTuplet.option1.title
+        
+        Icon2.image = diningTuplet.option2.image
+        Label2.text = diningTuplet.option2.title
+        
+        Icon3.image = diningTuplet.option3.image
+        Label3.text = diningTuplet.option3.title
     }
     
     @IBAction func Remove1(_ sender: Any) {
-        if(Categories.sharedInstance.getAvailableRestaurauntGroupsCount() > 0 ) {
-            print("here1")
-            category1 = category2
-            setCategory1()
+        //Can only remove an option if remaining options available
+        
+        if(Cuisines.sharedInstance.getAvailableRestaurauntGroupsCount() > 0 ) {
+            
+            guard let option2 = self.diningOptionTuplet?.option3 else {fatalError("No option 2")}
+            
+            self.diningOptionTuplet?.option1 = option2
+            update()
             Remove2((Any).self)
         }
     }
     
     @IBAction func Remove2(_ sender: Any) {
-        if(Categories.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
-            print("here2")
-            category2 = category3
-            setCategory2()
+        //Can only remove an option if remaining options available
+        if(Cuisines.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
+            guard let option3 = self.diningOptionTuplet?.option3 else {fatalError("No option 3")}
+            self.diningOptionTuplet?.option2 = option3
             Remove3((Any).self)
-            // Categories.sharedInstance.removeItem(index: 1)
         }
     }
     
     @IBAction func Remove3(_ sender: Any) {
-        if(Categories.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
-            print("here3")
-            category3 = Categories.sharedInstance.removeItem(index: 0)
-            
-            setCategory3()
+        if(Cuisines.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
+            self.diningOptionTuplet?.option3 = Cuisines.sharedInstance.removeItem(index: 0)
+            update()
         }
         
     }
@@ -101,42 +105,43 @@ class LeaderVotingViewController:UIViewController{
         guard let thirdSelection = Label3.text else {fatalError("No third selection")}
         
         //by nature, all of the leaders selection are approved
-        
         let vote1 = Vote.init(category: firstSelection, restaurantId: Optional<String>.none, approved: true, ranking: 1)
         
         let vote2 = Vote.init(category: secondSelection, restaurantId: Optional<String>.none, approved: true, ranking: 2)
         
         let vote3 = Vote.init(category: thirdSelection, restaurantId: Optional<String>.none, approved: true, ranking: 3)
         
-       
-        
-        //        let dict = ["1" : firstSelection,"2" : secondSelection, "3" :thirdSelection]
-        //        print(dict)
+        Survey.sharedInstance.setLeaderCategorySelection(leaderSelection: [vote1,vote2,vote3])
         
         delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,caption: "Here's what Paul is in the mood for")
     }
     
     @IBAction func Swap12(_ sender: Any) {
-        let temp = category1
-        category1 = category2
-        category2 = temp
-        setCategory1()
-        setCategory2()
+        
+        guard let currentDiningTuplet = self.diningOptionTuplet else {fatalError("No current dining tuplet")}
+        
+        let newDiningTuplet = DiningOptionTuplet.init(option1: currentDiningTuplet.option2, option2: currentDiningTuplet.option1, option3: currentDiningTuplet.option3)
+        
+        self.diningOptionTuplet = newDiningTuplet
+        
+        update()
     }
     
     
     @IBAction func Swap23(_ sender: Any) {
-        let temp = category2
-        category2 = category3
-        category3 = temp
-        setCategory2()
-        setCategory3()
         
+        guard let currentDiningTuplet = self.diningOptionTuplet else {fatalError("No current dining tuplet")}
+        
+        let newDiningTuplet = DiningOptionTuplet.init(option1: currentDiningTuplet.option1, option2: currentDiningTuplet.option3, option3: currentDiningTuplet.option2)
+        
+        self.diningOptionTuplet = newDiningTuplet
+        
+        update()
     }
     
     
     @IBAction func Shuffle(_ sender: Any) {
-        Categories.sharedInstance.shuffle()
+        Cuisines.sharedInstance.shuffle()
         loadAll()
     }
     
@@ -146,7 +151,6 @@ class LeaderVotingViewController:UIViewController{
     
     
 }
-
 
 
 protocol LeaderVotingViewControllerDelegate: class {

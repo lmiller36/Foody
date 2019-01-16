@@ -38,43 +38,43 @@ class Map : UICollectionReusableView,MKMapViewDelegate,UIGestureRecognizerDelega
     //    }
     
     @objc func RepopulateMap() {
-        let restaurants = RestaurantsNearby.sharedInstance.getApplicableRestaurants()
-        let allAnnotations = self.mapView.annotations
-        self.mapView.removeAnnotations(allAnnotations)
-        
-        var coordinates = [CLLocationCoordinate2D]()
-        
-        for restaurant in restaurants{
-            
-            let annotation = RestaurantMarker(restaurantInfo: restaurant)
-            let coordinate = CLLocationCoordinate2D(latitude: restaurant.coordinates.latitude, longitude: restaurant.coordinates.longitude)
-            
-            coordinates.append(coordinate)
-            
-            annotation.coordinate = coordinate
-            annotation.title = restaurant.name
-            
-            self.mapView.addAnnotation(annotation)
-        }
-        
-        let rects = coordinates.map{ (coordinate) -> MKMapRect in
-            return MKMapRect.init(origin: MKMapPoint.init(x: coordinate.latitude, y: coordinate.longitude),size: MKMapSize.init())
-        }
-        
-        if(rects.count >= 2) {
-       var x = MKMapRectUnion(rects[0], rects[1])
-        
-        rects.forEach {
-            rect in
-                x = MKMapRectUnion(x,rect)
-        }
-        
-        print(rects)
-        print(x)
-            print(x.width + 0.01,x.height + 0.01)
-            self.radius = max(x.width + 0.01,x.height + 0.01)
-
-        }
+//        let restaurants = RestaurantsNearby.sharedInstance.getApplicableRestaurants()
+//        let allAnnotations = self.mapView.annotations
+//        self.mapView.removeAnnotations(allAnnotations)
+//        
+//        var coordinates = [CLLocationCoordinate2D]()
+//        
+//        for restaurant in restaurants{
+//            
+//            let annotation = RestaurantMarker(restaurantInfo: restaurant)
+//            let coordinate = CLLocationCoordinate2D(latitude: restaurant.coordinates.latitude, longitude: restaurant.coordinates.longitude)
+//            
+//            coordinates.append(coordinate)
+//            
+//            annotation.coordinate = coordinate
+//            annotation.title = restaurant.name
+//            
+//            self.mapView.addAnnotation(annotation)
+//        }
+//        
+//        let rects = coordinates.map{ (coordinate) -> MKMapRect in
+//            return MKMapRect.init(origin: MKMapPoint.init(x: coordinate.latitude, y: coordinate.longitude),size: MKMapSize.init())
+//        }
+//        
+//        if(rects.count >= 2) {
+//       var x = MKMapRectUnion(rects[0], rects[1])
+//        
+//        rects.forEach {
+//            rect in
+//                x = MKMapRectUnion(x,rect)
+//        }
+//        
+//        print(rects)
+//        print(x)
+//            print(x.width + 0.01,x.height + 0.01)
+//            self.radius = max(x.width + 0.01,x.height + 0.01)
+//
+//        }
        
         
 //        let center = CLLocation(latitude: x.origin.coordinate.latitude,longitude: x.origin.coordinate.longitude)

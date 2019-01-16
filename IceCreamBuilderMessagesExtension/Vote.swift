@@ -12,10 +12,13 @@ struct MessageStruct : Codable {
     
     let state : String
     let leader: String
+    let messageSender: String
+    let surveyID : String
     
     let vote1 : Vote
     let vote2 : Vote
     let vote3 : Vote
+    
 }
 
 struct Vote : Codable {

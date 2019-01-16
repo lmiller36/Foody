@@ -15,13 +15,11 @@ class MessagesViewController: MSMessagesAppViewController {
     var stateOfApp = AppState.MainMenu
     var leaderOfSurvey : String?
     
-    
-    
+    var surveyID : SurveyID?
     var remainingParticipants,completedParticipants : [String]?
     var myIdentifier : UUID?
     var isLeader = false
-    //    var knownParticipants = [Participant]()
-    //    var knownNumberOfParticipants : Int?
+    var numberOfParticipants : Int?
     var appQueryItems = [URLQueryItem]()
     var savedAppData = [String : Int]()
     //    var hasCached = false
@@ -71,6 +69,9 @@ class MessagesViewController: MSMessagesAppViewController {
     
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
         
+        
+        let survey = SurveyID.generate()
+        print(survey.id)
         let url = conversation.selectedMessage?.url
         
         self.leaderOfSurvey = conversation.localParticipantIdentifier.uuidString
@@ -82,9 +83,13 @@ class MessagesViewController: MSMessagesAppViewController {
         //defaults to true, and changed if necessary with the message struct
         self.isLeader = true
         
+        //defaults to number in conversation (not including the leader)
+        self.numberOfParticipants = conversation.remoteParticipantIdentifiers.count
+        
+        
+        
         //there has been at least one round
         if let queryItems = URLComponents(string: url?.absoluteString ?? "")?.queryItems {
-            print(queryItems)
             guard let savedMessage =  queryItems.filter({$0.name == MessagesViewController.DATA}).first?.value else {fatalError("Data was not received")}
             
             guard let decodedData = savedMessage.data(using: .utf8) else {fatalError("Data could not be decoded")}
@@ -95,52 +100,97 @@ class MessagesViewController: MSMessagesAppViewController {
             
             self.leaderOfSurvey = decodedMessageStruct.leader
             self.isLeader = self.leaderOfSurvey == conversation.localParticipantIdentifier.uuidString
-           
+            
             guard let nextState = AppState.init(rawValue:  decodedMessageStruct.state) else {fatalError("unexpected App State")}
             
-            self.stateOfApp = nextState
+            if(nextState == AppState.CategorySelection){
+                
+                // if leader do something different
+                if(!self.isLeader) {
+                    
+                    let category1 = decodedMessageStruct.vote1.category
+                    
+                    guard let grouping1 = Grouping.init(rawValue : decodedMessageStruct.vote1.category) else {fatalError("Unexpected grouping value")}
+                    let cuisine1 =  Cuisines.getCuisine(grouping: grouping1)
+
+                    let image1 = cuisine1.displayInformation.image
+                    let option1 = DiningOption.init(title: category1, image: image1, restaurant: Optional<RestaurantInfo>.none)
+                    
+                    let category2 = decodedMessageStruct.vote2.category
+                    guard let grouping2 = Grouping.init(rawValue : decodedMessageStruct.vote2.category) else {fatalError("Unexpected grouping value")}
+                    let cuisine2 =  Cuisines.getCuisine(grouping: grouping2)
+
+                    let image2 = cuisine2.displayInformation.image
+                    let option2 = DiningOption.init(title: category2, image: image2, restaurant: Optional<RestaurantInfo>.none)
+                    
+                    let category3 = decodedMessageStruct.vote3.category
+                    guard let grouping3 = Grouping.init(rawValue : decodedMessageStruct.vote3.category) else {fatalError("Unexpected grouping value")}
+                    let cuisine3 =  Cuisines.getCuisine(grouping: grouping3)
+
+                    let image3 = cuisine3.displayInformation.image
+                    let option3 = DiningOption.init(title: category3, image: image3, restaurant: Optional<RestaurantInfo>.none)
+                    
+                    let leadersSelection = DiningOptionTuplet.init(option1: option1, option2: option2, option3: option3)
+                    
+                    Survey.sharedInstance.receivedFirstRoundOptions(firstRoundOptions: leadersSelection)
+                }
+                    //you are the leader and have clicked on a participants vote
+                else if (decodedMessageStruct.messageSender != conversation.localParticipantIdentifier.uuidString) {
+                    print("Add participant's Vote!!")
+                    
+                    //repopulate Survey from saved cache data
+                    guard let savedCacheData = Survey.readFromCache() else {fatalError("No saved cache data")}
+                    
+                    let surveyIDsMatch = savedCacheData.surveyID.id == decodedMessageStruct.surveyID
+                    
+                    if (surveyIDsMatch) {
+                        
+                        Survey.sharedInstance.repopulateSurvey(cacheableSurvey: savedCacheData)
+                        
+                        let participantVote = ParticipantVote.fromMessageStruct(message: decodedMessageStruct)
+                        Survey.sharedInstance.appendParticipantsVotes(vote: participantVote)
+                        
+                        print(Survey.sharedInstance.toString())
+                        
+                    }
+                    else {
+                        print("survey id's did not match")
+                    }
+                }
+            }
+            
+            let savedSurveyID = SurveyID.init(id: decodedMessageStruct.surveyID)
+            Survey.sharedInstance.populateSurveyID(surveyID: savedSurveyID)
+            self.surveyID = savedSurveyID
+            
+            if(self.isLeader) {
+                print(Survey.sharedInstance.toString())
+            }
+            
+            //check if leader ... so go to wait
+            if(self.isLeader){
+                
+                //if survey is finished, advance to the next state
+                if(Survey.sharedInstance.roundIsFinished()) {
+                    self.stateOfApp = nextState.NextState()
+                }
+                    //the round is finished
+                else {
+                    self.stateOfApp = AppState.Wait
+                }
+                
+            }
+            else {
+                self.stateOfApp = nextState
+            }
         }
         
         if(!(self.remainingParticipants != nil)) {
             self.remainingParticipants = conversation.remoteParticipantIdentifiers.map{$0.uuidString}
         }
         
-        
-        
-        //        //participant has voted
-        //        if let completedParticipants = self.completedParticipants {
-        //            if(completedParticipants.contains(conversation.localParticipantIdentifier.uuidString)){
-        //                self.stateOfApp = AppState.Wait
-        //            }
-        //
-        //                //participant has not voted in this round
-        //            else{
-        //                self.stateOfApp = currentRound
-        //            }
-        //        }
-        //            // first round voting
-        //        else{
-        //            self.stateOfApp = currentRound
-        //        }
-        
-        
-        //self.myIdentifier =  conversation.localParticipantIdentifier
         switchState(newState: self.stateOfApp)
         
-    }
-    
-    //    private func concatenateUUIDS(UUIDS:[UUID])->String{
-    //        return UUIDS.map{$0.uuidString}.joined(separator:MessagesViewController.DELIMETER)
-    //    }
-    
-    private func getAllParticipantUUIDStrings(queryItems:[URLQueryItem])->[Participant]{
-        var known_Participants = [Participant]()
-        
-        return known_Participants
-    }
-    
-    private func createParticipantKey(count:Int)->String{
-        return "participantUUID_" + String(count)
     }
     
     private func instantiateInitialSetupController() -> UIViewController {
@@ -183,6 +233,15 @@ class MessagesViewController: MSMessagesAppViewController {
             as? LeaderVotingViewController
             else { fatalError("Unable to instantiate a StartMenuViewController from the storyboard") }
         
+        //populate surveyID , which has not yet been generated
+        let newSurveyID = SurveyID.generate()
+        self.surveyID = newSurveyID
+        Survey.sharedInstance.populateSurveyID(surveyID: newSurveyID)
+        
+        //populate participant count in survey
+        guard let participantCount = self.numberOfParticipants else {fatalError("Number of participants not present")}
+        Survey.sharedInstance.setParticipatingMemberCount(count: participantCount)
+        
         controller.delegate = self
         
         return controller
@@ -198,6 +257,21 @@ class MessagesViewController: MSMessagesAppViewController {
         
         return controller
     }
+    
+    
+    private func instantiateLeaderRestaurantViewController() -> UIViewController {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: LeaderRestaurantViewController.storyboardIdentifier)
+            as? LeaderRestaurantViewController
+            else { fatalError("Unable to instantiate an ParticipantViewController from the storyboard") }
+        
+        Survey.sharedInstance.tallyResults()
+        
+        controller.delegate = self
+        
+        return controller
+    }
+    
+    
     
     
     private func initializeController(){
@@ -219,12 +293,13 @@ class MessagesViewController: MSMessagesAppViewController {
             else {
                 controller = instantiateParticipantViewController()
             }
-            //        case AppState.VotingRound1:
-            //            controller = instantiateVotingController()
-            //        case AppState.VotingRound2:
-            //            controller = instantiateVotingController()
-            //        case AppState.VotingRound3:
-        //            controller = instantiateVotingController()
+        case AppState.RestaurantSelection :
+            if(self.isLeader){
+                controller = instantiateLeaderRestaurantViewController()
+            }
+            else {
+                controller = instantiateWaitingViewController()
+            }
         case AppState.Wait:
             controller = instantiateWaitingViewController()
         default :
@@ -391,7 +466,6 @@ class MessagesViewController: MSMessagesAppViewController {
         }
         
         
-        
         return true
         
         
@@ -431,10 +505,11 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     func createMessageStruct(vote1:Vote,vote2:Vote,vote3:Vote)->MessageStruct{
-        let nextState = (self.isLeader ? self.stateOfApp : self.stateOfApp.NextState()).rawValue
+        let nextState = self.stateOfApp.rawValue//(self.isLeader ? self.stateOfApp : self.stateOfApp.NextState()).rawValue
         guard let leader = self.leaderOfSurvey else {fatalError("No leader found")}
-        
-        let message = MessageStruct.init(state: nextState, leader: leader, vote1: vote1, vote2: vote2, vote3: vote3)
+        guard let myUUID = self.myIdentifier else {fatalError("No UUID found")}
+        guard let surveyID = self.surveyID else {fatalError("No survey ID found")}
+        let message = MessageStruct.init(state: nextState, leader: leader, messageSender:myUUID.uuidString,surveyID:surveyID.id,vote1: vote1, vote2: vote2, vote3: vote3)
         
         return message
     }
@@ -442,7 +517,7 @@ class MessagesViewController: MSMessagesAppViewController {
 
 /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
 
-extension MessagesViewController: InitialSetupViewControllerDelegate,LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate {
+extension MessagesViewController: InitialSetupViewControllerDelegate,LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate,LeaderRestaurantViewDelegate {
     
     func backToMainMenu() {
         stateOfApp = AppState.MainMenu
@@ -452,7 +527,7 @@ extension MessagesViewController: InitialSetupViewControllerDelegate,LeaderVotin
     func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote, caption:String){
         
         let message = createMessageStruct(vote1: vote1,vote2: vote2,vote3: vote3)
-        
+        print(message)
         //        let conversation_dict = addConversationDetails(dictionary:dictionary)
         //        print(conversation_dict)
         createMessage(message: message,caption:caption)

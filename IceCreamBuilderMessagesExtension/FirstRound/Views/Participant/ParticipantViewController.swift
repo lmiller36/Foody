@@ -16,25 +16,27 @@ class ParticipantViewController:UIViewController{
     weak var delegate: ParticipantVotingViewControllerDelegate?
     var showBorder = false
     
-    var categoryStates : [Grouping: SelectionState]
+    var categoryStates : [SelectionState]
+    var diningTuplet : DiningOptionTuplet?
     
     
     @IBOutlet weak var AvailableTypes: UICollectionView!
     
     required init?(coder aDecoder: NSCoder) {
-        self.categoryStates = [Grouping: SelectionState]()
+        self.categoryStates = [SelectionState]()
+        
         super.init(coder: aDecoder)
     }
     
     override func viewDidLoad() {
-        for grouping in Categories.sharedInstance.currentOrdering{
-            categoryStates[grouping] = SelectionState.unselected
-        }
+        self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
+        self.diningTuplet = Survey.sharedInstance.getFirstRoundOptions()
     }
     
-    func switchState(grouping : Grouping){
-        let currentState = categoryStates[grouping]
-        let newState : SelectionState  =  {switch(currentState!){
+    func switchState(index:Int){
+        let currentState = categoryStates[index]
+        let newState : SelectionState  =  {
+            switch(currentState){
             
         case SelectionState.unselected:
             return SelectionState.approved
@@ -44,23 +46,18 @@ class ParticipantViewController:UIViewController{
             return SelectionState.approved
             }}()
         
-        categoryStates[grouping] = newState
-        print(currentState)
-        print(newState)
+        categoryStates[index] = newState
     }
     
     @objc private func SelectionTapped(_ sender: UITapGestureRecognizer){
         
-        print("tapped image!")
-        
-        
         guard let indexPath = self.AvailableTypes?.indexPathForItem(at: sender.location(in: self.AvailableTypes)) else {return}
         guard let cell = self.AvailableTypes?.cellForItem(at: indexPath) as? ParticipantVoteCell else {return}
-    
-        let grouping = Grouping.init(rawValue: cell.IconTitle.text!)!
-        switchState(grouping: grouping)
         
-      
+        let grouping = Grouping.init(rawValue: cell.IconTitle.text!)!
+        switchState(index: indexPath.row)
+        
+        
         self.AvailableTypes.reloadData()
         
     }
@@ -69,48 +66,46 @@ class ParticipantViewController:UIViewController{
         
         var votedOnAllOptions = true
         
-//        var votes = [String:String]()
+        //        var votes = [String:String]()
         self.showBorder = true
         
-        var votes = [Vote]()
+        guard let diningTuplet = self.diningTuplet else {fatalError("No saved dining tuplet")}
         
-       let selection = self.categoryStates.filter({$0.value != SelectionState.unselected})
-        print(selection)
+        for selectionState in self.categoryStates{
+            votedOnAllOptions = votedOnAllOptions && (selectionState != SelectionState.unselected)
+        }
+        
+        //can submit
+        if(votedOnAllOptions)
+        {
+            
+            print(categoryStates)
+            
+        let vote1 = Vote.init(category: diningTuplet.option1.title, restaurantId: Optional<String>.none, approved: self.categoryStates[0].isApproved(), ranking: 1)
+        
+        let vote2 = Vote.init(category: diningTuplet.option2.title, restaurantId: Optional<String>.none, approved: self.categoryStates[1].isApproved(), ranking: 2)
+        
+        let vote3 = Vote.init(category: diningTuplet.option3.title, restaurantId: Optional<String>.none, approved: self.categoryStates[2].isApproved(), ranking: 3)
+            
+            self.delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,caption: "Lorne has voted")
+        }
+        else {
+            self.AvailableTypes.reloadData()
+        }
     }
-        
+    
     @IBAction func Back_Main_Menu(_ sender: Any) {
-         self.delegate?.backToMainMenu()
+        self.delegate?.backToMainMenu()
     }
     
     
     
 }
 
-//if let visibleCells = self.AvailableTypes?.visibleCells as? [UICollectionViewCell] {
-//    for cell in visibleCells {
-//        if let participantViewCell = cell as? ParticipantVoteCell {
-//            //                    print(participantViewCell.IconTitle.text)
-//            //                    participantViewCell.showBorder = true
-//            //
-//            //                    if (participantViewCell.state == SelectionState.unselected)
-//            //                    {
-//            //                        votedOnAllOptions = false
-//            //                        participantViewCell.layer.borderColor = UIColor.red.cgColor
-//            //                        participantViewCell.layer.borderWidth = 1
-//            //                    }
-//            //                    else {
-//            //                        participantViewCell.layer.borderWidth = 0
-//            //                        if let text = participantViewCell.IconTitle.text {
-//            //                            votes[text] = String(participantViewCell.state.isApproved())
-//            //                        }
-//            //                    }
-//
-//        }
-//    }
 
 extension ParticipantViewController : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Categories.sharedInstance.getAvailableRestaurauntGroupsCount()
+        return self.categoryStates.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -127,14 +122,17 @@ extension ParticipantViewController : UICollectionViewDataSource {
             else { fatalError("Unable to dequeue a VoteCell") }
         
         let row = indexPath.row
-        let representedRestaurantGroup =  Categories.sharedInstance.getRestaurantGroup(index: row)
+        guard let diningTuplet = self.diningTuplet else {fatalError("No saved dining tuplet")}
+
+        let diningOption = diningTuplet.getOption(index: row)
         
         //cell.Info = representedRestaurantGroup.grouping.rawValue
-        cell.IconTitle.text = representedRestaurantGroup.grouping.rawValue
-        cell.Icon.image = representedRestaurantGroup.displayIcon.image
+        cell.IconTitle.text = diningOption.title
+        cell.Icon.image = diningOption.image
         
         let grouping = Grouping.init(rawValue: cell.IconTitle.text!)!
-        let state = self.categoryStates[grouping] as! SelectionState
+        let state = self.categoryStates[row]
+        
         
         let image : UIImage = {
             switch (state) {
@@ -158,19 +156,6 @@ extension ParticipantViewController : UICollectionViewDataSource {
         else {
             cell.layer.borderWidth = 0
         }
-//
-//                            if (self.categoryStates[representedRestaurantGroup.grouping] == SelectionState.unselected && self.showBorder)
-//                            {
-//
-//                                cell.layer.borderColor = UIColor.red.cgColor
-//                                cell.layer.borderWidth = 1
-//                            }
-//                            else {
-//                                cell.layer.borderWidth = 0
-//                                if let text = cell.IconTitle.text {
-//                                    //votes[text] = String(participantViewCell.state.isApproved())
-//                                }
-//                            }
         
         cell.Info.text = ""
         cell.Statement1.text = ""
