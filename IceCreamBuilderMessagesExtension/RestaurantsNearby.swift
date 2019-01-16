@@ -309,7 +309,7 @@ class RestaurantsNearby {
     
         let yelpRequest = YelpRequest.init(coordinates: locationCoordinates, result_limit: 50, radius_in_meters: 1000, categories: [], sortAttribute: SortAttribute.best_match)
     
-    yelpRequest.getNearbyRestaurants(callback :{ (restaurants) in
+        getNearbyRestaurants(base_url: yelpRequest.request_url(),callback :{ (restaurants) in
     print(restaurants)
     //RestaurantsNearby.sharedInstance.addRestaurants(restaurants: restaurants)
     })

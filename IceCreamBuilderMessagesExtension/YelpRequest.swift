@@ -94,10 +94,11 @@ public struct YelpRequest {
         
         return url
     }
+}
     
-    func getNearbyRestaurants(callback: @escaping (_ restaurants: [RestaurantInfo]) -> Void){
+func getNearbyRestaurants(base_url : String,callback: @escaping (_ restaurants: [RestaurantInfo]) -> Void){
         
-        let base_url = self.request_url()
+        
         
         guard let url = URL(string:base_url) else {fatalError("URL not valid")}
         var userRequest = URLRequest(url: url)
@@ -126,7 +127,7 @@ public struct YelpRequest {
             
             
             }.resume()
-    }
+    
 }
 
 public enum SortAttribute : String{

@@ -18,6 +18,8 @@ class LeaderRestaurantViewController : UIViewController {
     
     var diningOptions = [DiningOption]()
     
+    var queryString : String?
+    
     weak var delegate: LeaderRestaurantViewDelegate?
     
     static let storyboardIdentifier = "LeaderRestaurantViewController"
@@ -46,8 +48,11 @@ class LeaderRestaurantViewController : UIViewController {
                 //Initialize yelp request
                 let yelpRequest = YelpRequest.init(coordinates: locationCoordinates, result_limit: 50, radius_in_meters: 10000, categories: categories,sortAttribute: SortAttribute.best_match)
                 
+                let base_url = yelpRequest.request_url()
+                self.queryString = base_url
+                
                 //Make API call to Yelp
-                yelpRequest.getNearbyRestaurants(callback :{ (restaurants) in
+                getNearbyRestaurants(base_url:base_url,callback :{ (restaurants) in
                     print(restaurants.map{$0.name})
                     
                     //Add restaurants to shared instance
@@ -153,9 +158,12 @@ class LeaderRestaurantViewController : UIViewController {
         
         let vote3 = Vote.init(cuisine: thirdSelection.cuisine, restaurantId: thirdSelection.restaurant?.id, approved: true, ranking: 3)
         
-        Survey.sharedInstance.setLeaderRestaurantSelection(leaderSelection: [vote1,vote2,vote3])
+        guard let queryString = self.queryString else {fatalError(
+            "No query string present")}
         
-        delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: Optional<String>.none, caption: "Here's which restaurants Paul likes")
+        Survey.sharedInstance.setLeaderRestaurantSelection(leaderSelection: [vote1,vote2,vote3], queryString: queryString)
+        
+        delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: queryString, caption: "Here's which restaurants Paul likes")
         
     }
     

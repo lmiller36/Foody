@@ -106,7 +106,8 @@ class Survey {
         Survey.writeCache(survey: self)
     }
     
-    func setLeaderRestaurantSelection(leaderSelection : [Vote]){
+    func setLeaderRestaurantSelection(leaderSelection : [Vote],queryString : String){
+        self.queryString = queryString
         self.leaderRestaurauntSelection = leaderSelection
         
         Survey.writeCache(survey: self)

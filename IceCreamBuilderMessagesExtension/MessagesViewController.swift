@@ -158,6 +158,9 @@ class MessagesViewController: MSMessagesAppViewController {
                     }
                 }
             }
+            else if(nextState == AppState.RestaurantSelection){
+                
+            }
             
             let savedSurveyID = SurveyID.init(id: decodedMessageStruct.surveyID)
             Survey.sharedInstance.populateSurveyID(surveyID: savedSurveyID)
@@ -298,7 +301,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 controller = instantiateLeaderRestaurantViewController()
             }
             else {
-                controller = instantiateWaitingViewController()
+                controller = instantiateParticipantViewController()
             }
         case AppState.Wait:
             controller = instantiateWaitingViewController()
