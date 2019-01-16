@@ -14,6 +14,7 @@ struct MessageStruct : Codable {
     let leader: String
     let messageSender: String
     let surveyID : String
+    let urlQueryString : String?
     
     let vote1 : Vote
     let vote2 : Vote
@@ -22,13 +23,13 @@ struct MessageStruct : Codable {
 }
 
 struct Vote : Codable {
-    let category : String
+    let cuisine : String
     let restaurantId : String?
     let approved : Bool
     let ranking : Int
     
     enum CodingKeys : String,CodingKey{
-        case category
+        case cuisine
         case restaurantId
         case approved
         case ranking

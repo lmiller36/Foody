@@ -28,7 +28,7 @@ class RestaurantsNearby {
             let title = restaurant.getCategory().title
             let image = getType(type: restaurant.getCategory().alias).image
             
-            let diningOption = DiningOption.init(title: title, image: image, restaurant: restaurant)
+            let diningOption = DiningOption.init(cuisine: title, image: image, restaurant: restaurant)
         
         self.restaurants.append(diningOption)
         }

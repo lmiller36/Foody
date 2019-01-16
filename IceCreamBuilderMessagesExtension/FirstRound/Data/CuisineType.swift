@@ -16,7 +16,7 @@ class Cuisine {
     
     init(applicationRestaurants:[Icon],displayIcon:Icon,grouping:Grouping) {
         self.applicableCategories = applicationRestaurants
-        self.displayInformation = DiningOption.init(title: grouping.rawValue, image: displayIcon.image, restaurant: Optional<RestaurantInfo>.none)
+        self.displayInformation = DiningOption.init(cuisine: grouping.rawValue, image: displayIcon.image, restaurant: Optional<RestaurantInfo>.none)
     }
 }
 

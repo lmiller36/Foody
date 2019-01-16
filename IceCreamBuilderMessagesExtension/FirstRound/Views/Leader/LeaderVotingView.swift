@@ -58,13 +58,13 @@ class LeaderVotingViewController:UIViewController{
         guard let diningTuplet = self.diningOptionTuplet else {fatalError("No option present")}
         
         Icon1.image = diningTuplet.option1.image
-        Label1.text = diningTuplet.option1.title
+        Label1.text = diningTuplet.option1.cuisine
         
         Icon2.image = diningTuplet.option2.image
-        Label2.text = diningTuplet.option2.title
+        Label2.text = diningTuplet.option2.cuisine
         
         Icon3.image = diningTuplet.option3.image
-        Label3.text = diningTuplet.option3.title
+        Label3.text = diningTuplet.option3.cuisine
     }
     
     @IBAction func Remove1(_ sender: Any) {
@@ -72,7 +72,7 @@ class LeaderVotingViewController:UIViewController{
         
         if(Cuisines.sharedInstance.getAvailableRestaurauntGroupsCount() > 0 ) {
             
-            guard let option2 = self.diningOptionTuplet?.option3 else {fatalError("No option 2")}
+            guard let option2 = self.diningOptionTuplet?.option2 else {fatalError("No option 2")}
             
             self.diningOptionTuplet?.option1 = option2
             update()
@@ -105,15 +105,15 @@ class LeaderVotingViewController:UIViewController{
         guard let thirdSelection = Label3.text else {fatalError("No third selection")}
         
         //by nature, all of the leaders selection are approved
-        let vote1 = Vote.init(category: firstSelection, restaurantId: Optional<String>.none, approved: true, ranking: 1)
+        let vote1 = Vote.init(cuisine: firstSelection, restaurantId: Optional<String>.none, approved: true, ranking: 1)
         
-        let vote2 = Vote.init(category: secondSelection, restaurantId: Optional<String>.none, approved: true, ranking: 2)
+        let vote2 = Vote.init(cuisine: secondSelection, restaurantId: Optional<String>.none, approved: true, ranking: 2)
         
-        let vote3 = Vote.init(category: thirdSelection, restaurantId: Optional<String>.none, approved: true, ranking: 3)
+        let vote3 = Vote.init(cuisine: thirdSelection, restaurantId: Optional<String>.none, approved: true, ranking: 3)
         
         Survey.sharedInstance.setLeaderCategorySelection(leaderSelection: [vote1,vote2,vote3])
         
-        delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,caption: "Here's what Paul is in the mood for")
+        delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: Optional<String>.none,caption: "Here's what Paul is in the mood for")
     }
     
     @IBAction func Swap12(_ sender: Any) {
@@ -159,7 +159,7 @@ protocol LeaderVotingViewControllerDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote, caption:String)
+    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote,queryString:String?, caption:String)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     

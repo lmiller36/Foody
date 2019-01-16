@@ -108,27 +108,27 @@ class MessagesViewController: MSMessagesAppViewController {
                 // if leader do something different
                 if(!self.isLeader) {
                     
-                    let category1 = decodedMessageStruct.vote1.category
+                    let category1 = decodedMessageStruct.vote1.cuisine
                     
-                    guard let grouping1 = Grouping.init(rawValue : decodedMessageStruct.vote1.category) else {fatalError("Unexpected grouping value")}
+                    guard let grouping1 = Grouping.init(rawValue : decodedMessageStruct.vote1.cuisine) else {fatalError("Unexpected grouping value")}
                     let cuisine1 =  Cuisines.getCuisine(grouping: grouping1)
 
                     let image1 = cuisine1.displayInformation.image
-                    let option1 = DiningOption.init(title: category1, image: image1, restaurant: Optional<RestaurantInfo>.none)
+                    let option1 = DiningOption.init(cuisine: category1, image: image1, restaurant: Optional<RestaurantInfo>.none)
                     
-                    let category2 = decodedMessageStruct.vote2.category
-                    guard let grouping2 = Grouping.init(rawValue : decodedMessageStruct.vote2.category) else {fatalError("Unexpected grouping value")}
+                    let category2 = decodedMessageStruct.vote2.cuisine
+                    guard let grouping2 = Grouping.init(rawValue : decodedMessageStruct.vote2.cuisine) else {fatalError("Unexpected grouping value")}
                     let cuisine2 =  Cuisines.getCuisine(grouping: grouping2)
 
                     let image2 = cuisine2.displayInformation.image
-                    let option2 = DiningOption.init(title: category2, image: image2, restaurant: Optional<RestaurantInfo>.none)
+                    let option2 = DiningOption.init(cuisine: category2, image: image2, restaurant: Optional<RestaurantInfo>.none)
                     
-                    let category3 = decodedMessageStruct.vote3.category
-                    guard let grouping3 = Grouping.init(rawValue : decodedMessageStruct.vote3.category) else {fatalError("Unexpected grouping value")}
+                    let category3 = decodedMessageStruct.vote3.cuisine
+                    guard let grouping3 = Grouping.init(rawValue : decodedMessageStruct.vote3.cuisine) else {fatalError("Unexpected grouping value")}
                     let cuisine3 =  Cuisines.getCuisine(grouping: grouping3)
 
                     let image3 = cuisine3.displayInformation.image
-                    let option3 = DiningOption.init(title: category3, image: image3, restaurant: Optional<RestaurantInfo>.none)
+                    let option3 = DiningOption.init(cuisine: category3, image: image3, restaurant: Optional<RestaurantInfo>.none)
                     
                     let leadersSelection = DiningOptionTuplet.init(option1: option1, option2: option2, option3: option3)
                     
@@ -504,12 +504,12 @@ class MessagesViewController: MSMessagesAppViewController {
         }
     }
     
-    func createMessageStruct(vote1:Vote,vote2:Vote,vote3:Vote)->MessageStruct{
+    func createMessageStruct(vote1:Vote,vote2:Vote,vote3:Vote,queryString:String?)->MessageStruct{
         let nextState = self.stateOfApp.rawValue//(self.isLeader ? self.stateOfApp : self.stateOfApp.NextState()).rawValue
         guard let leader = self.leaderOfSurvey else {fatalError("No leader found")}
         guard let myUUID = self.myIdentifier else {fatalError("No UUID found")}
         guard let surveyID = self.surveyID else {fatalError("No survey ID found")}
-        let message = MessageStruct.init(state: nextState, leader: leader, messageSender:myUUID.uuidString,surveyID:surveyID.id,vote1: vote1, vote2: vote2, vote3: vote3)
+        let message = MessageStruct.init(state: nextState, leader: leader, messageSender:myUUID.uuidString,surveyID:surveyID.id,urlQueryString : queryString,vote1: vote1, vote2: vote2, vote3: vote3)
         
         return message
     }
@@ -524,9 +524,9 @@ extension MessagesViewController: InitialSetupViewControllerDelegate,LeaderVotin
         switchState(newState: stateOfApp)
     }
     
-    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote, caption:String){
+    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote, queryString:String?, caption:String){
         
-        let message = createMessageStruct(vote1: vote1,vote2: vote2,vote3: vote3)
+        let message = createMessageStruct(vote1: vote1,vote2: vote2,vote3: vote3,queryString:queryString)
         print(message)
         //        let conversation_dict = addConversationDetails(dictionary:dictionary)
         //        print(conversation_dict)

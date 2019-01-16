@@ -27,6 +27,7 @@ class Survey {
     //second round
     private var categoryWinner : DiningOption?
     private var leaderRestaurauntSelection : [Vote]?
+    private var queryString : String?
     
     
     init(){
@@ -70,11 +71,11 @@ class Survey {
         
         if let highestVote = highestVote {
             
-            let category = highestVote.category
-            guard let grouping = Grouping.init(rawValue : highestVote.category) else {fatalError("Unexpected grouping value")}
+            let category = highestVote.cuisine
+            guard let grouping = Grouping.init(rawValue : highestVote.cuisine) else {fatalError("Unexpected grouping value")}
              let cuisine =  Cuisines.getCuisine(grouping: grouping)
             let image = cuisine.displayInformation.image
-            self.categoryWinner = DiningOption.init(title: category, image: image, restaurant: Optional<RestaurantInfo>.none)
+            self.categoryWinner = DiningOption.init(cuisine: category, image: image, restaurant: Optional<RestaurantInfo>.none)
             
             self.participantsVotes.removeAll()
             
@@ -104,6 +105,13 @@ class Survey {
         
         Survey.writeCache(survey: self)
     }
+    
+    func setLeaderRestaurantSelection(leaderSelection : [Vote]){
+        self.leaderRestaurauntSelection = leaderSelection
+        
+        Survey.writeCache(survey: self)
+    }
+    
     
     func appendParticipantsVotes (vote : ParticipantVote){
         
@@ -162,8 +170,9 @@ class Survey {
         guard let participantCount = survey.participatingMemberCount else {fatalError("No member count present")}
         guard let firstRoundLeaderOptions = survey.leaderCategorySelection else {fatalError("No Leader options present")}
         
+          let secondRoundLeaderOptions = survey.leaderRestaurauntSelection ?? []
         
-        let cacheableSurvey = CacheableSurvey.init(surveyID: surveyID, participantCount: participantCount, votes: survey.participantsVotes, firstRoundOptions: firstRoundLeaderOptions)
+        let cacheableSurvey = CacheableSurvey.init(surveyID: surveyID, participantCount: participantCount, votes: survey.participantsVotes, firstRoundOptions: firstRoundLeaderOptions,secondRoundOptions:secondRoundLeaderOptions,queryString:survey.queryString)
         
         return cacheableSurvey
     }
@@ -208,6 +217,10 @@ struct CacheableSurvey : Codable {
     let participantCount : Int
     let votes : [ParticipantVote]
     let firstRoundOptions : [Vote]
+    
+    let secondRoundOptions : [Vote]
+    let queryString : String?
+    
 }
 
 struct ParticipantVote : Codable{

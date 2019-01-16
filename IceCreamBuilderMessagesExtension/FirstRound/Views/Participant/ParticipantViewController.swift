@@ -81,13 +81,13 @@ class ParticipantViewController:UIViewController{
             
             print(categoryStates)
             
-        let vote1 = Vote.init(category: diningTuplet.option1.title, restaurantId: Optional<String>.none, approved: self.categoryStates[0].isApproved(), ranking: 1)
+        let vote1 = Vote.init(cuisine: diningTuplet.option1.cuisine, restaurantId: Optional<String>.none, approved: self.categoryStates[0].isApproved(), ranking: 1)
         
-        let vote2 = Vote.init(category: diningTuplet.option2.title, restaurantId: Optional<String>.none, approved: self.categoryStates[1].isApproved(), ranking: 2)
+        let vote2 = Vote.init(cuisine: diningTuplet.option2.cuisine, restaurantId: Optional<String>.none, approved: self.categoryStates[1].isApproved(), ranking: 2)
         
-        let vote3 = Vote.init(category: diningTuplet.option3.title, restaurantId: Optional<String>.none, approved: self.categoryStates[2].isApproved(), ranking: 3)
+        let vote3 = Vote.init(cuisine: diningTuplet.option3.cuisine, restaurantId: Optional<String>.none, approved: self.categoryStates[2].isApproved(), ranking: 3)
             
-            self.delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,caption: "Lorne has voted")
+            self.delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: Optional<String>.none, caption: "Lorne has voted")
         }
         else {
             self.AvailableTypes.reloadData()
@@ -127,7 +127,7 @@ extension ParticipantViewController : UICollectionViewDataSource {
         let diningOption = diningTuplet.getOption(index: row)
         
         //cell.Info = representedRestaurantGroup.grouping.rawValue
-        cell.IconTitle.text = diningOption.title
+        cell.IconTitle.text = diningOption.cuisine
         cell.Icon.image = diningOption.image
         
         let grouping = Grouping.init(rawValue: cell.IconTitle.text!)!
@@ -175,7 +175,7 @@ protocol ParticipantVotingViewControllerDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote, caption:String)
+    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote,queryString:String?, caption:String)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     

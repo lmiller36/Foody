@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct DiningOption {
-    let title : String
+    let cuisine : String
     let image : UIImage
     let restaurant : RestaurantInfo?
 }

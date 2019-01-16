@@ -13,7 +13,7 @@ class WaitingViewController : UIViewController {
     static let storyboardIdentifier = "WaitingViewController"
     
     override func viewDidLoad() {
-        print(Survey.readFromCache())
+       // print(Survey.readFromCache())
     }
     
 }
