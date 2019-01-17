@@ -103,7 +103,7 @@ class MessagesViewController: MSMessagesAppViewController {
             
             guard let nextState = AppState.init(rawValue:  decodedMessageStruct.state) else {fatalError("unexpected App State")}
             
-            if(nextState == AppState.CategorySelection){
+            if(nextState == AppState.CategorySelection || nextState == AppState.RestaurantSelection){
                 
                 // if leader do something different
                 if(!self.isLeader) {
@@ -131,8 +131,14 @@ class MessagesViewController: MSMessagesAppViewController {
                     let option3 = DiningOption.init(cuisine: category3, image: image3, restaurant: Optional<RestaurantInfo>.none)
                     
                     let leadersSelection = DiningOptionTuplet.init(option1: option1, option2: option2, option3: option3)
-                    
+                    if(nextState == AppState.CategorySelection) {
                     Survey.sharedInstance.receivedFirstRoundOptions(firstRoundOptions: leadersSelection)
+                    }
+                    
+                    if(nextState == AppState.RestaurantSelection) {
+                        Survey.sharedInstance.receivedFirstRoundOptions(firstRoundOptions: leadersSelection)
+                    }
+                    
                 }
                     //you are the leader and have clicked on a participants vote
                 else if (decodedMessageStruct.messageSender != conversation.localParticipantIdentifier.uuidString) {
@@ -158,9 +164,9 @@ class MessagesViewController: MSMessagesAppViewController {
                     }
                 }
             }
-            else if(nextState == AppState.RestaurantSelection){
-                
-            }
+//            else if(nextState == AppState.RestaurantSelection){
+//
+//            }
             
             let savedSurveyID = SurveyID.init(id: decodedMessageStruct.surveyID)
             Survey.sharedInstance.populateSurveyID(surveyID: savedSurveyID)
