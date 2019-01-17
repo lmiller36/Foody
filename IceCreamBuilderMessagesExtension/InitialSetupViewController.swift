@@ -20,25 +20,16 @@ class InitialSetupViewController : UIViewController {
         super.init(coder: aDecoder)
     }
     
-
-    override func viewDidLoad() {//        Username.on
-        //Username.resignFirstResponder()
-    }
     
     @IBAction func SubmitUserData(_ sender: Any) {
         guard let userEnteredName = Username.text else {return}
         
         //user entered some name
         if(!userEnteredName.isEmpty){
-            print(userEnteredName)
             UserData.sharedInstance.writeCache(userdata: userEnteredName)
             delegate?.backToMainMenu()
         }
-        
-        
     }
-    
-    
 }
 
 class UsertextField : UITextView,UITextViewDelegate {
@@ -63,9 +54,6 @@ class UsertextField : UITextView,UITextViewDelegate {
 protocol InitialSetupViewControllerDelegate: class {
     
     func backToMainMenu()
-    
-//    func addMessageToConversation(_ dictionary:[String:String],caption:String)
-    
     func changePresentationStyle(presentationStyle: MSMessagesAppPresentationStyle)
     
 }
@@ -83,12 +71,37 @@ class UserData {
         self.cacheDataAvailable = self.usersName != nil
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func isCacheDataAvailable() -> Bool {
         return self.cacheDataAvailable
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     fileprivate static func readFromCache() -> String?{
         if Storage.fileExists(UserData.filename, in: .caches) {
+            
             // we have messages to retrieve
             let messagesFromDisk = Storage.retrieve(UserData.filename, from: .caches, as: [Message].self)
             
@@ -97,25 +110,30 @@ class UserData {
             return username
         }
         else{
-            print("User data not in cache!")
             return Optional<String>.none
         }
         
-
+        
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func writeCache(userdata : String){
-                var messages = [Message]()
         
-        
-                let newMessage = Message(title: "UserData", body: userdata)
-                messages.append(newMessage)
-                print(messages)
+        var messages = [Message]()
+        let newMessage = Message(title: "UserData", body: userdata)
+        messages.append(newMessage)
         
         Storage.store(messages, to: .caches, as: UserData.filename)
-    }
-    
-    fileprivate static func writeCache() {
-        
     }
 }

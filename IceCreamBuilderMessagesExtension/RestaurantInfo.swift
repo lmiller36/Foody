@@ -8,10 +8,12 @@
 
 import Foundation
 
+//TODO: header
 struct Businesses:Codable{
     let businesses:[Safe<RestaurantInfo>]
 }
 
+//TODO: header
 extension Businesses {
     func getRestaurants()->[RestaurantInfo]{
         var restaurants = [RestaurantInfo]()
@@ -25,13 +27,13 @@ extension Businesses {
     }
 }
 
+//TODO: header
 public struct Safe<Base: Decodable>: Codable {
     let value: RestaurantInfo?
     
     public init(from decoder: Decoder) throws {
         do {
             let container = try decoder.singleValueContainer()
-            print(container)
             self.value = try container.decode(RestaurantInfo.self)
         } catch {
             assertionFailure("ERROR: \(error)")
@@ -41,25 +43,8 @@ public struct Safe<Base: Decodable>: Codable {
     }
 }
 
-//extension Businesses: Sequence {
-//    
-//    typealias Iterator = AnyIterator<RestaurantInfo>
-//    
-//    func makeIterator() -> Iterator {
-//        var index = 0
-//        
-//        return Iterator {
-//            guard index < self.businesses.count else { return nil }
-//            
-//            let restaraunt = self.businesses[index]
-//            index += 1
-//            
-//            return restaraunt
-//        }
-//    }
-//}
-
-//#TODO combine into one class with RestaurantIcon
+//TODO: combine into one class with RestaurantIcon
+//TODO: header
 struct RestaurantInfo: Codable {
     let id: String
     let alias: String
@@ -104,11 +89,13 @@ struct RestaurantInfo: Codable {
     
 }
 
+//TODO: header
 struct Category:Codable{
     let alias:String
     let title:String
 }
 
+//TODO: header
 struct Location:Codable{
     let address1    : String?
     let address2    : String?
@@ -130,12 +117,14 @@ struct Location:Codable{
     }
 }
 
+//TODO: header
 struct Coordinates:Codable{
     let latitude: Double
     let longitude: Double
     
 }
 
+//TODO: header
 extension Array where Element: Equatable {
     public mutating func mergeElements<C : Collection>(newElements: C) where C.Iterator.Element == Element{
         let filteredList = newElements.filter({!self.contains($0)})

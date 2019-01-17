@@ -28,12 +28,36 @@ class ParticipantViewController:UIViewController{
         super.init(coder: aDecoder)
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     override func viewDidLoad() {
         self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
         self.diningTuplet = Survey.sharedInstance.getFirstRoundOptions()
     }
     
-    func switchState(index:Int){
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
+    func switchSelectionState(index:Int){
         let currentState = categoryStates[index]
         let newState : SelectionState  =  {
             switch(currentState){
@@ -49,24 +73,44 @@ class ParticipantViewController:UIViewController{
         categoryStates[index] = newState
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @objc private func SelectionTapped(_ sender: UITapGestureRecognizer){
         
         guard let indexPath = self.AvailableTypes?.indexPathForItem(at: sender.location(in: self.AvailableTypes)) else {return}
-        guard let cell = self.AvailableTypes?.cellForItem(at: indexPath) as? ParticipantVoteCell else {return}
-        
-        let grouping = Grouping.init(rawValue: cell.IconTitle.text!)!
-        switchState(index: indexPath.row)
-        
+     
+        switchSelectionState(index: indexPath.row)
         
         self.AvailableTypes.reloadData()
         
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Submit(_ sender: Any) {
         
         var votedOnAllOptions = true
         
-        //        var votes = [String:String]()
         self.showBorder = true
         
         guard let diningTuplet = self.diningTuplet else {fatalError("No saved dining tuplet")}
@@ -78,9 +122,7 @@ class ParticipantViewController:UIViewController{
         //can submit
         if(votedOnAllOptions)
         {
-            
-            print(categoryStates)
-            
+                    
         let vote1 = Vote.init(cuisine: diningTuplet.option1.cuisine, restaurantId: Optional<String>.none, approved: self.categoryStates[0].isApproved(), ranking: 1)
         
         let vote2 = Vote.init(cuisine: diningTuplet.option2.cuisine, restaurantId: Optional<String>.none, approved: self.categoryStates[1].isApproved(), ranking: 2)
@@ -94,6 +136,18 @@ class ParticipantViewController:UIViewController{
         }
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Back_Main_Menu(_ sender: Any) {
         self.delegate?.backToMainMenu()
     }
@@ -115,7 +169,18 @@ extension ParticipantViewController : UICollectionViewDataSource {
     }
     
     
-    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     private func dequeueVoteCell( at indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = AvailableTypes.dequeueReusableCell(withReuseIdentifier: ParticipantVoteCell.reuseIdentifier,
                                                             for: indexPath) as? ParticipantVoteCell
@@ -126,11 +191,9 @@ extension ParticipantViewController : UICollectionViewDataSource {
 
         let diningOption = diningTuplet.getOption(index: row)
         
-        //cell.Info = representedRestaurantGroup.grouping.rawValue
         cell.IconTitle.text = diningOption.cuisine
         cell.Icon.image = diningOption.image
         
-        let grouping = Grouping.init(rawValue: cell.IconTitle.text!)!
         let state = self.categoryStates[row]
         
         
@@ -167,6 +230,33 @@ extension ParticipantViewController : UICollectionViewDataSource {
         
         return cell
     }
+}
+
+//TODO: header
+public  enum SelectionState : String{
+    case unselected
+    case approved
+    case denied
+    
+    func isApproved() -> Bool{
+        return self == .approved
+    }
+    
+}
+
+class ParticipantVoteCell : UICollectionViewCell{
+    static let reuseIdentifier = "ParticipantVoteCell"
+    
+    @IBOutlet weak var Icon: UIImageView!
+    @IBOutlet weak var IconTitle: UILabel!
+    
+    @IBOutlet weak var Selection: UIButton!
+    
+    @IBOutlet weak var Info: UILabel!
+    @IBOutlet weak var Statement1: UILabel!
+    @IBOutlet weak var Statement2: UILabel!
+    @IBOutlet weak var Statement3: UILabel!
+    
 }
 
 protocol ParticipantVotingViewControllerDelegate: class {

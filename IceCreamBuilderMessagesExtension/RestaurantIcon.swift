@@ -13,25 +13,30 @@ struct Restaurant {
     // MARK: Properties
     
     var icon: Icon?
-//
-//    var scoops: Scoops?
-//
-//    var topping: Topping?
+
     
     var restaurantInfo:RestaurantInfo?
     
     var blackAndWhite:Bool
 
-    
-//    var isComplete: Bool {
-//        return base != nil && scoops != nil && topping != nil
-//    }
+
 }
 
 /// Extends `IceCream` to be able to be represented by and created with an array of `NSURLQueryItem`s.
 extension Restaurant {
     
-    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     init(restaurant:RestaurantInfo,blackAndWhite:Bool){
         self.restaurantInfo = restaurant
         self.blackAndWhite = blackAndWhite

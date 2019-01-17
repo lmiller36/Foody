@@ -8,25 +8,38 @@
 
 import Foundation
 
+///All information concerning a survey
+///
+/// - important:
+///     Fields in the survey become populated when state reached in the current survey
+
 class Survey {
     static let sharedInstance = Survey.init()
     static let filename = "Survey.json"
     
+    ///Survey's alphanumeric id
     private var surveyID : SurveyID?
+    
+    ///Leader's cuisine selection
     private var firstRoundOptions : DiningOptionTuplet?
     
-    //variables used only by the leader
+    ///Votes from each participant
     private var participantsVotes : [ParticipantVote]
     
-    //number of voting participants (does not include the leader)
+    ///Count of voting participants (does not include the leader)
     private var participatingMemberCount : Int?
     
-    //first round options
+    //TODO: is this and firstRoundOptions needed??
+    ///Leader's cuisine selection2
     private var leaderCategorySelection : [Vote]?
     
-    //second round
+    ///Group agreed upon cuisine
     private var categoryWinner : DiningOption?
+    
+    ///Leader's restaurant selection
     private var leaderRestaurauntSelection : [Vote]?
+    
+    ///URL to be queried with Yelp API
     private var queryString : String?
     
     
@@ -79,7 +92,6 @@ class Survey {
             
             self.participantsVotes.removeAll()
             
-            print(self.categoryWinner)
         }
     }
     
@@ -117,11 +129,9 @@ class Survey {
     func appendParticipantsVotes (vote : ParticipantVote){
         
         let voteHasBeenCounted = self.participantsVotes.contains{$0.participantUUID == vote.participantUUID}
-        print(voteHasBeenCounted)
+
         if(!voteHasBeenCounted) {
             self.participantsVotes.append(vote)
-            print(self.participantsVotes)
-            
         }
     }
     
@@ -135,7 +145,7 @@ class Survey {
     
     func getFirstRoundOptions() -> DiningOptionTuplet {
         guard let firstRoundOptions = self.firstRoundOptions else {fatalError("No options present")}
-        guard let surveyID = self.surveyID else {fatalError("Cannot proceed without a surveyID")}
+        guard self.surveyID != nil else {fatalError("Cannot proceed without a surveyID")}
         
         return firstRoundOptions
     }
@@ -160,7 +170,6 @@ class Survey {
             
         }
         else{
-            print("No stored cache")
             return Optional<CacheableSurvey>.none
         }
     }
@@ -194,7 +203,16 @@ class Survey {
     
 }
 
+/// Visible choice's on both leader and participant screens. Can be easily configured should a survey group require a different number of choices
+///
+/// Parameters:
+/// - **option1**: The *first* dining option.
+/// - **option2**: The *second* dining option.
+/// - **option3**: The *third* dining option.
 public struct DiningOptionTuplet {
+    
+    //TODO: allow configurability (3+ dining options)
+    
     var option1 : DiningOption
     var option2 : DiningOption
     var option3 : DiningOption
@@ -213,25 +231,49 @@ public struct DiningOptionTuplet {
     }
 }
 
+/// A Cacheable representation of a survey at any point in the process
+///
+/// Parameters:
+/// - **surveyID**: Survey's alphanumeric identification string
+/// - **participantCount**: Number of participating members in the current survey.
+/// - **votes**: All recorded votes in the current survey.
+/// - **firstRoundOptions**: Leader's selection of restaurant cuisines.
+/// - **secondRoundOptions**: Leader's choice of restaurants
+/// - **queryString**: URL for Yelp API.
 struct CacheableSurvey : Codable {
+    
     let surveyID : SurveyID
+    
+    //TODO: Can this change if people opt out?
     let participantCount : Int
+    
+    //TODO: Change to first and second round so information is not lost
     let votes : [ParticipantVote]
+    
     let firstRoundOptions : [Vote]
     
     let secondRoundOptions : [Vote]
+    
     let queryString : String?
     
 }
 
-struct ParticipantVote : Codable{
+/// Participant's choices in a round
+///
+/// Parameters:
+/// - **vote1**: The user's *first* vote.
+/// - **vote2**: The user's *second* vote.
+/// - **vote3**: The user's *third* vote.
+/// - **participantUUID**: User's identifying UUID string, as per the Leader's view
+struct ParticipantVote : Codable {
+
     let vote1 : Vote
     let vote2 : Vote
     let vote3 : Vote
     
     let participantUUID : String
     
-    static func fromMessageStruct(message : MessageStruct)->ParticipantVote{
+    static func fromMessageStruct(message : MessageStruct) -> ParticipantVote{
         let vote1 = message.vote1
         let vote2 = message.vote2
         let vote3 = message.vote3
@@ -242,6 +284,10 @@ struct ParticipantVote : Codable{
     }
 }
 
+/// Identification for a given Survey
+///
+/// Parameters:
+/// - **id**: 25 character alphanumberic id
 public struct SurveyID : Codable {
     let id : String
     

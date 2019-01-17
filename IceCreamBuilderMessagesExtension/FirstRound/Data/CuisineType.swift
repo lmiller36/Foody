@@ -14,6 +14,20 @@ class Cuisine {
     let applicableCategories : [Icon]
     let displayInformation : DiningOption
     
+    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
+    
     init(applicationRestaurants:[Icon],displayIcon:Icon,grouping:Grouping) {
         self.applicableCategories = applicationRestaurants
         self.displayInformation = DiningOption.init(cuisine: grouping.rawValue, image: displayIcon.image, restaurant: Optional<RestaurantInfo>.none)
@@ -24,27 +38,59 @@ class Cuisines {
     
     static let sharedInstance = Cuisines.init()
     
-    //var cuisineMap: [Grouping : Cuisine]
-    
-    
     var hiddenRestaurantGroups : [Grouping : Cuisine]
     var currentOrdering : [Grouping]
     
     let allGroupings = [Grouping.American,Grouping.Breakfast,Grouping.Asian,Grouping.Japanese,Grouping.Chinese,Grouping.Italian,Grouping.Pizza,Grouping.Mexican,Grouping.Burgers]
     
+    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     fileprivate init(){
         //self.cuisineMap = Cuisines.cuisineMappings()
         self.hiddenRestaurantGroups = [Grouping : Cuisine]()
         self.currentOrdering = allGroupings.shuffled()
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func setCategories(categories:[String]){
         let givenCategories = categories.map{Grouping.init(rawValue: $0)}
-        
         currentOrdering = givenCategories as! [Grouping]
     }
     
-    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func getAvailableRestaurauntGroupsCount() -> Int {
         return self.currentOrdering.count
     }
@@ -56,10 +102,34 @@ class Cuisines {
         
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func shuffle(){
         self.currentOrdering = allGroupings.shuffled()
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func removeItem(index:Int) -> DiningOption
     {
         let groupingToRemove = self.currentOrdering.remove(at: index)
@@ -68,8 +138,18 @@ class Cuisines {
         return removedItem.displayInformation
     }
     
-    //used for category voting
-    static func getCuisine(grouping:Grouping) -> Cuisine{
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */    static func getCuisine(grouping:Grouping) -> Cuisine{
         
         
         switch (grouping){
@@ -98,6 +178,7 @@ class Cuisines {
     
 }
 
+//TODO: header
 public enum Grouping : String,CodingKey {
     case American
     case Breakfast

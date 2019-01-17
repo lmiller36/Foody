@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Messages
 
+//TODO: Add feature to sort by different quantifiers (ie brunch, dinner, etc)
 class LeaderVotingViewController:UIViewController{
     static let storyboardIdentifier = "LeaderVotingViewController"
     
@@ -38,6 +39,18 @@ class LeaderVotingViewController:UIViewController{
         loadAll()
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func loadAll(){
         
         
@@ -53,6 +66,18 @@ class LeaderVotingViewController:UIViewController{
         
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func update(){
         
         guard let diningTuplet = self.diningOptionTuplet else {fatalError("No option present")}
@@ -67,9 +92,21 @@ class LeaderVotingViewController:UIViewController{
         Label3.text = diningTuplet.option3.cuisine
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Remove1(_ sender: Any) {
-        //Can only remove an option if remaining options available
         
+        //Can only remove an option if remaining options available
         if(Cuisines.sharedInstance.getAvailableRestaurauntGroupsCount() > 0 ) {
             
             guard let option2 = self.diningOptionTuplet?.option2 else {fatalError("No option 2")}
@@ -80,7 +117,20 @@ class LeaderVotingViewController:UIViewController{
         }
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Remove2(_ sender: Any) {
+        
         //Can only remove an option if remaining options available
         if(Cuisines.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
             guard let option3 = self.diningOptionTuplet?.option3 else {fatalError("No option 3")}
@@ -89,6 +139,18 @@ class LeaderVotingViewController:UIViewController{
         }
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Remove3(_ sender: Any) {
         if(Cuisines.sharedInstance.getAvailableRestaurauntGroupsCount() > 0) {
             self.diningOptionTuplet?.option3 = Cuisines.sharedInstance.removeItem(index: 0)
@@ -97,14 +159,24 @@ class LeaderVotingViewController:UIViewController{
         
     }
     
-    
-    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func SubmitSelection(_ sender: Any) {
         guard let firstSelection = Label1.text else {fatalError("No first selection")}
         guard let secondSelection = Label2.text else {fatalError("No second selection")}
         guard let thirdSelection = Label3.text else {fatalError("No third selection")}
         
-        //by nature, all of the leaders selection are approved
+        //by design, all of the leaders selection are approved
         let vote1 = Vote.init(cuisine: firstSelection, restaurantId: Optional<String>.none, approved: true, ranking: 1)
         
         let vote2 = Vote.init(cuisine: secondSelection, restaurantId: Optional<String>.none, approved: true, ranking: 2)
@@ -116,6 +188,18 @@ class LeaderVotingViewController:UIViewController{
         delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: Optional<String>.none,caption: "Here's what Paul is in the mood for")
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Swap12(_ sender: Any) {
         
         guard let currentDiningTuplet = self.diningOptionTuplet else {fatalError("No current dining tuplet")}
@@ -127,7 +211,18 @@ class LeaderVotingViewController:UIViewController{
         update()
     }
     
-    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Swap23(_ sender: Any) {
         
         guard let currentDiningTuplet = self.diningOptionTuplet else {fatalError("No current dining tuplet")}
@@ -139,12 +234,35 @@ class LeaderVotingViewController:UIViewController{
         update()
     }
     
-    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Shuffle(_ sender: Any) {
         Cuisines.sharedInstance.shuffle()
         loadAll()
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func Back_Main_Menu(_ sender: Any) {
         self.delegate?.backToMainMenu()
     }

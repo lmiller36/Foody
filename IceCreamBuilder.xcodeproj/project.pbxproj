@@ -7,15 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4806D7612183B80300FC5912 /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7602183B80300FC5912 /* Participant.swift */; };
 		4806D7632183C2C100FC5912 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7622183C2C100FC5912 /* AppState.swift */; };
 		4806D7652183D8C300FC5912 /* WaitingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D7642183D8C300FC5912 /* WaitingViewController.swift */; };
 		4806D76721862B0300FC5912 /* Cacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806D76621862B0300FC5912 /* Cacher.swift */; };
-		48163198217ED33D0003F334 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48163197217ED33D0003F334 /* Map.swift */; };
-		4816717E2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4816717D2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift */; };
-		4820457A2155EBE900989507 /* StickersNearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482045792155EBE900989507 /* StickersNearby.swift */; };
 		4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */; };
-		4852138D218B673000517D65 /* RestaurantCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4852138C218B673000517D65 /* RestaurantCategory.swift */; };
 		4888F5C0217F7C60005EA28A /* russian_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888F590217F7C59005EA28A /* russian_sticker.png */; };
 		4888F5C1217F7C60005EA28A /* icecream_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888F591217F7C59005EA28A /* icecream_sticker.png */; };
 		4888F5C2217F7C60005EA28A /* thumbsDown_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888F592217F7C59005EA28A /* thumbsDown_selected.png */; };
@@ -77,7 +72,6 @@
 		4888F607217F7F0B005EA28A /* chinese_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888F606217F7F0B005EA28A /* chinese_sticker.png */; };
 		4888F609217F806C005EA28A /* cocktailBars_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888F608217F806B005EA28A /* cocktailBars_sticker.png */; };
 		4888F60B2180C4CE005EA28A /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */; };
-		4888F60D2180D06D005EA28A /* VotingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888F60C2180D06D005EA28A /* VotingHeader.swift */; };
 		4888F60F2180E311005EA28A /* RestaurantInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888F60E2180E311005EA28A /* RestaurantInfo.swift */; };
 		48B14F4C2155A4A300A05FEF /* YelpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F4A2155A4A300A05FEF /* YelpRequest.swift */; };
 		48B14F522155DA0100A05FEF /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B14F502155DA0100A05FEF /* CurrentLocation.swift */; };
@@ -103,9 +97,7 @@
 		B5E0A56B1D01079C006A77D2 /* base03_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E0A5501D01079C006A77D2 /* base03_sticker.png */; };
 		B5E0A56C1D01079C006A77D2 /* base04_sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E0A5511D01079C006A77D2 /* base04_sticker.png */; };
 		CE31F7E621D44840007EE827 /* LeaderVotingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31F7E521D44840007EE827 /* LeaderVotingView.swift */; };
-		CE5CFC6D21D7166D002A7BCD /* ParticipantVoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC6C21D7166D002A7BCD /* ParticipantVoteCell.swift */; };
 		CE5CFC6F21D716DE002A7BCD /* ParticipantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */; };
-		CE5CFC7121D726B5002A7BCD /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC7021D726B5002A7BCD /* Screen.swift */; };
 		CE5CFC7321DC0980002A7BCD /* InitialSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */; };
 		CEE0DA4621DE8FF000BFA92C /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0DA4521DE8FF000BFA92C /* Vote.swift */; };
 		CEE0DA4821DEECF100BFA92C /* CuisineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0DA4721DEECF100BFA92C /* CuisineType.swift */; };
@@ -139,15 +131,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4806D7602183B80300FC5912 /* Participant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
 		4806D7622183C2C100FC5912 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		4806D7642183D8C300FC5912 /* WaitingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingViewController.swift; sourceTree = "<group>"; };
 		4806D76621862B0300FC5912 /* Cacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacher.swift; sourceTree = "<group>"; };
-		48163197217ED33D0003F334 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		4816717D2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceTouchGestureRecognizer.swift; sourceTree = "<group>"; };
-		482045792155EBE900989507 /* StickersNearby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersNearby.swift; sourceTree = "<group>"; };
 		4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsNearby.swift; sourceTree = "<group>"; };
-		4852138C218B673000517D65 /* RestaurantCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantCategory.swift; sourceTree = "<group>"; };
 		4888F590217F7C59005EA28A /* russian_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = russian_sticker.png; sourceTree = "<group>"; };
 		4888F591217F7C59005EA28A /* icecream_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icecream_sticker.png; sourceTree = "<group>"; };
 		4888F592217F7C59005EA28A /* thumbsDown_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbsDown_selected.png; sourceTree = "<group>"; };
@@ -209,7 +196,6 @@
 		4888F606217F7F0B005EA28A /* chinese_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chinese_sticker.png; sourceTree = "<group>"; };
 		4888F608217F806B005EA28A /* cocktailBars_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktailBars_sticker.png; sourceTree = "<group>"; };
 		4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
-		4888F60C2180D06D005EA28A /* VotingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingHeader.swift; sourceTree = "<group>"; };
 		4888F60E2180E311005EA28A /* RestaurantInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantInfo.swift; sourceTree = "<group>"; };
 		48B14F4A2155A4A300A05FEF /* YelpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpRequest.swift; sourceTree = "<group>"; };
 		48B14F502155DA0100A05FEF /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
@@ -241,9 +227,7 @@
 		B5E0A5501D01079C006A77D2 /* base03_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base03_sticker.png; sourceTree = "<group>"; };
 		B5E0A5511D01079C006A77D2 /* base04_sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = base04_sticker.png; sourceTree = "<group>"; };
 		CE31F7E521D44840007EE827 /* LeaderVotingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderVotingView.swift; sourceTree = "<group>"; };
-		CE5CFC6C21D7166D002A7BCD /* ParticipantVoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantVoteCell.swift; sourceTree = "<group>"; };
 		CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantViewController.swift; sourceTree = "<group>"; };
-		CE5CFC7021D726B5002A7BCD /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSetupViewController.swift; sourceTree = "<group>"; };
 		CEE0DA4521DE8FF000BFA92C /* Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
 		CEE0DA4721DEECF100BFA92C /* CuisineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuisineType.swift; sourceTree = "<group>"; };
@@ -349,9 +333,7 @@
 				4833314B215EDAFB00FD997D /* RestaurantsNearby.swift */,
 				48B14F4A2155A4A300A05FEF /* YelpRequest.swift */,
 				4888F60E2180E311005EA28A /* RestaurantInfo.swift */,
-				CE1E2DE621E5AAD0005716FE /* OLd */,
 				48B14F502155DA0100A05FEF /* CurrentLocation.swift */,
-				CE5CFC7021D726B5002A7BCD /* Screen.swift */,
 				CEE0DA4521DE8FF000BFA92C /* Vote.swift */,
 				CEE0DA4921DEED9000BFA92C /* DiningOption.swift */,
 				CEE0DA4C21DFC6A600BFA92C /* Survey.swift */,
@@ -452,19 +434,6 @@
 			name = Bases;
 			sourceTree = "<group>";
 		};
-		CE1E2DE621E5AAD0005716FE /* OLd */ = {
-			isa = PBXGroup;
-			children = (
-				4806D7602183B80300FC5912 /* Participant.swift */,
-				4888F60C2180D06D005EA28A /* VotingHeader.swift */,
-				48163197217ED33D0003F334 /* Map.swift */,
-				4816717D2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift */,
-				482045792155EBE900989507 /* StickersNearby.swift */,
-				4852138C218B673000517D65 /* RestaurantCategory.swift */,
-			);
-			path = OLd;
-			sourceTree = "<group>";
-		};
 		CEE0DA4B21DEEE3800BFA92C /* FirstRound */ = {
 			isa = PBXGroup;
 			children = (
@@ -486,7 +455,6 @@
 			isa = PBXGroup;
 			children = (
 				CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */,
-				CE5CFC6C21D7166D002A7BCD /* ParticipantVoteCell.swift */,
 			);
 			path = Participant;
 			sourceTree = "<group>";
@@ -545,6 +513,7 @@
 				B55F96201CFF829D00B33E33 /* Sources */,
 				B55F96211CFF829D00B33E33 /* Frameworks */,
 				B55F96221CFF829D00B33E33 /* Resources */,
+				CEAE41BF21F103C30048A835 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -685,6 +654,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CEAE41BF21F103C30048A835 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nTAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B52828A51CD1724C009CD776 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -699,10 +688,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE5CFC7121D726B5002A7BCD /* Screen.swift in Sources */,
-				4888F60D2180D06D005EA28A /* VotingHeader.swift in Sources */,
 				CEE0DA4621DE8FF000BFA92C /* Vote.swift in Sources */,
-				4816717E2157DF0000FB53D5 /* ForceTouchGestureRecognizer.swift in Sources */,
 				B55F96281CFF829D00B33E33 /* MessagesViewController.swift in Sources */,
 				4806D7632183C2C100FC5912 /* AppState.swift in Sources */,
 				CE5CFC6F21D716DE002A7BCD /* ParticipantViewController.swift in Sources */,
@@ -711,14 +697,9 @@
 				4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */,
 				4888F60F2180E311005EA28A /* RestaurantInfo.swift in Sources */,
 				B5B1E9F21D02717700BD5715 /* IceCreamStickerCache.swift in Sources */,
-				4806D7612183B80300FC5912 /* Participant.swift in Sources */,
-				48163198217ED33D0003F334 /* Map.swift in Sources */,
 				CE31F7E621D44840007EE827 /* LeaderVotingView.swift in Sources */,
 				B55F964C1CFF82E100B33E33 /* QueryItemRepresentable.swift in Sources */,
-				4852138D218B673000517D65 /* RestaurantCategory.swift in Sources */,
 				CEE0DA5221E01C1100BFA92C /* LeaderRestaurantViewController.swift in Sources */,
-				4820457A2155EBE900989507 /* StickersNearby.swift in Sources */,
-				CE5CFC6D21D7166D002A7BCD /* ParticipantVoteCell.swift in Sources */,
 				B55F96451CFF82E100B33E33 /* IceCreamHistory.swift in Sources */,
 				CEE0DA4D21DFC6A600BFA92C /* Survey.swift in Sources */,
 				B55F96471CFF82E100B33E33 /* IceCreamPart.swift in Sources */,

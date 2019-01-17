@@ -13,7 +13,7 @@ import Messages
 
 class MainMenuViewController :UIViewController{
     
-  //  @IBOutlet weak var ScrollView: UIScrollView!
+    //  @IBOutlet weak var ScrollView: UIScrollView!
     @IBOutlet weak var Logo: UILabel!
     
     @IBOutlet weak var Continue: UIButton!
@@ -37,98 +37,51 @@ class MainMenuViewController :UIViewController{
     
     static let storyboardIdentifier = "MainMenuViewController"
     
-
+    
     
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     override func viewDidLoad() {
-    
+        
         //if view is compact, hide buttons
-       
-       let viewIsCompact = MessagesViewController.presentationStyle == MSMessagesAppPresentationStyle.compact
-      
-            self.NewSurveyView.isHidden = viewIsCompact
-            self.SettingsView.isHidden = viewIsCompact
-            self.HelpView.isHidden = viewIsCompact
-
-            //encodeDataCheck()
-
+        let viewIsCompact = MessagesViewController.presentationStyle == MSMessagesAppPresentationStyle.compact
+        
+        self.NewSurveyView.isHidden = viewIsCompact
+        self.SettingsView.isHidden = viewIsCompact
+        self.HelpView.isHidden = viewIsCompact
     }
     
-    
-    
-//    func encodeDataCheck(){
-//
-//        let now = Date()
-//
-//        let formatter = DateFormatter()
-//
-//        formatter.timeZone = TimeZone.current
-//        formatter.dateFormat = "yyyy-MM-dd HH:mm.ss"
-//
-//        let dateString = formatter.string(from: now)
-//
-//
-//
-//
-//        if Storage.fileExists("messages.json", in: .documents) {
-//            // we have messages to retrieve
-//            let messagesFromDisk = Storage.retrieve("messages.json", from: .documents, as: [Message].self)
-//
-//            print(messagesFromDisk)
-//        }
-//
-//            var messages = [Message]()
-//
-//
-//                let newMessage = Message(title: "Message", body: dateString)
-//                messages.append(newMessage)
-//
-//
-//            Storage.store(messages, to: .documents, as: "messages.json")
-//
-//
-//
-//        print(dateString)
-//
-//
-////        let cache = NSCache<NSString, NSString>()
-////        let myObject: NSString
-////
-////        if let cachedVersion = cache.object(forKey: "CachedObject") {
-////            // use the cached version
-////            myObject = cachedVersion
-////            print("found in cache")
-////        } else {
-////            // create it from scratch then store in the cache
-////            myObject = dateString as NSString
-////            cache.setObject(dateString as NSString, forKey: "CachedObject")
-////        }
-////
-//    }
-    
-
-    
-    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func AddNewSurvey(_ sender: UIGestureRecognizer) {
-        print("Add new survey")
-        print(sender)
         delegate?.switchState_StartMenu(newState: AppState.CategorySelection)
     }
     
-    
-    
-    
-    
-}
-
-class MainMenu{
-    static let headerHeight = Int(0.3 * Screen.sharedInstance.height())
-    static let frameHeight = Int(Screen.sharedInstance.height()) - MainMenu.headerHeight
-    static let buttonLength = Int(0.1 * Screen.sharedInstance.height())
 }
 
 class ScrollingFoodCell : UICollectionViewCell{

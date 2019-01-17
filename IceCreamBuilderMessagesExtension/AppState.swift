@@ -8,8 +8,7 @@
 
 import Foundation
 
-//struct StateInfo {let name:String, position:Int}
-
+//TODO: header
 enum AppState : String {
     case NotInApp
     case Setup
@@ -20,6 +19,18 @@ enum AppState : String {
     case Wait
     case Booted
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func Order()->Int {
         switch self {
         case .Setup : return 0
@@ -33,6 +44,18 @@ enum AppState : String {
         }
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func NextState() ->AppState {
 
         switch self {

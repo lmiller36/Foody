@@ -16,6 +16,7 @@ class LeaderRestaurantViewController : UIViewController {
     
     var visibleDiningOptions = [DiningOption]()
     
+    //TODO: Reconstruct using DiningOptionTuplet
     var diningOptions = [DiningOption]()
     
     var queryString : String?
@@ -23,6 +24,18 @@ class LeaderRestaurantViewController : UIViewController {
     weak var delegate: LeaderRestaurantViewDelegate?
     
     static let storyboardIdentifier = "LeaderRestaurantViewController"
+    
+    
+
+    //TODO: Comment header
+    /// Some introductory test that describes the purpose
+    /// of the function.
+    
+    /**
+     Another useful function
+     - parameter alpha: Describe the alpha param
+     - parameter beta: Describe the beta param
+     */
     
     override func viewDidLoad() {
         //#TODO break out into a method
@@ -43,8 +56,6 @@ class LeaderRestaurantViewController : UIViewController {
                     return icon.rawValue
                 })
                 
-                print(categories)
-                
                 //Initialize yelp request
                 let yelpRequest = YelpRequest.init(coordinates: locationCoordinates, result_limit: 50, radius_in_meters: 10000, categories: categories,sortAttribute: SortAttribute.best_match)
                 
@@ -60,8 +71,6 @@ class LeaderRestaurantViewController : UIViewController {
                         RestaurantsNearby.sharedInstance.addRestaurants(restaurants: restaurants)
                         //Repopulate view
                         self.populateData()
-                        print(self.visibleDiningOptions)
-                        print(self.diningOptions)
                         
                     }
                 })
@@ -72,14 +81,21 @@ class LeaderRestaurantViewController : UIViewController {
             //Repopulate view
             DispatchQueue.main.async {
                 self.populateData()
-                print(self.visibleDiningOptions)
-                print(self.diningOptions)
             }
         }
         
     }
     
+
+    //TODO: Comment header
+    /// Some introductory test that describes the purpose
+    /// of the function.
     
+    /**
+     Another useful function
+     - parameter alpha: Describe the alpha param
+     - parameter beta: Describe the beta param
+     */
     
     func populateData(){
         
@@ -97,6 +113,15 @@ class LeaderRestaurantViewController : UIViewController {
         self.reload()
     }
     
+    //TODO: Comment header
+    /// Some introductory test that describes the purpose
+    /// of the function.
+    
+    /**
+     Another useful function
+     - parameter alpha: Describe the alpha param
+     - parameter beta: Describe the beta param
+     */
     func getRankingIcon(index:Int) -> UIImage {
         switch(index){
         case 0:
@@ -110,6 +135,16 @@ class LeaderRestaurantViewController : UIViewController {
         }
     }
     
+    //TODO: Comment header
+    /// Some introductory test that describes the purpose
+    /// of the function.
+    
+    /**
+     Another useful function
+     - parameter alpha: Describe the alpha param
+     - parameter beta: Describe the beta param
+     */
+    
     func reload(){
         DispatchQueue.main.async {
             
@@ -117,9 +152,19 @@ class LeaderRestaurantViewController : UIViewController {
         }
     }
     
+    //TODO: Comment header
+    /// Some introductory test that describes the purpose
+    /// of the function.
+    
+    /**
+     Another useful function
+     - parameter alpha: Describe the alpha param
+     - parameter beta: Describe the beta param
+     */
+    
     func removeRestaurant(index:Int){
         if(index < 0 || index >= visibleDiningOptions.count){fatalError("Index out of bounds error")}
-        print("please remove \(String(index))")
+
         //only remove if remaining options are still available
         if(!self.diningOptions.isEmpty) {
         visibleDiningOptions.remove(at: index)
@@ -133,6 +178,16 @@ class LeaderRestaurantViewController : UIViewController {
         }
     }
     
+    //TODO: Comment header
+    /// Some introductory test that describes the purpose
+    /// of the function.
+    
+    /**
+     Another useful function
+     - parameter alpha: Describe the alpha param
+     - parameter beta: Describe the beta param
+     */
+    
     func swapRestaurants(index1:Int,index2:Int){
         if(index1 < 0 || index2 < 0 || index1 >= visibleDiningOptions.count ||  index2 >= visibleDiningOptions.count){fatalError("Index out of bounds error")}
         
@@ -145,6 +200,18 @@ class LeaderRestaurantViewController : UIViewController {
         self.reload()
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @IBAction func SubmitSelection(_ sender: Any) {
         
          let firstSelection = visibleDiningOptions[0]
@@ -172,8 +239,7 @@ class LeaderRestaurantViewController : UIViewController {
 }
 
 extension LeaderRestaurantViewController : UICollectionViewDataSource {
-    //#TODO fix to remove hard coded
-    //will always show 3 options, unless they are not 3 possible options
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return visibleDiningOptions.count
     }
@@ -186,14 +252,26 @@ extension LeaderRestaurantViewController : UICollectionViewDataSource {
     
     
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     private func dequeueVoteCell( at indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = VisibleRestaurants.dequeueReusableCell(withReuseIdentifier: LeaderRestaurantCell.reuseIdentifier,
                                                                 for: indexPath) as? LeaderRestaurantCell
             else { fatalError("Unable to dequeue a LeaderRestaurantCell") }
         
         let row = indexPath.row
-        print(row)
         let diningOption = visibleDiningOptions[row]
+        
         //Icon and title
         cell.IconTitle.text = diningOption.cuisine
         cell.Icon.image = diningOption.image
@@ -221,11 +299,8 @@ extension LeaderRestaurantViewController : UICollectionViewDataSource {
         }
         
         //Rating and price
-        
         guard let price = diningOption.restaurant?.price else {return cell}
         guard let rating = diningOption.restaurant?.rating else {return cell}
-        
-        print(rating)
         
         let ratingInStars = String(RestaurantsNearby.getRatingInStars(rating: rating))
         
@@ -272,6 +347,18 @@ extension LeaderRestaurantViewController : UICollectionViewDataSource {
     }
     
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @objc private func downtap(_ sender:  UIButton!){
         
         guard let cell = sender.superview?.superview as? LeaderRestaurantCell else {
@@ -285,6 +372,19 @@ extension LeaderRestaurantViewController : UICollectionViewDataSource {
   
     }
     
+    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @objc private func uptap(_ sender:  UIButton!){
         guard let cell = sender.superview?.superview as? LeaderRestaurantCell else {
             fatalError("Cell not found")
@@ -296,6 +396,18 @@ extension LeaderRestaurantViewController : UICollectionViewDataSource {
         self.swapRestaurants(index1: row, index2: row - 1)
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     @objc private func remove(_ sender:  UIButton!){
         guard let cell = sender.superview?.superview as? LeaderRestaurantCell else {
             fatalError("Cell not found")

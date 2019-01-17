@@ -9,7 +9,15 @@
 import Foundation
 import UIKit
 
+/// Display information for a collectionview item
+///
+///
+/// Parameters:
+/// - **cuisine**: Cuisine type of the given dining option
+/// - **image**: Icon for the given cuisine
+/// - **restaurant**: Applicable restaurant information, if available
 struct DiningOption {
+    
     let cuisine : String
     let image : UIImage
     let restaurant : RestaurantInfo?
