@@ -99,6 +99,7 @@
 		CE31F7E621D44840007EE827 /* LeaderVotingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE31F7E521D44840007EE827 /* LeaderVotingView.swift */; };
 		CE5CFC6F21D716DE002A7BCD /* ParticipantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */; };
 		CE5CFC7321DC0980002A7BCD /* InitialSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */; };
+		CED387F121F246FD008C9403 /* DoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED387F021F246FD008C9403 /* DoneViewController.swift */; };
 		CEE0DA4621DE8FF000BFA92C /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0DA4521DE8FF000BFA92C /* Vote.swift */; };
 		CEE0DA4821DEECF100BFA92C /* CuisineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0DA4721DEECF100BFA92C /* CuisineType.swift */; };
 		CEE0DA4A21DEED9000BFA92C /* DiningOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0DA4921DEED9000BFA92C /* DiningOption.swift */; };
@@ -229,6 +230,7 @@
 		CE31F7E521D44840007EE827 /* LeaderVotingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderVotingView.swift; sourceTree = "<group>"; };
 		CE5CFC6E21D716DE002A7BCD /* ParticipantViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantViewController.swift; sourceTree = "<group>"; };
 		CE5CFC7221DC0980002A7BCD /* InitialSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSetupViewController.swift; sourceTree = "<group>"; };
+		CED387F021F246FD008C9403 /* DoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneViewController.swift; sourceTree = "<group>"; };
 		CEE0DA4521DE8FF000BFA92C /* Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
 		CEE0DA4721DEECF100BFA92C /* CuisineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuisineType.swift; sourceTree = "<group>"; };
 		CEE0DA4921DEED9000BFA92C /* DiningOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiningOption.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 				4888F60A2180C4CE005EA28A /* MainMenuViewController.swift */,
 				CEE0DA4B21DEEE3800BFA92C /* FirstRound */,
 				CEE0DA5521E01D0900BFA92C /* SecondRound */,
+				CED387F021F246FD008C9403 /* DoneViewController.swift */,
 				4806D76621862B0300FC5912 /* Cacher.swift */,
 				4806D7642183D8C300FC5912 /* WaitingViewController.swift */,
 				4806D7622183C2C100FC5912 /* AppState.swift */,
@@ -704,6 +707,7 @@
 				CEE0DA4D21DFC6A600BFA92C /* Survey.swift in Sources */,
 				B55F96471CFF82E100B33E33 /* IceCreamPart.swift in Sources */,
 				CE5CFC7321DC0980002A7BCD /* InitialSetupViewController.swift in Sources */,
+				CED387F121F246FD008C9403 /* DoneViewController.swift in Sources */,
 				48B14F522155DA0100A05FEF /* CurrentLocation.swift in Sources */,
 				4888F60B2180C4CE005EA28A /* MainMenuViewController.swift in Sources */,
 				4806D7652183D8C300FC5912 /* WaitingViewController.swift in Sources */,

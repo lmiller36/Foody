@@ -68,6 +68,23 @@ class RestaurantsNearby {
      
      - Returns: A beautiful, brand-new bicycle, custom-built just for you.
      */
+    func getRestaurantsByID(ids: [String]) -> [DiningOption] {
+        let matching_restaurants = [DiningOption]()
+        return self.restaurants.filter{$0.restaurant != nil && ids.contains(($0.restaurant?.id)!)}
+    }
+    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func isEmpty() -> Bool{
         return restaurants.count == 0
     }

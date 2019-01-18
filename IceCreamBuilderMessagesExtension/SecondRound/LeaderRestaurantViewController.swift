@@ -228,7 +228,12 @@ class LeaderRestaurantViewController : UIViewController {
         guard let queryString = self.queryString else {fatalError(
             "No query string present")}
         
-        Survey.sharedInstance.setLeaderRestaurantSelection(leaderSelection: [vote1,vote2,vote3], queryString: queryString)
+        let votes = [vote1,vote2,vote3]
+        let restaurantInfo = [firstSelection.restaurant,secondSelection.restaurant,thirdSelection.restaurant]
+        
+        //TODO: replace with guard to as! goes away
+        
+        Survey.sharedInstance.setLeaderRestaurantSelection(leaderSelection: votes,restaurantInfo:restaurantInfo as! [RestaurantInfo],queryString: queryString)
         
         delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: queryString, caption: "Here's which restaurants Paul likes")
         

@@ -65,16 +65,18 @@ class ParticipantViewController:UIViewController{
                     RestaurantsNearby.sharedInstance.addRestaurants(restaurants: restaurants)
               
                     let approvedRestaurantIDs = Survey.sharedInstance.getApprovedRestaurants()
+                   
+                    //TODO: filter does not ensure leader's ordering is preserved
+                    let known_restaurants = RestaurantsNearby.sharedInstance.getRestaurantsByID(ids: approvedRestaurantIDs)
                     
-                    let known_restaurants = RestaurantsNearby.sharedInstance.getRestaurants().filter({approvedRestaurantIDs.contains($0.restaurant?.id ?? "")  })
-                    
-                    print(known_restaurants)
+                    print(known_restaurants.map{$0.restaurant?.name})
                     print(known_restaurants.count)
                     
                     //TODO: fix magic number here and everywhere
                     let numberOfOptions = 3
                     if(known_restaurants.count != numberOfOptions){
-                        fatalError("Error occurred")
+                        //TODO:Ensure correctness, when fatal error, this often fails
+                        print("Error occurred")
                     }
                     let newDiningTuplet = DiningOptionTuplet.init(option1: known_restaurants[0], option2: known_restaurants[1], option3: known_restaurants[2])
                     

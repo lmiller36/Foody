@@ -27,11 +27,11 @@ class MessagesViewController: MSMessagesAppViewController {
     
     //TODO: move into separate class (if still used)
     public static let DATA = "DATA"
-//    public static let LEADER = "Leader"
-//    public static let CURRENT_ROUND = "CurrentRound"
-//    public static let REMAINING_PARTICIPANTS = "RemainingParticipants"
-//    public static let COMPLETED_PARTICIPANTS = "CompletedParticipants"
-//    public static let DELIMETER = "|"
+    //    public static let LEADER = "Leader"
+    //    public static let CURRENT_ROUND = "CurrentRound"
+    //    public static let REMAINING_PARTICIPANTS = "RemainingParticipants"
+    //    public static let COMPLETED_PARTICIPANTS = "CompletedParticipants"
+    //    public static let DELIMETER = "|"
     
     //TODO: Do class init
     /**
@@ -136,9 +136,9 @@ class MessagesViewController: MSMessagesAppViewController {
     
     func populateDiningOptions(messageStruct:MessageStruct){
         
-           guard let nextState = AppState.init(rawValue:  messageStruct.state) else {fatalError("unexpected App State")}
+        guard let nextState = AppState.init(rawValue:  messageStruct.state) else {fatalError("unexpected App State")}
         
-     
+        
         if(nextState == AppState.CategorySelection) {
             let option1 = self.voteToDiningOption(vote: messageStruct.vote1)
             let option2 = self.voteToDiningOption(vote: messageStruct.vote2)
@@ -152,14 +152,13 @@ class MessagesViewController: MSMessagesAppViewController {
             
             Survey.sharedInstance.receivedFirstRoundOptions(firstRoundOptions: leadersSelection)
         }
-        
-        if(nextState == AppState.RestaurantSelection) {
+       else if(nextState == AppState.RestaurantSelection) {
             //Survey.sharedInstance.receivedSecondRoundOptions(secondRoundOptions: leadersSelection)
             
             guard let id1 = messageStruct.vote1.restaurantId else {fatalError("ID missing")}
             guard let id2 = messageStruct.vote2.restaurantId else {fatalError("ID missing")}
             guard let id3 = messageStruct.vote3.restaurantId else {fatalError("ID missing")}
-
+            
             let IDs = [id1,id2,id3]
             
             Survey.sharedInstance.setApprovedRestaurants(restaurantIDs: IDs)
@@ -218,7 +217,7 @@ class MessagesViewController: MSMessagesAppViewController {
             self.isLeader = self.leaderOfSurvey == conversation.localParticipantIdentifier.uuidString
             
             guard let nextState = AppState.init(rawValue:  decodedMessageStruct.state) else {fatalError("unexpected App State")}
-            
+            print(nextState)
             if(nextState == AppState.CategorySelection || nextState == AppState.RestaurantSelection){
                 
                 // if leader do something different
@@ -227,14 +226,17 @@ class MessagesViewController: MSMessagesAppViewController {
                         guard let base_url = decodedMessageStruct.urlQueryString else { fatalError("Message struct missing url query string")}
                         Survey.sharedInstance.setQueryString(queryString: base_url)
                     }
-                        self.populateDiningOptions(messageStruct: decodedMessageStruct)
+                    self.populateDiningOptions(messageStruct: decodedMessageStruct)
                 }
                     //you are the leader and have clicked on a participants vote
                 else if (decodedMessageStruct.messageSender != conversation.localParticipantIdentifier.uuidString) {
                     
+                    print("Appending votes!")
+                    
                     //repopulate Survey from saved cache data
                     guard let savedCacheData = Survey.readFromCache() else {fatalError("No saved cache data")}
-                    
+                    print("Read from cache")
+                    print(savedCacheData)
                     let surveyIDsMatch = savedCacheData.surveyID.id == decodedMessageStruct.surveyID
                     
                     if (surveyIDsMatch) {
@@ -250,6 +252,12 @@ class MessagesViewController: MSMessagesAppViewController {
                     }
                 }
             }
+ 
+            
+            //Tallying Restaurant votes
+            //            else if (nextState == AppState.Done){
+            //
+            //            }
             
             let savedSurveyID = SurveyID.init(id: decodedMessageStruct.surveyID)
             Survey.sharedInstance.populateSurveyID(surveyID: savedSurveyID)
@@ -264,6 +272,8 @@ class MessagesViewController: MSMessagesAppViewController {
                 
                 //if survey is finished, advance to the next state
                 if(Survey.sharedInstance.roundIsFinished()) {
+                    Survey.sharedInstance.tallyResults(appstate: nextState)
+
                     self.stateOfApp = nextState.NextState()
                 }
                     //the round is finished
@@ -425,14 +435,34 @@ class MessagesViewController: MSMessagesAppViewController {
             as? LeaderRestaurantViewController
             else { fatalError("Unable to instantiate an ParticipantViewController from the storyboard") }
         
-        Survey.sharedInstance.tallyResults()
+       // Survey.sharedInstance.tallyResults()
         
         controller.delegate = self
         
         return controller
     }
     
-    
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
+    private func instantiateDoneViewController() -> UIViewController {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: DoneViewController.storyboardIdentifier)
+            as? DoneViewController
+            else { fatalError("Unable to instantiate an ParticipantViewController from the storyboard") }
+        
+        controller.delegate = self
+        
+        return controller
+    }
     
     //TODO: Do class init
     /**
@@ -474,6 +504,8 @@ class MessagesViewController: MSMessagesAppViewController {
             }
         case AppState.Wait:
             controller = instantiateWaitingViewController()
+        case AppState.Done:
+            controller = instantiateDoneViewController()
         default :
             //#TODO handle when a user tries to enter a survey they are not a part of
             controller = instantiateStartMenuController()
@@ -533,30 +565,30 @@ class MessagesViewController: MSMessagesAppViewController {
         }
     }
     
-//    //TODO: Do class init
-//    /**
-//     Initializes a new bicycle with the provided parts and specifications.
-//
-//     Description is something you might want
-//
-//     - Throws: SomeError you might want to catch
-//
-//     - parameter radius: The frame size of the bicycle, in centimeters
-//
-//     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
-//     */
-//    func addConversationDetails(dictionary : [String : String]) ->  [String : String] {
-//        var data = [String : String]()
-//        data = data.merging(dictionary, uniquingKeysWith: { (first, _) in first })
-//        guard let leader = self.leaderOfSurvey else{ fatalError("Expected leader")}
-//
-//        data[MessagesViewController.LEADER]  = leader
-//
-//        data[MessagesViewController.CURRENT_ROUND] = self.stateOfApp.NextState().rawValue
-//        self.stateOfApp = AppState.Wait
-//
-//        return data
-//    }
+    //    //TODO: Do class init
+    //    /**
+    //     Initializes a new bicycle with the provided parts and specifications.
+    //
+    //     Description is something you might want
+    //
+    //     - Throws: SomeError you might want to catch
+    //
+    //     - parameter radius: The frame size of the bicycle, in centimeters
+    //
+    //     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+    //     */
+    //    func addConversationDetails(dictionary : [String : String]) ->  [String : String] {
+    //        var data = [String : String]()
+    //        data = data.merging(dictionary, uniquingKeysWith: { (first, _) in first })
+    //        guard let leader = self.leaderOfSurvey else{ fatalError("Expected leader")}
+    //
+    //        data[MessagesViewController.LEADER]  = leader
+    //
+    //        data[MessagesViewController.CURRENT_ROUND] = self.stateOfApp.NextState().rawValue
+    //        self.stateOfApp = AppState.Wait
+    //
+    //        return data
+    //    }
     
     //Cannot be reached from wait or booted screens
     //TODO: Do class init
@@ -632,7 +664,7 @@ class MessagesViewController: MSMessagesAppViewController {
         // Add the message to the conversation.
         conversation.insert(message) { error in
             if((error) != nil) {
-            print("Error occured \(String(describing: error))")
+                print("Error occured \(String(describing: error))")
             }
         }
     }
@@ -665,7 +697,7 @@ class MessagesViewController: MSMessagesAppViewController {
 
 /// Extends `MessagesViewController` to conform to the `IceCreamsViewControllerDelegate` protocol.
 
-extension MessagesViewController: InitialSetupViewControllerDelegate,LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate,LeaderRestaurantViewDelegate {
+extension MessagesViewController: InitialSetupViewControllerDelegate,LeaderVotingViewControllerDelegate,ParticipantVotingViewControllerDelegate,LeaderRestaurantViewDelegate,DoneViewDelegate {
     
     //TODO: Do class init
     /**
