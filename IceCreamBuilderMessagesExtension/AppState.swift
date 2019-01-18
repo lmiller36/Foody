@@ -8,44 +8,64 @@
 
 import Foundation
 
-//struct StateInfo {let name:String, position:Int}
-
+//TODO: header
 enum AppState : String {
     case NotInApp
+    case Setup
     case MainMenu
-    case InitialSelection
-    case VotingRound1
-    case VotingRound2
-    case VotingRound3
+    case CategorySelection
+    case RestaurantSelection
     case Done
     case Wait
     case Booted
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func Order()->Int {
         switch self {
+        case .Setup : return 0
         case .NotInApp: return 0
         case .MainMenu: return 0
-        case .InitialSelection: return 1
-        case .VotingRound1: return 2
-        case .VotingRound2: return 3
-        case .VotingRound3: return 4
+        case .CategorySelection: return 1
+        case .RestaurantSelection: return 2
         case .Done: return 5
         case .Wait: return -1
         case .Booted: return -1
         }
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
     func NextState() ->AppState {
 
         switch self {
         
         case .NotInApp: return .MainMenu
-        case .MainMenu: return .InitialSelection
-        case .InitialSelection: return .VotingRound1
-        case .VotingRound1: return .VotingRound2
-        case .VotingRound2: return .VotingRound3
-        case .VotingRound3: return .Done
-        case.Wait: return .Wait
+        case .Setup: return .MainMenu
+        case .MainMenu: return .CategorySelection
+        case .CategorySelection: return .RestaurantSelection
+        case .RestaurantSelection: return .Done
+        case .Wait: return .Wait
         case .Done: return .Done
         case .Booted: return .Booted
         }

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+//TODO: header
 class WaitingViewController : UIViewController {
     static let storyboardIdentifier = "WaitingViewController"
 }
