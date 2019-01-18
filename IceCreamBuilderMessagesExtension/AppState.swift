@@ -65,7 +65,7 @@ enum AppState : String {
         case .MainMenu: return .CategorySelection
         case .CategorySelection: return .RestaurantSelection
         case .RestaurantSelection: return .Done
-        case.Wait: return .Wait
+        case .Wait: return .Wait
         case .Done: return .Done
         case .Booted: return .Booted
         }

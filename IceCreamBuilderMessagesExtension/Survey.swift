@@ -23,6 +23,12 @@ class Survey {
     ///Leader's cuisine selection
     private var firstRoundOptions : DiningOptionTuplet?
     
+    ///Leader's restaurant selection
+    private var secondRoundOptions : DiningOptionTuplet?
+    
+    ///Votes from each participant in the first round
+    private var firstRoundVotes : [ParticipantVote]
+    
     ///Votes from each participant
     private var participantsVotes : [ParticipantVote]
     
@@ -33,18 +39,25 @@ class Survey {
     ///Leader's cuisine selection2
     private var leaderCategorySelection : [Vote]?
     
+    
+    private var secondRoundVotes : [ParticipantVote]
+
     ///Group agreed upon cuisine
     private var categoryWinner : DiningOption?
     
-    ///Leader's restaurant selection
+    ///Leader's restaurant selection2
     private var leaderRestaurauntSelection : [Vote]?
+    private var winningRestaurant : RestaurantInfo?
     
     ///URL to be queried with Yelp API
     private var queryString : String?
     
+    private var approvedIDs : [String]?
     
     init(){
         self.participantsVotes = [ParticipantVote]()
+        self.firstRoundVotes = [ParticipantVote]()
+        self.secondRoundVotes = [ParticipantVote]()
     }
     
     func repopulateSurvey(cacheableSurvey:CacheableSurvey) {
@@ -83,15 +96,20 @@ class Survey {
         }
         
         if let highestVote = highestVote {
-            
+            if(self.firstRoundVotes.count == 0) {
             let category = highestVote.cuisine
             guard let grouping = Grouping.init(rawValue : highestVote.cuisine) else {fatalError("Unexpected grouping value")}
              let cuisine =  Cuisines.getCuisine(grouping: grouping)
             let image = cuisine.displayInformation.image
             self.categoryWinner = DiningOption.init(cuisine: category, image: image, restaurant: Optional<RestaurantInfo>.none)
-            
+        
+            self.firstRoundVotes = self.participantsVotes
+                
             self.participantsVotes.removeAll()
-            
+            }
+            else {
+                let 
+            }
         }
     }
     
@@ -108,8 +126,31 @@ class Survey {
         self.firstRoundOptions = firstRoundOptions
     }
     
+    func receivedSecondRoundOptions (secondRoundOptions:DiningOptionTuplet){
+        self.secondRoundOptions = secondRoundOptions
+    }
+    
+    func setApprovedRestaurants(restaurantIDs : [String]) {
+        self.approvedIDs = restaurantIDs
+    }
+    
+    
     func setParticipatingMemberCount(count : Int){
         self.participatingMemberCount = count
+    }
+    
+    func setQueryString(queryString : String){
+        self.queryString = queryString
+    }
+    
+    func getApprovedRestaurants()->[String]{
+        guard let approvedIDs = self.approvedIDs else{fatalError("ApprovedIDs has not been set")}
+        return approvedIDs
+    }
+    
+    func getQueryString()->String{
+           guard let queryString = self.queryString else{fatalError("Query String has not been set")}
+        return queryString
     }
     
     func setLeaderCategorySelection(leaderSelection : [Vote]){
@@ -133,6 +174,9 @@ class Survey {
         if(!voteHasBeenCounted) {
             self.participantsVotes.append(vote)
         }
+        
+        Survey.writeCache(survey: self)
+
     }
     
     func roundIsFinished()->Bool{
@@ -141,6 +185,13 @@ class Survey {
         }
         
         return false
+    }
+    
+    func getSecondRoundOptions() -> DiningOptionTuplet {
+        guard let secondRoundOptions = self.secondRoundOptions else {fatalError("No options present")}
+        guard self.surveyID != nil else {fatalError("Cannot proceed without a surveyID")}
+        
+        return secondRoundOptions
     }
     
     func getFirstRoundOptions() -> DiningOptionTuplet {
@@ -182,7 +233,7 @@ class Survey {
         
           let secondRoundLeaderOptions = survey.leaderRestaurauntSelection ?? []
         
-        let cacheableSurvey = CacheableSurvey.init(surveyID: surveyID, participantCount: participantCount, votes: survey.participantsVotes, firstRoundOptions: firstRoundLeaderOptions,secondRoundOptions:secondRoundLeaderOptions,queryString:survey.queryString)
+        let cacheableSurvey = CacheableSurvey.init(surveyID: surveyID, participantCount: participantCount, firstRoundVotes:survey.firstRoundVotes, secondRoundRoundVotes: survey.secondRoundVotes, votes: survey.participantsVotes, firstRoundOptions: firstRoundLeaderOptions,secondRoundOptions:secondRoundLeaderOptions,queryString:survey.queryString)
         
         return cacheableSurvey
     }
@@ -248,6 +299,9 @@ struct CacheableSurvey : Codable {
     let participantCount : Int
     
     //TODO: Change to first and second round so information is not lost
+    let firstRoundVotes : [ParticipantVote]
+    let secondRoundRoundVotes : [ParticipantVote]
+
     let votes : [ParticipantVote]
     
     let firstRoundOptions : [Vote]

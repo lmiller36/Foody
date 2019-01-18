@@ -78,12 +78,12 @@ class LeaderRestaurantViewController : UIViewController {
             })
         }
         else {
-            //Repopulate view
             DispatchQueue.main.async {
+                
                 self.populateData()
             }
-        }
         
+        }
     }
     
 
@@ -272,6 +272,7 @@ extension LeaderRestaurantViewController : UICollectionViewDataSource {
         let row = indexPath.row
         let diningOption = visibleDiningOptions[row]
         
+        //TODO: combine with participant cell since code was copied
         //Icon and title
         cell.IconTitle.text = diningOption.cuisine
         cell.Icon.image = diningOption.image

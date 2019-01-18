@@ -107,6 +107,66 @@ class MessagesViewController: MSMessagesAppViewController {
         print("yo, in here!")
     }
     
+    //TODO: Do class init
+    /**
+     Initializes a new bicycle with the provided parts and specifications.
+     
+     Description is something you might want
+     
+     - Throws: SomeError you might want to catch
+     
+     - parameter radius: The frame size of the bicycle, in centimeters
+     
+     - Returns: A beautiful, brand-new bicycle, custom-built just for you.
+     */
+    func voteToDiningOption(vote:Vote) -> DiningOption {
+        
+        print(RestaurantsNearby.sharedInstance.isEmpty())
+        
+        let category = vote.cuisine
+        
+        guard let grouping = Grouping.init(rawValue : category) else {fatalError("Unexpected grouping value")}
+        let cuisine =  Cuisines.getCuisine(grouping: grouping)
+        
+        let image = cuisine.displayInformation.image
+        let diningOption = DiningOption.init(cuisine: category, image: image, restaurant: Optional<RestaurantInfo>.none)
+        
+        return diningOption
+    }
+    
+    func populateDiningOptions(messageStruct:MessageStruct){
+        
+           guard let nextState = AppState.init(rawValue:  messageStruct.state) else {fatalError("unexpected App State")}
+        
+     
+        if(nextState == AppState.CategorySelection) {
+            let option1 = self.voteToDiningOption(vote: messageStruct.vote1)
+            let option2 = self.voteToDiningOption(vote: messageStruct.vote2)
+            let option3 = self.voteToDiningOption(vote: messageStruct.vote3)
+            
+            
+            let leadersSelection = DiningOptionTuplet.init(option1: option1, option2: option2, option3: option3)
+            
+            print(leadersSelection)
+            print(nextState)
+            
+            Survey.sharedInstance.receivedFirstRoundOptions(firstRoundOptions: leadersSelection)
+        }
+        
+        if(nextState == AppState.RestaurantSelection) {
+            //Survey.sharedInstance.receivedSecondRoundOptions(secondRoundOptions: leadersSelection)
+            
+            guard let id1 = messageStruct.vote1.restaurantId else {fatalError("ID missing")}
+            guard let id2 = messageStruct.vote2.restaurantId else {fatalError("ID missing")}
+            guard let id3 = messageStruct.vote3.restaurantId else {fatalError("ID missing")}
+
+            let IDs = [id1,id2,id3]
+            
+            Survey.sharedInstance.setApprovedRestaurants(restaurantIDs: IDs)
+            
+        }
+    }
+    
     // MARK: Child view controller presentation
     //TODO: break into methods
     //TODO: Do class init
@@ -123,6 +183,10 @@ class MessagesViewController: MSMessagesAppViewController {
      */
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
         
+        if(self.stateOfApp == AppState.Wait){
+            switchState(newState: self.stateOfApp)
+            return
+        }
         
         let url = conversation.selectedMessage?.url
         
@@ -159,38 +223,11 @@ class MessagesViewController: MSMessagesAppViewController {
                 
                 // if leader do something different
                 if(!self.isLeader) {
-                    
-                    let category1 = decodedMessageStruct.vote1.cuisine
-                    
-                    guard let grouping1 = Grouping.init(rawValue : decodedMessageStruct.vote1.cuisine) else {fatalError("Unexpected grouping value")}
-                    let cuisine1 =  Cuisines.getCuisine(grouping: grouping1)
-                    
-                    let image1 = cuisine1.displayInformation.image
-                    let option1 = DiningOption.init(cuisine: category1, image: image1, restaurant: Optional<RestaurantInfo>.none)
-                    
-                    let category2 = decodedMessageStruct.vote2.cuisine
-                    guard let grouping2 = Grouping.init(rawValue : decodedMessageStruct.vote2.cuisine) else {fatalError("Unexpected grouping value")}
-                    let cuisine2 =  Cuisines.getCuisine(grouping: grouping2)
-                    
-                    let image2 = cuisine2.displayInformation.image
-                    let option2 = DiningOption.init(cuisine: category2, image: image2, restaurant: Optional<RestaurantInfo>.none)
-                    
-                    let category3 = decodedMessageStruct.vote3.cuisine
-                    guard let grouping3 = Grouping.init(rawValue : decodedMessageStruct.vote3.cuisine) else {fatalError("Unexpected grouping value")}
-                    let cuisine3 =  Cuisines.getCuisine(grouping: grouping3)
-                    
-                    let image3 = cuisine3.displayInformation.image
-                    let option3 = DiningOption.init(cuisine: category3, image: image3, restaurant: Optional<RestaurantInfo>.none)
-                    
-                    let leadersSelection = DiningOptionTuplet.init(option1: option1, option2: option2, option3: option3)
-                    if(nextState == AppState.CategorySelection) {
-                        Survey.sharedInstance.receivedFirstRoundOptions(firstRoundOptions: leadersSelection)
+                    if(nextState == AppState.RestaurantSelection){
+                        guard let base_url = decodedMessageStruct.urlQueryString else { fatalError("Message struct missing url query string")}
+                        Survey.sharedInstance.setQueryString(queryString: base_url)
                     }
-                    
-                    if(nextState == AppState.RestaurantSelection) {
-                        Survey.sharedInstance.receivedFirstRoundOptions(firstRoundOptions: leadersSelection)
-                    }
-                    
+                        self.populateDiningOptions(messageStruct: decodedMessageStruct)
                 }
                     //you are the leader and have clicked on a participants vote
                 else if (decodedMessageStruct.messageSender != conversation.localParticipantIdentifier.uuidString) {
@@ -365,6 +402,7 @@ class MessagesViewController: MSMessagesAppViewController {
             as? ParticipantViewController
             else { fatalError("Unable to instantiate an ParticipantViewController from the storyboard") }
         
+        controller.isCuisineRound = self.stateOfApp == AppState.CategorySelection
         controller.delegate = self
         
         return controller
@@ -414,7 +452,7 @@ class MessagesViewController: MSMessagesAppViewController {
         
         /// - Tag: PresentViewController
         let controller: UIViewController
-        
+        print("state \(self.stateOfApp.rawValue)")
         switch self.stateOfApp {
         case AppState.Setup :
             controller = instantiateInitialSetupController()
@@ -593,7 +631,9 @@ class MessagesViewController: MSMessagesAppViewController {
         /// - Tag: InsertMessageInConversation
         // Add the message to the conversation.
         conversation.insert(message) { error in
-            fatalError("Error occured \(String(describing: error))")
+            if((error) != nil) {
+            print("Error occured \(String(describing: error))")
+            }
         }
     }
     
@@ -660,8 +700,10 @@ extension MessagesViewController: InitialSetupViewControllerDelegate,LeaderVotin
         
         let message = createMessageStruct(vote1: vote1,vote2: vote2,vote3: vote3,queryString:queryString)
         createMessage(message: message,caption:caption)
+        
         self.stateOfApp = AppState.Wait
         switchState(newState: self.stateOfApp)
+        
         requestPresentationStyle(.compact)
     }
     

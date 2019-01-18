@@ -19,6 +19,7 @@ class ParticipantViewController:UIViewController{
     var categoryStates : [SelectionState]
     var diningTuplet : DiningOptionTuplet?
     
+    var isCuisineRound : Bool?
     
     @IBOutlet weak var AvailableTypes: UICollectionView!
     
@@ -41,8 +42,63 @@ class ParticipantViewController:UIViewController{
      - Returns: A beautiful, brand-new bicycle, custom-built just for you.
      */
     override func viewDidLoad() {
-        self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
-        self.diningTuplet = Survey.sharedInstance.getFirstRoundOptions()
+
+        
+        guard let isCuisineRound = self.isCuisineRound else{fatalError("Round is unknown")}
+        if(isCuisineRound) {
+            self.diningTuplet = Survey.sharedInstance.getFirstRoundOptions()
+            self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
+
+            DispatchQueue.main.async {
+                
+                self.AvailableTypes.reloadData()
+            }
+        }
+        else {
+            let base_url = Survey.sharedInstance.getQueryString()
+           
+            if(RestaurantsNearby.sharedInstance.isEmpty()) {
+                getNearbyRestaurants(base_url: base_url, callback :{ (restaurants) in
+                    print(restaurants.map{$0.name})
+                    
+                    //Add restaurants to shared instance
+                    RestaurantsNearby.sharedInstance.addRestaurants(restaurants: restaurants)
+              
+                    let approvedRestaurantIDs = Survey.sharedInstance.getApprovedRestaurants()
+                    
+                    let known_restaurants = RestaurantsNearby.sharedInstance.getRestaurants().filter({approvedRestaurantIDs.contains($0.restaurant?.id ?? "")  })
+                    
+                    print(known_restaurants)
+                    print(known_restaurants.count)
+                    
+                    //TODO: fix magic number here and everywhere
+                    let numberOfOptions = 3
+                    if(known_restaurants.count != numberOfOptions){
+                        fatalError("Error occurred")
+                    }
+                    let newDiningTuplet = DiningOptionTuplet.init(option1: known_restaurants[0], option2: known_restaurants[1], option3: known_restaurants[2])
+                    
+                    Survey.sharedInstance.receivedSecondRoundOptions(secondRoundOptions: newDiningTuplet)
+                
+
+                    DispatchQueue.main.async {
+                        self.diningTuplet = newDiningTuplet
+                        self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
+                        self.AvailableTypes.reloadData()
+                    }
+                })
+            }
+            else {
+                 DispatchQueue.main.async {
+                    self.diningTuplet = Survey.sharedInstance.getSecondRoundOptions()
+                    self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
+
+                    self.AvailableTypes.reloadData()
+                }
+            }
+            
+            
+        }
     }
     
     //TODO: Do class init
@@ -61,13 +117,13 @@ class ParticipantViewController:UIViewController{
         let currentState = categoryStates[index]
         let newState : SelectionState  =  {
             switch(currentState){
-            
-        case SelectionState.unselected:
-            return SelectionState.approved
-        case SelectionState.approved:
-            return SelectionState.denied
-        case SelectionState.denied:
-            return SelectionState.approved
+                
+            case SelectionState.unselected:
+                return SelectionState.approved
+            case SelectionState.approved:
+                return SelectionState.denied
+            case SelectionState.denied:
+                return SelectionState.approved
             }}()
         
         categoryStates[index] = newState
@@ -88,7 +144,7 @@ class ParticipantViewController:UIViewController{
     @objc private func SelectionTapped(_ sender: UITapGestureRecognizer){
         
         guard let indexPath = self.AvailableTypes?.indexPathForItem(at: sender.location(in: self.AvailableTypes)) else {return}
-     
+        
         switchSelectionState(index: indexPath.row)
         
         self.AvailableTypes.reloadData()
@@ -122,14 +178,15 @@ class ParticipantViewController:UIViewController{
         //can submit
         if(votedOnAllOptions)
         {
-                    
-        let vote1 = Vote.init(cuisine: diningTuplet.option1.cuisine, restaurantId: Optional<String>.none, approved: self.categoryStates[0].isApproved(), ranking: 1)
-        
-        let vote2 = Vote.init(cuisine: diningTuplet.option2.cuisine, restaurantId: Optional<String>.none, approved: self.categoryStates[1].isApproved(), ranking: 2)
-        
-        let vote3 = Vote.init(cuisine: diningTuplet.option3.cuisine, restaurantId: Optional<String>.none, approved: self.categoryStates[2].isApproved(), ranking: 3)
+            
+            let vote1 = Vote.init(cuisine: diningTuplet.option1.cuisine, restaurantId: diningTuplet.option1.restaurant?.id ?? Optional<String>.none, approved: self.categoryStates[0].isApproved(), ranking: 1)
+            
+            let vote2 = Vote.init(cuisine: diningTuplet.option2.cuisine, restaurantId: diningTuplet.option2.restaurant?.id ?? Optional<String>.none, approved: self.categoryStates[1].isApproved(), ranking: 2)
+            
+            let vote3 = Vote.init(cuisine: diningTuplet.option3.cuisine, restaurantId: diningTuplet.option3.restaurant?.id ?? Optional<String>.none, approved: self.categoryStates[2].isApproved(), ranking: 3)
             
             self.delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: Optional<String>.none, caption: "Lorne has voted")
+            
         }
         else {
             self.AvailableTypes.reloadData()
@@ -188,7 +245,7 @@ extension ParticipantViewController : UICollectionViewDataSource {
         
         let row = indexPath.row
         guard let diningTuplet = self.diningTuplet else {fatalError("No saved dining tuplet")}
-
+        
         let diningOption = diningTuplet.getOption(index: row)
         
         cell.IconTitle.text = diningOption.cuisine
@@ -220,13 +277,60 @@ extension ParticipantViewController : UICollectionViewDataSource {
             cell.layer.borderWidth = 0
         }
         
-        cell.Info.text = ""
+        
+        cell.RestaurantName.text = ""
         cell.Statement1.text = ""
         cell.Statement2.text = ""
         cell.Statement3.text = ""
+        cell.Statement4.text = ""
+
         
         let tapped = UITapGestureRecognizer(target: self, action: #selector(SelectionTapped))
         cell.Selection.addGestureRecognizer(tapped)
+        
+        //used in second round
+        if let restaurantInfo = diningOption.restaurant {
+            cell.Statement1.text = restaurantInfo.displayPhone
+            //Icon and title
+            cell.IconTitle.text = diningOption.cuisine
+            cell.Icon.image = diningOption.image
+            
+            
+            //Restaurant Info
+            cell.RestaurantName.text = diningOption.restaurant?.name
+            
+            //Address
+            if let address = diningOption.restaurant?.location.address1 {
+                cell.Statement1.text = String(address) + ","
+            }
+            
+            //City
+            if let address = diningOption.restaurant?.location.city {
+                cell.Statement2.text = String(address)
+            }
+            
+            //Distance
+            if let distanceInMeters = diningOption.restaurant?.distance {
+                let distanceInMiles =  Measurement(value: distanceInMeters, unit: UnitLength.meters).converted(to: UnitLength.miles).value
+                cell.Statement3.text = String(format: "%.1f", distanceInMiles)+" miles"
+            }
+            
+            //Rating and price
+            guard let price = diningOption.restaurant?.price else {return cell}
+            guard let rating = diningOption.restaurant?.rating else {return cell}
+            
+            let ratingInStars = String(RestaurantsNearby.getRatingInStars(rating: rating))
+            
+            let statement4 = ratingInStars+" "+price
+            let textColor = UIColor.init(red: 133/255, green: 187/255, blue: 101/255, alpha: 1.0)
+            
+            let range = (statement4 as NSString).range(of: price)
+            
+            let attribute = NSMutableAttributedString.init(string: statement4)
+            attribute.addAttribute(NSAttributedStringKey.foregroundColor, value: textColor , range: range)
+            
+            cell.Statement4.attributedText = attribute
+        }
         
         return cell
     }
@@ -252,11 +356,11 @@ class ParticipantVoteCell : UICollectionViewCell{
     
     @IBOutlet weak var Selection: UIButton!
     
-    @IBOutlet weak var Info: UILabel!
+    @IBOutlet weak var RestaurantName: UILabel!
     @IBOutlet weak var Statement1: UILabel!
     @IBOutlet weak var Statement2: UILabel!
     @IBOutlet weak var Statement3: UILabel!
-    
+    @IBOutlet weak var Statement4: UILabel!
 }
 
 protocol ParticipantVotingViewControllerDelegate: class {
