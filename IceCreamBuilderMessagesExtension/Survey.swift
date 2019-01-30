@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import CloudKit
 ///All information concerning a survey
 ///
 /// - important:
@@ -16,292 +16,364 @@ import Foundation
 class Survey {
     static let sharedInstance = Survey.init()
     static let filename = "Survey.json"
+    static let className = "SurveyCloud"
     
     ///Survey's alphanumeric id
-    private var surveyID : SurveyID?
+    public var recordID:String?
+    
+    public var record:CKRecord?
     
     ///Leader's cuisine selection
-    private var firstRoundOptions : DiningOptionTuplet?
+    public var firstRoundOptions : DiningOptions?
+    public var firstRoundVotes : [Vote2]
+    public var firstRoundParticipants : [String]
     
     ///Leader's restaurant selection
-    private var secondRoundOptions : DiningOptionTuplet?
+    public var secondRoundOptions : DiningOptions?
+    public var secondRoundVotes : [Vote2]
+    public var secondRoundParticipants : [String]
     
-    ///Votes from each participant in the first round
-    private var firstRoundVotes : [ParticipantVote]
-    
-    ///Votes from each participant
-    private var participantsVotes : [ParticipantVote]
     
     ///Count of voting participants (does not include the leader)
-    private var participatingMemberCount : Int?
-    
-    //TODO: is this and firstRoundOptions needed??
-    ///Leader's cuisine selection2
-    private var leaderCategorySelection : [Vote]?
-    
-    
-    private var secondRoundVotes : [ParticipantVote]
+    public var participatingMemberCount : Int?
     
     ///Group agreed upon cuisine
-    private var categoryWinner : DiningOption?
+    public var categoryWinner : DiningOption?
     
     ///Information pertaining the restaurant
     private var restaurantInfo : [RestaurantInfo]?
     
-    ///Leader's restaurant selection2
-    private var leaderRestaurauntSelection : [Vote]?
-    private var winningRestaurant : DiningOption?
+    public var participantUUID:String?
     
-    ///URL to be queried with Yelp API
-    private var queryString : String?
+    public var leaderID : String?
+    
+    public var isLeader:Bool
+    
+    public var appState:AppState
     
     private var approvedIDs : [String]?
     
     init(){
-        self.participantsVotes = [ParticipantVote]()
-        self.firstRoundVotes = [ParticipantVote]()
-        self.secondRoundVotes = [ParticipantVote]()
+        self.isLeader = true
+        self.appState = AppState.MainMenu
+        self.firstRoundVotes = [Vote2]()
+        self.secondRoundVotes = [Vote2]()
+        self.firstRoundParticipants = [String]()
+        self.secondRoundParticipants = [String]()
+        
     }
     
-    func repopulateSurvey(cacheableSurvey:CacheableSurvey) {
-        //repopulate datafields of survey from cached version
-        
-        //TODO: fix discrepancy between firstRoundOptions tuplet and vote array
-        
-        self.surveyID = cacheableSurvey.surveyID
-        self.participantsVotes = cacheableSurvey.votes
-        self.participatingMemberCount = cacheableSurvey.participantCount
-        
-        self.leaderCategorySelection = cacheableSurvey.firstRoundOptions
-        self.secondRoundVotes = cacheableSurvey.secondRoundVotes
-        
-        self.restaurantInfo = cacheableSurvey.restaurantInfo
-        
-        if(cacheableSurvey.winningRestaurantID != ""){
-            let winningRestaurantInfo = cacheableSurvey.restaurantInfo.filter{$0.id == cacheableSurvey.winningRestaurantID}[0]
-            self.winningRestaurant = DiningOption.init(cuisine: winningRestaurantInfo.getCategory().title, image: getType(type: winningRestaurantInfo.getCategory().alias).image, restaurant: winningRestaurantInfo)
-        }
-        
-        //self.secondRoundOptions = cacheableSurvey.secondRoundOptions
-        
-        self.restaurantInfo = cacheableSurvey.restaurantInfo
+    func getRecord()->CKRecord{
+        //        if let record = self.record {
+        //            switch self.appState {
+        //            case AppState.CategorySelection:
+        //                record.set
+        //            }
+        //        }
+        //        else {
+        return createRecordID()
+        // }
     }
     
-    func tallyResults(appstate:AppState){
-        
-        var votes_for_first = 0 , votes_for_second = 0 , votes_for_third = 0
-        
-        for vote in self.participantsVotes {
-            if(vote.vote1.approved){ votes_for_first += 1 }
-            if(vote.vote2.approved){ votes_for_second += 1 }
-            if(vote.vote3.approved){ votes_for_third += 1 }
-        }
-        
-        let maximum = max(votes_for_first,votes_for_second,votes_for_third)
-        var highestVote : Vote?
-        
-        let indexOfHighest : Int
-        
-        let vote = self.participantsVotes[0]
-        
-        if(votes_for_first == maximum) {
-            indexOfHighest = 0
-            highestVote = vote.vote1
-        }
-        else if(votes_for_second == maximum){
-            indexOfHighest = 1
-            highestVote = vote.vote2
+    func createRecordID() -> CKRecord{
+        //A survey is already in progress
+        let record:CKRecord
+        if let savedRecord = self.record {
+            record = savedRecord
         }
         else {
-            indexOfHighest = 2
-            highestVote = vote.vote3
+            record = CKRecord(recordType: Survey.className)
+            
+        }
+        let surveyCloud = self.toSurveyCloud()
+        
+        let dict = surveyCloud.getDict()
+        print("dict")
+        print(dict)
+        for key in dict.keys {
+            print("key: \(key)")
+            let value = dict[key]
+            record.setObject(value, forKey: key)
+            
+        }
+        print("record")
+        //            guard let encodedData = try? JSONEncoder().encode(surveyCloud) else {fatalError("Encoding Failed")}
+        //            let encodedDataStr = String(decoding: encodedData, as: UTF8.self)
+        //
+        //            survey.setObject(encodedDataStr as CKRecordValue, forKey: "data")
+        return record
+        
+    }
+    
+    func addVotes(votes:[Vote2]) {
+        
+        guard let participantID = self.participantUUID else {fatalError("Participant UUID not saved")}
+        
+        switch appState {
+        case AppState.CategorySelection:
+            self.firstRoundVotes.append(contentsOf: votes)
+            self.firstRoundParticipants.append(participantID)
+        case AppState.RestaurantSelection:
+            self.secondRoundVotes.append(contentsOf:votes)
+            self.secondRoundParticipants.append(participantID)
+            
+        default:
+            fatalError("Voting not possibly from this state")
+        }
+    }
+    
+    func populateSurvey(surveyCloud : SurveyCloud) {
+        print("Populating")
+        /**
+         let leaderID : String
+         let participantCount : Int
+         let currentRound : String
+         
+         //first round
+         let chosenCuisines : [String]
+         let votesForEachCuisine : [Vote2]
+         let hasVotedInRoundOne : [String]
+         
+         //second round
+         let chosenRestaurants : [RestaurantInfo]
+         let votesForEachRestaurant : [Vote2]
+         let hasVotedInRoundTwo : [String]
+         
+         //Winners
+         let winningCuisineIndex : Int
+         let winningRestaurantIndex : Int
+         */
+        
+        guard let participantIdentifier = self.participantUUID else {fatalError("Participant UUID not set")}
+        guard let numberOfParticipants = self.participatingMemberCount else {fatalError("Participant Count not set")}
+        
+        self.leaderID = surveyCloud.leaderID
+        self.participatingMemberCount = surveyCloud.participantCount
+        self.appState = AppState(rawValue: surveyCloud.currentRound)!
+        
+        self.firstRoundOptions = DiningOptions.init(diningOptions: surveyCloud.chosenCuisines.map{cuisine in
+            return cuisineToDiningOption(cuisine_str: cuisine)
+        })
+        
+        self.firstRoundVotes = surveyCloud.votesForEachCuisine.map{
+            (vote_str) -> Vote2 in
+            guard let decodedData = vote_str.data(using: .utf8) else {fatalError("Data could not be decoded")}
+            
+            guard let decodedVote = try?JSONDecoder().decode(Vote2.self, from: decodedData) else {fatalError("Data not sent as message struct")}
+            return decodedVote
         }
         
-        if let highestVote = highestVote {
-            //Tallying votes for Cuisine
-            print(self.firstRoundVotes)
-            if(appstate == AppState.CategorySelection) {
-                let category = highestVote.cuisine
-                guard let grouping = Grouping.init(rawValue : highestVote.cuisine) else {fatalError("Unexpected grouping value")}
-                let cuisine =  Cuisines.getCuisine(grouping: grouping)
-                let image = cuisine.displayInformation.image
-                self.categoryWinner = DiningOption.init(cuisine: category, image: image, restaurant: Optional<RestaurantInfo>.none)
-                
-                self.firstRoundVotes = self.participantsVotes
-                
-                self.participantsVotes.removeAll()
-            }
-                //Tallying votes for restaurant
-            else if(appstate == AppState.RestaurantSelection){
-                //the participant does not send the restaurant id, so we must check against the leader's saved value for the ranking
-                
-                guard let restaurantInfo = self.restaurantInfo else {fatalError("No restaurant info present")}
-                
-                print(restaurantInfo)
-                
-                let winningRestaurantInfo = restaurantInfo[indexOfHighest]
-                
-                print(winningRestaurantInfo)
-
-                let winningDiningOption = DiningOption.init(cuisine: winningRestaurantInfo.getCategory().title, image: getType(type: winningRestaurantInfo.getCategory().alias).image, restaurant: winningRestaurantInfo)
-                
-                print(winningDiningOption)
-                
-                    self.winningRestaurant = winningDiningOption
-      
+        self.firstRoundParticipants = surveyCloud.hasVotedInRoundOne
+        
+        self.secondRoundOptions = DiningOptions.init(diningOptions: surveyCloud.chosenRestaurants.map{restaurant in
+            return restaurantToDiningOption(restaurantInfo_str: restaurant)
+        })
+        
+        self.secondRoundParticipants = surveyCloud.hasVotedInRoundTwo
+        
+        self.isLeader = surveyCloud.leaderID == participantIdentifier
+        print("Leader:\(String(self.isLeader))")
+        //if leader and round is over, tally votes
+        if(self.isLeader) {
+          
+            let categorySelectionRoundFinished = self.appState == AppState.CategorySelection && self.firstRoundParticipants.count == numberOfParticipants
+            let restaurantSelectionRoundFinished = self.appState == AppState.RestaurantSelection && self.secondRoundParticipants.count == numberOfParticipants
+            
+            print(categorySelectionRoundFinished)
+            print(restaurantSelectionRoundFinished)
+            
+            if(categorySelectionRoundFinished || restaurantSelectionRoundFinished){
+                self.tallyResults()
+                self.appState = self.appState.NextState()
+                print(self.appState)
             }
             else {
-                fatalError("\(appstate) not valid")
+                self.appState = AppState.Wait
             }
         }
-    }
-    
-    func getWinningRestaurant() -> DiningOption  {
-        guard let winningRestaurant = self.winningRestaurant else {fatalError("Results for winning restaurant not available")}
-        return winningRestaurant
-    }
-    
-    func getCategoryWinner() -> DiningOption {
-        guard let categoryWinner = self.categoryWinner else{fatalError("Votes have not yet been tallied")}
-        return categoryWinner
-    }
-    
-    func populateSurveyID(surveyID : SurveyID){
-        self.surveyID = surveyID
-    }
-    
-    func receivedFirstRoundOptions (firstRoundOptions:DiningOptionTuplet){
-        self.firstRoundOptions = firstRoundOptions
-    }
-    
-    func receivedSecondRoundOptions (secondRoundOptions:DiningOptionTuplet){
-        self.secondRoundOptions = secondRoundOptions
-    }
-    
-    func setApprovedRestaurants(restaurantIDs : [String]) {
-        self.approvedIDs = restaurantIDs
-    }
-    
-    
-    func setParticipatingMemberCount(count : Int){
-        self.participatingMemberCount = count
-    }
-    
-    func setQueryString(queryString : String){
-        self.queryString = queryString
-    }
-    
-    func getApprovedRestaurants()->[String]{
-        guard let approvedIDs = self.approvedIDs else{fatalError("ApprovedIDs has not been set")}
-        return approvedIDs
-    }
-    
-    func getQueryString()->String{
-        guard let queryString = self.queryString else{fatalError("Query String has not been set")}
-        return queryString
-    }
-    
-    func setLeaderCategorySelection(leaderSelection : [Vote]){
-        self.leaderCategorySelection = leaderSelection
-        
-        Survey.writeCache(survey: self)
-    }
-    
-    func setLeaderRestaurantSelection(leaderSelection : [Vote],restaurantInfo:[RestaurantInfo],queryString : String){
-        self.queryString = queryString
-        self.leaderRestaurauntSelection = leaderSelection
-        self.restaurantInfo = restaurantInfo
-        
-        Survey.writeCache(survey: self)
-    }
-    
-    
-    func appendParticipantsVotes (vote : ParticipantVote){
-        
-        let voteHasBeenCounted = self.participantsVotes.contains{$0.participantUUID == vote.participantUUID}
-        print("vote has been counted :\(String(voteHasBeenCounted))")
-        if(!voteHasBeenCounted) {
-            self.participantsVotes.append(vote)
-        }
-        
-        Survey.writeCache(survey: self)
-        
-    }
-    
-    func roundIsFinished()->Bool{
-        if let participatingMemberCount = self.participatingMemberCount {
-            return participatingMemberCount == self.participantsVotes.count
-        }
-        
-        return false
-    }
-    
-    func getSecondRoundOptions() -> DiningOptionTuplet {
-        guard let secondRoundOptions = self.secondRoundOptions else {fatalError("No options present")}
-        guard self.surveyID != nil else {fatalError("Cannot proceed without a surveyID")}
-        
-        return secondRoundOptions
-    }
-    
-    func getFirstRoundOptions() -> DiningOptionTuplet {
-        guard let firstRoundOptions = self.firstRoundOptions else {fatalError("No options present")}
-        guard self.surveyID != nil else {fatalError("Cannot proceed without a surveyID")}
-        
-        return firstRoundOptions
-    }
-    
-    func toString () -> String {
-        
-        let cacheableSurvey = Survey.toCacheableSurvey(survey: self)
-        
-        //encode cacheable survey
-        guard let encodedData = try? JSONEncoder().encode(cacheableSurvey) else {fatalError("Encoding Failed")}
-        let encodedDataStr = String(decoding: encodedData, as: UTF8.self)
-        
-        return encodedDataStr
-    }
-    
-    public static func readFromCache() -> CacheableSurvey?{
-        if Storage.fileExists(Survey.filename, in: .caches) {
+            //participant of survey
+        else {
+            //check if participant has already voted
+            print(surveyCloud)
+            let waitRound1 = self.firstRoundParticipants.contains(participantIdentifier) && self.appState == AppState.CategorySelection
             
-            // we have a cached survey to retrieve
-            let cachedSurvey = Storage.retrieve(Survey.filename, from: .caches, as: CacheableSurvey.self)
-            return cachedSurvey
+            let waitRound2 = self.secondRoundParticipants.contains(participantIdentifier) && self.appState == AppState.RestaurantSelection
             
+            if (waitRound1 || waitRound2){
+                self.appState = AppState.Wait
+            }
         }
-        else{
-            return Optional<CacheableSurvey>.none
+        
+        print(self.appState)
+        
+    }
+    
+    func cuisineToDiningOption(cuisine_str:String) -> DiningOption {
+        
+        guard let grouping = Grouping.init(rawValue : cuisine_str) else {fatalError("Unexpected grouping value")}
+        let cuisine =  Cuisines.getCuisine(grouping: grouping)
+        
+        return cuisine.displayInformation
+    }
+    
+    func restaurantToDiningOption(restaurantInfo_str:String) -> DiningOption {
+        
+        guard let decodedData = restaurantInfo_str.data(using: .utf8) else {fatalError("Data could not be decoded")}
+        
+        guard let decodedRestaurantInfo = try?JSONDecoder().decode(RestaurantInfo.self, from: decodedData) else {fatalError("Data not sent as restaurant Info")}
+        
+        let category = decodedRestaurantInfo.getCategory()
+        guard let grouping = Grouping.init(rawValue : category.title) else {fatalError("Unexpected grouping value")}
+        let cuisine =  Cuisines.getCuisine(grouping: grouping).displayInformation
+        
+        let diningOption = DiningOption.init(cuisine: category.title, image: cuisine.image, restaurant: decodedRestaurantInfo)
+        
+        return diningOption
+    }
+    
+    func toSurveyCloud() -> SurveyCloud {
+        print("SURVEY CLOUD")
+        guard let leaderID  = self.leaderID else {fatalError("Leader id was not set")}
+        guard let participantCount  = self.participatingMemberCount else {fatalError("Participant count was not set")}
+        
+        guard let chosenCuisines = self.firstRoundOptions?.diningOptions.map({ (diningOption) -> String in
+            return diningOption.cuisine
+        }) else {fatalError("FirstRoundOptions not set")}
+        
+        var firstRoundVotesStrArr = [String]()
+        for vote in self.firstRoundVotes {
+            guard let encodedVote = try? JSONEncoder().encode(vote) else {fatalError("Encoding Failed")}
+            let encodedVoteStr = String(decoding: encodedVote, as: UTF8.self)
+            firstRoundVotesStrArr.append(encodedVoteStr)
         }
+        
+        let chosenRestaurants = self.secondRoundOptions?.diningOptions.map({ (diningOption) -> String in
+                        guard let encodedData = try? JSONEncoder().encode(diningOption.restaurant) else {fatalError("Encoding Failed")}
+                        let encodedDataStr = String(decoding: encodedData, as: UTF8.self)
+            return encodedDataStr
+        }) ?? []
+        
+        var secondRoundVotesStrArr = [String]()
+        for vote in self.secondRoundVotes {
+            guard let encodedVote = try? JSONEncoder().encode(vote) else {fatalError("Encoding Failed")}
+            let encodedVoteStr = String(decoding: encodedVote, as: UTF8.self)
+            secondRoundVotesStrArr.append(encodedVoteStr)
+        }
+        
+        let surveyCloud =  SurveyCloud.init(leaderID: leaderID, participantCount: participantCount, currentRound: self.appState.rawValue, chosenCuisines: chosenCuisines, votesForEachCuisine: firstRoundVotesStrArr, hasVotedInRoundOne: self.firstRoundParticipants, chosenRestaurants: chosenRestaurants, votesForEachRestaurant: secondRoundVotesStrArr, hasVotedInRoundTwo: self.secondRoundParticipants, winningCuisineIndex: -1, winningRestaurantIndex: -1)
+        
+        return surveyCloud
     }
     
-    public static func toCacheableSurvey(survey: Survey) -> CacheableSurvey {
+    //
+    func tallyResults(){
+        var highestIndex = -1
+        var highest_cuisine = ""
+       var highest_number_of_votes = -1
+        var highestCuisineOption:DiningOption?
         
-        guard let surveyID = survey.surveyID else {fatalError("No survey ID present")}
-        guard let participantCount = survey.participatingMemberCount else {fatalError("No member count present")}
-        guard let firstRoundLeaderOptions = survey.leaderCategorySelection else {fatalError("No Leader options present")}
+        var count = 0
+        let options : DiningOptions
+        let votes : [Vote2]
+        if (self.appState == AppState.CategorySelection){
+            guard let firstRoundOptions = self.firstRoundOptions else {fatalError("First round options not present")}
+            options = firstRoundOptions
+            votes = self.firstRoundVotes
+        }
+        else
+        {
+            guard let secondRoundOptions = self.secondRoundOptions else {fatalError("Second round options not present")}
+            options = secondRoundOptions
+            votes = self.secondRoundVotes
+        }
         
-        let winningRestaurantID = survey.winningRestaurant?.restaurant?.id ?? ""
-        let secondRoundLeaderOptions = survey.leaderRestaurauntSelection ?? []
-        let restaurantInfo = survey.restaurantInfo ?? []
+        for option in options.diningOptions {
+            let numberOfVotes = votes.filter{$0.name == option.cuisine && $0.approved}.count
+            
+            if(numberOfVotes > highest_number_of_votes){
+                highestCuisineOption = option
+                highestIndex = count
+                highest_number_of_votes = numberOfVotes
+                highest_cuisine = option.cuisine
+            }
+            
+            count += 1
+        }
         
-        let cacheableSurvey = CacheableSurvey.init(surveyID: surveyID, participantCount: participantCount, firstRoundVotes:survey.firstRoundVotes, secondRoundVotes: survey.secondRoundVotes, votes: survey.participantsVotes, firstRoundOptions: firstRoundLeaderOptions, secondRoundOptions:secondRoundLeaderOptions, restaurantInfo:restaurantInfo, winningRestaurantID : winningRestaurantID, queryString:survey.queryString)
+        print(highest_cuisine)
+        print(highest_cuisine)
         
-        return cacheableSurvey
+        if(self.appState == AppState.CategorySelection){
+            self.categoryWinner = highestCuisineOption
+        }
+        
+        //        var votes_for_first = 0 , votes_for_second = 0 , votes_for_third = 0
+        //
+        //        for vote in self.participantsVotes {
+        //            if(vote.vote1.approved){ votes_for_first += 1 }
+        //            if(vote.vote2.approved){ votes_for_second += 1 }
+        //            if(vote.vote3.approved){ votes_for_third += 1 }
+        //        }
+        //
+        //        let maximum = max(votes_for_first,votes_for_second,votes_for_third)
+        //        var highestVote : Vote?
+        //
+        //        let indexOfHighest : Int
+        //
+        //        let vote = self.participantsVotes[0]
+        //
+        //        if(votes_for_first == maximum) {
+        //            indexOfHighest = 0
+        //            highestVote = vote.vote1
+        //        }
+        //        else if(votes_for_second == maximum){
+        //            indexOfHighest = 1
+        //            highestVote = vote.vote2
+        //        }
+        //        else {
+        //            indexOfHighest = 2
+        //            highestVote = vote.vote3
+        //        }
+        //
+        //        if let highestVote = highestVote {
+        //            //Tallying votes for Cuisine
+        //            print(self.firstRoundVotes)
+        //            if(appstate == AppState.CategorySelection) {
+        //                let category = highestVote.cuisine
+        //                guard let grouping = Grouping.init(rawValue : highestVote.cuisine) else {fatalError("Unexpected grouping value")}
+        //                let cuisine =  Cuisines.getCuisine(grouping: grouping)
+        //                let image = cuisine.displayInformation.image
+        //                self.categoryWinner = DiningOption.init(cuisine: category, image: image, restaurant: Optional<RestaurantInfo>.none)
+        //
+        //                self.firstRoundVotes = self.participantsVotes
+        //
+        //                self.participantsVotes.removeAll()
+        //            }
+        //                //Tallying votes for restaurant
+        //            else if(appstate == AppState.RestaurantSelection){
+        //                //the participant does not send the restaurant id, so we must check against the leader's saved value for the ranking
+        //
+        //                guard let restaurantInfo = self.restaurantInfo else {fatalError("No restaurant info present")}
+        //
+        //                print(restaurantInfo)
+        //
+        //                let winningRestaurantInfo = restaurantInfo[indexOfHighest]
+        //
+        //                print(winningRestaurantInfo)
+        //
+        //                let winningDiningOption = DiningOption.init(cuisine: winningRestaurantInfo.getCategory().title, image: getType(type: winningRestaurantInfo.getCategory().alias).image, restaurant: winningRestaurantInfo)
+        //
+        //                print(winningDiningOption)
+        //
+        //                    self.winningRestaurant = winningDiningOption
+        //
+        //            }
+        //            else {
+        //                fatalError("\(appstate) not valid")
+        //            }
+        //        }
     }
     
-    fileprivate static func removeCachedSurvey(){
-        
-        
-        Storage.remove(Survey.filename, from: .caches)
-        
-    }
-    
-    fileprivate static func writeCache(survey:Survey){
-        
-        let cacheableSurvey = toCacheableSurvey(survey: survey)
-        
-        Storage.store(cacheableSurvey, to: .caches, as: Survey.filename)
-    }
     
 }
 
@@ -311,25 +383,14 @@ class Survey {
 /// - **option1**: The *first* dining option.
 /// - **option2**: The *second* dining option.
 /// - **option3**: The *third* dining option.
-public struct DiningOptionTuplet {
+public struct DiningOptions {
     
     //TODO: allow configurability (3+ dining options)
     
-    var option1 : DiningOption
-    var option2 : DiningOption
-    var option3 : DiningOption
+    var diningOptions : [DiningOption]
     
     func getOption(index:Int)->DiningOption{
-        switch index {
-        case 0:
-            return option1
-        case 1:
-            return option2
-        case 2:
-            return option3
-        default:
-            fatalError("OutOfBounds")
-        }
+        return diningOptions[index]
     }
 }
 
@@ -343,66 +404,41 @@ public struct DiningOptionTuplet {
 /// - **secondRoundOptions**: Leader's choice of restaurants
 /// - **queryString**: URL for Yelp API.
 struct CacheableSurvey : Codable {
-    
-    let surveyID : SurveyID
-    
-    //TODO: Can this change if people opt out?
-    let participantCount : Int
-    
-    //TODO: Change to first and second round so information is not lost
-    let firstRoundVotes : [ParticipantVote]
-    let secondRoundVotes : [ParticipantVote]
-    
-    let votes : [ParticipantVote]
-    
-    let firstRoundOptions : [Vote]
-    
-    let secondRoundOptions : [Vote]
-    let restaurantInfo : [RestaurantInfo]
-    
-    let winningRestaurantID : String
-    
-    let queryString : String?
+    //
+    //    let surveyID : SurveyID
+    //
+    //    //TODO: Can this change if people opt out?
+    //    let participantCount : Int
+    //
+    //    //TODO: Change to first and second round so information is not lost
+    //    let firstRoundVotes : [ParticipantVote]
+    //    let secondRoundVotes : [ParticipantVote]
+    //
+    //    let votes : [ParticipantVote]
+    //
+    //    let firstRoundOptions : [Vote]
+    //
+    //    let secondRoundOptions : [Vote]
+    //    let restaurantInfo : [RestaurantInfo]
+    //
+    //    let winningRestaurantID : String
+    //
+    //    let queryString : String?
     
 }
 
-/// Participant's choices in a round
-///
-/// Parameters:
-/// - **vote1**: The user's *first* vote.
-/// - **vote2**: The user's *second* vote.
-/// - **vote3**: The user's *third* vote.
-/// - **participantUUID**: User's identifying UUID string, as per the Leader's view
-struct ParticipantVote : Codable {
-    
-    let vote1 : Vote
-    let vote2 : Vote
-    let vote3 : Vote
-    
-    let participantUUID : String
-    
-    static func fromMessageStruct(message : MessageStruct) -> ParticipantVote{
-        let vote1 = message.vote1
-        let vote2 = message.vote2
-        let vote3 = message.vote3
-        
-        let participantUUID = message.messageSender
-        
-        return ParticipantVote.init(vote1: vote1,vote2: vote2,vote3: vote3,participantUUID: participantUUID)
-    }
-}
 
-/// Identification for a given Survey
-///
-/// Parameters:
-/// - **id**: 25 character alphanumberic id
-public struct SurveyID : Codable {
-    let id : String
-    
-    static func generate() -> SurveyID{
-        let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let lengthOfAlphanumeric = 25
-        let randomString = String((0...lengthOfAlphanumeric-1).map{ _ in letters.randomElement()! })
-        return SurveyID.init(id: randomString)
-    }
-}
+///// Identification for a given Survey
+/////
+///// Parameters:
+///// - **id**: 25 character alphanumberic id
+//public struct SurveyID : Codable {
+//    let id : String
+//
+//    static func generate() -> SurveyID{
+//        let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+//        let lengthOfAlphanumeric = 25
+//        let randomString = String((0...lengthOfAlphanumeric-1).map{ _ in letters.randomElement()! })
+//        return SurveyID.init(id: randomString)
+//    }
+//}

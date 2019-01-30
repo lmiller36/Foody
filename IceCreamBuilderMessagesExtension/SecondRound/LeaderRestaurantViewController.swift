@@ -48,7 +48,7 @@ class LeaderRestaurantViewController : UIViewController {
                 guard let locationCoordinates = CurrentLocation.sharedInstance.getCurrentLocation()?.coordinate else {fatalError("Could not get current location")}
                 
                 //Retrieve winner of round 1
-                let firstRoundChoice = Survey.sharedInstance.getCategoryWinner()
+                guard let firstRoundChoice = Survey.sharedInstance.categoryWinner else {fatalError("Winning category not set")}
                 guard let grouping = Grouping.init(rawValue:firstRoundChoice.cuisine) else {fatalError("Illegal grouping")}
                 
                 //Create list of applicable restaurant category's
@@ -214,28 +214,30 @@ class LeaderRestaurantViewController : UIViewController {
      */
     @IBAction func SubmitSelection(_ sender: Any) {
         
-         let firstSelection = visibleDiningOptions[0]
-        let secondSelection = visibleDiningOptions[1]
-         let thirdSelection = visibleDiningOptions[2]
+        Survey.sharedInstance.secondRoundOptions = DiningOptions.init(diningOptions: visibleDiningOptions)
+        
+//         let firstSelection = visibleDiningOptions[0]
+//        let secondSelection = visibleDiningOptions[1]
+//         let thirdSelection = visibleDiningOptions[2]
         
         //by nature, all of the leaders selection are approved
-        let vote1 = Vote.init(cuisine: firstSelection.cuisine, restaurantId: firstSelection.restaurant?.id, approved: true, ranking: 1)
-        
-        let vote2 = Vote.init(cuisine: secondSelection.cuisine, restaurantId: secondSelection.restaurant?.id, approved: true, ranking: 2)
-        
-        let vote3 = Vote.init(cuisine: thirdSelection.cuisine, restaurantId: thirdSelection.restaurant?.id, approved: true, ranking: 3)
-        
-        guard let queryString = self.queryString else {fatalError(
-            "No query string present")}
-        
-        let votes = [vote1,vote2,vote3]
-        let restaurantInfo = [firstSelection.restaurant,secondSelection.restaurant,thirdSelection.restaurant]
+//        let vote1 = Vote.init(cuisine: firstSelection.cuisine, restaurantId: firstSelection.restaurant?.id, approved: true, ranking: 1)
+//
+//        let vote2 = Vote.init(cuisine: secondSelection.cuisine, restaurantId: secondSelection.restaurant?.id, approved: true, ranking: 2)
+//
+//        let vote3 = Vote.init(cuisine: thirdSelection.cuisine, restaurantId: thirdSelection.restaurant?.id, approved: true, ranking: 3)
+//
+//        guard let queryString = self.queryString else {fatalError(
+//            "No query string present")}
+//
+//        let votes = [vote1,vote2,vote3]
+//        let restaurantInfo = [firstSelection.restaurant,secondSelection.restaurant,thirdSelection.restaurant]
         
         //TODO: replace with guard to as! goes away
         
-        Survey.sharedInstance.setLeaderRestaurantSelection(leaderSelection: votes,restaurantInfo:restaurantInfo as! [RestaurantInfo],queryString: queryString)
-        
-        delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: queryString, caption: "Here's which restaurants Paul likes")
+//        Survey.sharedInstance.setLeaderRestaurantSelection(leaderSelection: votes,restaurantInfo:restaurantInfo as! [RestaurantInfo],queryString: queryString)
+//
+        delegate?.addMessageToConversation( caption: "Here's which restaurants Paul likes")
         
     }
     
@@ -454,7 +456,7 @@ protocol LeaderRestaurantViewDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote,queryString:String?, caption:String)
+    func addMessageToConversation(caption:String)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     

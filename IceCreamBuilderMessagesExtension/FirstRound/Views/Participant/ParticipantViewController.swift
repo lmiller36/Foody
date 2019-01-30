@@ -17,9 +17,7 @@ class ParticipantViewController:UIViewController{
     var showBorder = false
     
     var categoryStates : [SelectionState]
-    var diningTuplet : DiningOptionTuplet?
-    
-    var isCuisineRound : Bool?
+    var diningTuplet : DiningOptions?
     
     @IBOutlet weak var AvailableTypes: UICollectionView!
     
@@ -42,65 +40,27 @@ class ParticipantViewController:UIViewController{
      - Returns: A beautiful, brand-new bicycle, custom-built just for you.
      */
     override func viewDidLoad() {
-
-        
-        guard let isCuisineRound = self.isCuisineRound else{fatalError("Round is unknown")}
-        if(isCuisineRound) {
-            self.diningTuplet = Survey.sharedInstance.getFirstRoundOptions()
+        if(Survey.sharedInstance.appState == AppState.CategorySelection) {
+            self.diningTuplet = Survey.sharedInstance.firstRoundOptions
             self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
 
             DispatchQueue.main.async {
-                
                 self.AvailableTypes.reloadData()
             }
         }
         else {
-            let base_url = Survey.sharedInstance.getQueryString()
-           
-            if(RestaurantsNearby.sharedInstance.isEmpty()) {
-                getNearbyRestaurants(base_url: base_url, callback :{ (restaurants) in
-                    print(restaurants.map{$0.name})
-                    
-                    //Add restaurants to shared instance
-                    RestaurantsNearby.sharedInstance.addRestaurants(restaurants: restaurants)
-              
-                    let approvedRestaurantIDs = Survey.sharedInstance.getApprovedRestaurants()
-                   
-                    //TODO: filter does not ensure leader's ordering is preserved
-                    let known_restaurants = RestaurantsNearby.sharedInstance.getRestaurantsByID(ids: approvedRestaurantIDs)
-                    
-                    print(known_restaurants.map{$0.restaurant?.name})
-                    print(known_restaurants.count)
-                    
-                    //TODO: fix magic number here and everywhere
-                    let numberOfOptions = 3
-                    if(known_restaurants.count != numberOfOptions){
-                        //TODO:Ensure correctness, when fatal error, this often fails
-                        print("Error occurred")
-                    }
-                    let newDiningTuplet = DiningOptionTuplet.init(option1: known_restaurants[0], option2: known_restaurants[1], option3: known_restaurants[2])
-                    
-                    Survey.sharedInstance.receivedSecondRoundOptions(secondRoundOptions: newDiningTuplet)
-                
-
-                    DispatchQueue.main.async {
-                        self.diningTuplet = newDiningTuplet
-                        self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
-                        self.AvailableTypes.reloadData()
-                    }
-                })
-            }
-            else {
+        
                  DispatchQueue.main.async {
-                    self.diningTuplet = Survey.sharedInstance.getSecondRoundOptions()
+                    self.diningTuplet = Survey.sharedInstance.secondRoundOptions
+                    print(self.diningTuplet)
                     self.categoryStates = [SelectionState.unselected,SelectionState.unselected,SelectionState.unselected]
 
                     self.AvailableTypes.reloadData()
                 }
             }
-            
-            
-        }
+
+
+        
     }
     
     //TODO: Do class init
@@ -168,26 +128,38 @@ class ParticipantViewController:UIViewController{
     @IBAction func Submit(_ sender: Any) {
         
         var votedOnAllOptions = true
-        
+//        
         self.showBorder = true
-        
+//
         guard let diningTuplet = self.diningTuplet else {fatalError("No saved dining tuplet")}
-        
+//
+        var votes = [Vote2]()
+        var count = 0
         for selectionState in self.categoryStates{
             votedOnAllOptions = votedOnAllOptions && (selectionState != SelectionState.unselected)
+            let approved = selectionState == SelectionState.approved
+            guard let diningOption = self.diningTuplet?.diningOptions[count] else {fatalError("Missing dining option")}
+            
+            let name = Survey.sharedInstance.appState == AppState.CategorySelection ?
+            diningOption.cuisine : diningOption.restaurant!.id
+            
+            let vote = Vote2.init(name: name, voteBy: Survey.sharedInstance.participantUUID!,approved:approved)
+            votes.append(vote)
+            count += 1
         }
         
+        print(votedOnAllOptions)
+
         //can submit
         if(votedOnAllOptions)
         {
+     
             
-            let vote1 = Vote.init(cuisine: diningTuplet.option1.cuisine, restaurantId: diningTuplet.option1.restaurant?.id ?? Optional<String>.none, approved: self.categoryStates[0].isApproved(), ranking: 1)
+            print(votes)
             
-            let vote2 = Vote.init(cuisine: diningTuplet.option2.cuisine, restaurantId: diningTuplet.option2.restaurant?.id ?? Optional<String>.none, approved: self.categoryStates[1].isApproved(), ranking: 2)
-            
-            let vote3 = Vote.init(cuisine: diningTuplet.option3.cuisine, restaurantId: diningTuplet.option3.restaurant?.id ?? Optional<String>.none, approved: self.categoryStates[2].isApproved(), ranking: 3)
-            
-            self.delegate?.addMessageToConversation(vote1,vote2: vote2,vote3: vote3,queryString: Optional<String>.none, caption: "Lorne has voted")
+            Survey.sharedInstance.addVotes(votes: votes)
+
+           self.delegate?.addMessageToConversation( caption: "Lorne has voted")
             
         }
         else {
@@ -218,7 +190,7 @@ class ParticipantViewController:UIViewController{
 
 extension ParticipantViewController : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.categoryStates.count
+        return self.diningTuplet?.diningOptions.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -371,7 +343,7 @@ protocol ParticipantVotingViewControllerDelegate: class {
     
     func backToMainMenu()
     
-    func addMessageToConversation(_ vote1:Vote,vote2:Vote,vote3:Vote,queryString:String?, caption:String)
+    func addMessageToConversation(caption:String)
     
     func changePresentationStyle(presentationStyle:MSMessagesAppPresentationStyle)
     

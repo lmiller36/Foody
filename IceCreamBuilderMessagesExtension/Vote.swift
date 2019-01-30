@@ -8,6 +8,7 @@
 
 import Foundation
 
+//TODO: Fix
 /// Sending format of data in messages
 ///
 /// *Parameters*:
@@ -21,15 +22,18 @@ import Foundation
 /// - **vote3**: The user's *third* vote.
 struct MessageStruct : Codable {
     
-    let state : String
-    let leader: String
-    let messageSender: String
+    //Cloudkit RecordID of the survey at hand
     let surveyID : String
-    let urlQueryString : String?
     
-    let vote1 : Vote
-    let vote2 : Vote
-    let vote3 : Vote
+//    let state : String
+//    let leader: String
+//    let messageSender: String
+//    let surveyID : String
+//    let urlQueryString : String?
+//
+//    let vote1 : Vote
+//    let vote2 : Vote
+//    let vote3 : Vote
     
 }
 
@@ -41,6 +45,7 @@ struct MessageStruct : Codable {
 /// - **approved**: A boolean if the user approves of the given dining option
 /// - **ranking**: Leader's determined status of the dining option
 struct Vote : Codable {
+
     let cuisine : String
     let restaurantId : String?
     let approved : Bool
@@ -52,4 +57,27 @@ struct Vote : Codable {
         case approved
         case ranking
     }
+}
+
+/// A given vote on a dining option
+///
+/// *Parameters*:
+/// - **approvedBy**: A boolean if the user approves of the given dining option
+/// - **ranking**: Leader's determined status of the dining option
+struct Vote2 : Codable {
+    
+    let name : String
+    let voteBy: String
+    let approved:Bool
+    
+    enum CodingKeys : String,CodingKey{
+        
+        case name
+        case voteBy
+        case approved
+    }
+}
+
+struct Votes : Codable {
+    let votes : [Vote]
 }

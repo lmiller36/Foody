@@ -106,6 +106,8 @@
 		CEE0DA4D21DFC6A600BFA92C /* Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0DA4C21DFC6A600BFA92C /* Survey.swift */; };
 		CEE0DA5221E01C1100BFA92C /* LeaderRestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE0DA5121E01C1100BFA92C /* LeaderRestaurantViewController.swift */; };
 		CEE358CE2200A5F200AFDAC3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE358CD2200A5F200AFDAC3 /* CloudKit.framework */; };
+		CEE358D32200A85900AFDAC3 /* Survey_Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE358D22200A85900AFDAC3 /* Survey_Cloud.swift */; };
+		CEE358D62200A8F300AFDAC3 /* Survey_Cloud_Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE358D52200A8F300AFDAC3 /* Survey_Cloud_Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -239,6 +241,8 @@
 		CEE0DA5121E01C1100BFA92C /* LeaderRestaurantViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderRestaurantViewController.swift; sourceTree = "<group>"; };
 		CEE358CC2200A44700AFDAC3 /* IceCreamBuilderMessagesExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IceCreamBuilderMessagesExtension.entitlements; sourceTree = "<group>"; };
 		CEE358CD2200A5F200AFDAC3 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		CEE358D22200A85900AFDAC3 /* Survey_Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey_Cloud.swift; sourceTree = "<group>"; };
+		CEE358D52200A8F300AFDAC3 /* Survey_Cloud_Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey_Cloud_Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -345,6 +349,7 @@
 				48B14F502155DA0100A05FEF /* CurrentLocation.swift */,
 				CEE0DA4521DE8FF000BFA92C /* Vote.swift */,
 				CEE0DA4921DEED9000BFA92C /* DiningOption.swift */,
+				CEE358D42200A86000AFDAC3 /* Cloud */,
 				CEE0DA4C21DFC6A600BFA92C /* Survey.swift */,
 			);
 			path = IceCreamBuilderMessagesExtension;
@@ -491,6 +496,15 @@
 				CEE0DA5121E01C1100BFA92C /* LeaderRestaurantViewController.swift */,
 			);
 			path = SecondRound;
+			sourceTree = "<group>";
+		};
+		CEE358D42200A86000AFDAC3 /* Cloud */ = {
+			isa = PBXGroup;
+			children = (
+				CEE358D22200A85900AFDAC3 /* Survey_Cloud.swift */,
+				CEE358D52200A8F300AFDAC3 /* Survey_Cloud_Model.swift */,
+			);
+			path = Cloud;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -707,12 +721,14 @@
 			files = (
 				CEE0DA4621DE8FF000BFA92C /* Vote.swift in Sources */,
 				B55F96281CFF829D00B33E33 /* MessagesViewController.swift in Sources */,
+				CEE358D32200A85900AFDAC3 /* Survey_Cloud.swift in Sources */,
 				4806D7632183C2C100FC5912 /* AppState.swift in Sources */,
 				CE5CFC6F21D716DE002A7BCD /* ParticipantViewController.swift in Sources */,
 				B55F96431CFF82E100B33E33 /* IceCream+Image.swift in Sources */,
 				4806D76721862B0300FC5912 /* Cacher.swift in Sources */,
 				4833314C215EDAFB00FD997D /* RestaurantsNearby.swift in Sources */,
 				4888F60F2180E311005EA28A /* RestaurantInfo.swift in Sources */,
+				CEE358D62200A8F300AFDAC3 /* Survey_Cloud_Model.swift in Sources */,
 				B5B1E9F21D02717700BD5715 /* IceCreamStickerCache.swift in Sources */,
 				CE31F7E621D44840007EE827 /* LeaderVotingView.swift in Sources */,
 				B55F964C1CFF82E100B33E33 /* QueryItemRepresentable.swift in Sources */,

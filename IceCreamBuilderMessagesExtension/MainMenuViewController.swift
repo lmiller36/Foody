@@ -64,6 +64,7 @@ class MainMenuViewController :UIViewController{
         self.NewSurveyView.isHidden = viewIsCompact
         self.SettingsView.isHidden = viewIsCompact
         self.HelpView.isHidden = viewIsCompact
+        
     }
     
     //TODO: Do class init
@@ -79,7 +80,9 @@ class MainMenuViewController :UIViewController{
      - Returns: A beautiful, brand-new bicycle, custom-built just for you.
      */
     @IBAction func AddNewSurvey(_ sender: UIGestureRecognizer) {
-        delegate?.switchState_StartMenu(newState: AppState.CategorySelection)
+        
+        Survey.sharedInstance.appState = AppState.CategorySelection
+        delegate?.switchState_StartMenu()
     }
     
 }
@@ -97,6 +100,6 @@ class ScrollingFoodCell : UICollectionViewCell{
 protocol MainMenuViewControllerDelegate: class {
     
     /// Called to start a new survey
-    func switchState_StartMenu(newState:AppState)
+    func switchState_StartMenu()
     
 }
